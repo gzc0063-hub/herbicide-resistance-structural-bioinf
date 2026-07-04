@@ -44,7 +44,29 @@ sensitive"), not Ki. Both are real findings in the paper — just attributed to 
 wrong parameter in the brief. Use I50 fold-change for the "100–500×" claim, Ki
 fold-change (~10–55×) if citing Ki specifically.
 
-## Not yet independently verified (flagging per the brief's own "don't resolve by inference" instruction)
+## Primary-source full-text check — Hao et al. 2009 (PDF supplied by user, saved to `docs/references/Hao_et_al_2009_PPO_Gly210_computational.pdf`)
+
+- **Confirmed directly from the paper's own abstract:** "An interchain hydrogen bond
+  between Gly210 with Ser424... disappeared after Gly210 deletion." Matches the
+  brief's claim exactly — no longer just Dayan 2010's secondhand summary of it.
+- Confirmed: purely computational study (homology modeling, MD, MM-PBSA), no
+  wet-lab kinetics — matches the brief's characterization used to justify weighting
+  Dayan 2010 as the primary account.
+
+## Primary-source full-text check — Giacomini et al. 2017 (PDF supplied by user, saved to `docs/references/Giacomini_et_al_2017_R98G_R98M.pdf`)
+
+- Confirmed: R98G and R98M mutations, DOI 10.1002/ps.4581, Pest Manag Sci 73:1559-1563.
+- **No GenBank accession numbers appear anywhere in the full text**, including
+  References and Acknowledgements — this was a full read, not just a visible-text
+  search, so the "open item" status in the brief is now confirmed rather than assumed.
+  Sequencing was cDNA from individual plants (Table 1: populations GPW/LPW/SPW
+  resistant, KPW sensitive, per-plant genotype calls), not deposited full-length
+  sequences with accessions.
+- Confirmed verbatim: R98L (a related but distinct substitution at the homologous
+  site) belongs to *Ambrosia artemisiifolia* (common ragweed), not *Amaranthus* —
+  matches DECISION_LOG's nomenclature correction exactly.
+
+## Not yet independently verified
 
 - ABD52326/ABD52328 as a second legitimate ΔG210 pair, "confirmed via 2 independent
   citing papers" — Dayan 2010's methods only reference ABD52329/ABD52330 directly;
@@ -52,7 +74,6 @@ fold-change (~10–55×) if citing Ki specifically.
 - Heinemann et al. 2007's specific 4-residue active-site core (Arg98, Phe392,
   Leu356, Leu372) and the claimed kcat/Ki effects of mutating each — not yet read
   from that paper directly, only cited correctly by Dayan 2010.
-- Hao et al. 2009's specific "Gly210–Ser424 hydrogen bond" mechanism claim — Dayan
-  2010 only vaguely summarizes Hao's finding as "affected the surrounding hydrogen
-  bonding network"; the Ser424-specific detail isn't in the text I have.
+- Hao et al. 2014 (JAFC) — R98/hydrogen-bond-disruption mechanism detail still
+  citation-only, not read directly.
 - V361A mechanism class — per brief, genuinely still open.

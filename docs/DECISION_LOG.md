@@ -83,7 +83,23 @@ This was the largest single piece of work: verifying every mutation, accession, 
 
 ---
 
-## 7. How the files in this repo relate
+## 7. Validation-gate scope clarified (raised by Claude Code during Phase 1 execution)
+
+Claude Code correctly flagged that literally reproducing Dayan et al. 2010's cavity-volume and FAD-distance numbers would require rebuilding their homology models and running full solvated MD simulation from scratch — a genuinely separate, multi-day-to-multi-week undertaking, and one that would need repeating for every mutation across every enzyme to stay methodologically consistent. That's the same scope-explosion risk the panel review fix in section 2 was already designed to prevent, just recurring in a new form.
+
+**Decision: keep the static, scriptable pipeline (percentile-rank distance-to-active-site + solvent accessibility, no MD) as designed. Redefine the validation gate accordingly:**
+
+- **Not checked:** exact cavity-volume or FAD-distance numbers (551→848 Å³, +1.5 Å) — these require MD and are cited as literature, not reproduced computationally.
+- **Actually checked:** whether the pipeline's own static distance metric places Gly210 outside the Heinemann et al. 2007 four-residue active-site core (Arg98, Phe392, Leu356, Leu372) — a positional/geometric claim, consistent with Dayan's "adjacent to, not in, the active site" finding, and something the static pipeline can genuinely verify.
+- **Optional, not required:** a lightweight local energy minimization (ChimeraX, not full MD) on the region immediately around a deletion, before computing distance/SASA — cheap enough to apply at comparative scale, and partially reflects the conformational relaxation Dayan's MD captured, without adopting MD as the project's method.
+
+This also fixes a wording problem in `PPO_Phase1_Final_Validated_Brief.md` section 5, which currently reads as if the pipeline should reproduce Dayan's exact numbers. That section's numbers stay as the literature benchmark to *cite*; they are not a target the static pipeline is expected to hit.
+
+**Manuscript framing to carry forward:** the project's contribution is breadth — a systematic comparison across many enzymes and mutations using methods tractable at that scale — not per-target mechanistic depth. Where a deep MD study already exists for a given mutation (as it does for ΔG210), the lightweight pipeline's output is compared against that study's *qualitative* conclusions as an internal consistency check, not treated as a numerical replication exercise. State this explicitly in the methods section to preempt the reviewer question "why not MD everywhere."
+
+---
+
+## 8. How the files in this repo relate
 
 - **This file (`DECISION_LOG.md`)** — the *why*: every directional decision and correction, in the order they were made.
 - **`PPO_Phase1_Final_Validated_Brief.md`** — the *what*: the current, fully-cross-checked dataset, numbering keys, mechanism classes, and validation-gate numbers, ready to feed into the pipeline.

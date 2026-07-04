@@ -47,9 +47,13 @@ Arg98 (coordinates propionate carboxylate of protogen ring C), Phe392 (anchors r
 | R98G/R98M/R128G/R128M | `hydrogen_bond_disruption` | Removes H-bonds with acifluorfen, fomesafen, sulfentrazone specifically; oxadiazole-type inhibitors don't H-bond here so aren't affected the same way | Confirmed, mechanism detailed in Hao et al. 2014 (JAFC, still not directly read — citation only) |
 | V361A | pending | Not yet resolved from a structural paper in hand | Open |
 
-## 5. Exact validation-gate numbers for the pilot (from Dayan et al. 2010 — treat as ground truth)
+## 5. Dayan et al. 2010's numbers — cited benchmark, not a reproduction target
 
-Your ChimeraX/structural pipeline on wild-type vs. ΔG210 should be checked against these specific, quantitative published results before scaling to the other mutations:
+**Scope note (see DECISION_LOG.md section 7 for the full reasoning):** these numbers came from a full homology-modeling + solvated MD simulation study — genuinely a separate undertaking from this project's static, scriptable pipeline. Reproducing them numerically would require rebuilding that MD pipeline for every mutation across every enzyme surveyed here, which is out of scope. **Cite these numbers as literature; do not treat them as a target your static pipeline needs to hit.**
+
+The actual validation gate for the static pipeline: confirm that your own distance-to-active-site calculation places Gly210 **outside** the Heinemann et al. 2007 four-residue active-site core (Arg98, Phe392, Leu356, Leu372) — a positional claim, consistent with the finding below that Gly210 is "adjacent to, not in, the active site." That's what a static geometric metric can actually check.
+
+The numbers themselves, for citation purposes:
 
 - Active-site cavity volume: **~551 Å³ (WT) → ~848 Å³ (resistant)**
 - Gly207-carbonyl-to-FAD-N5 distance: **increases by ~1.5 Å on average** (WT cluster 6–8 Å; resistant cluster 7–9 Å)
