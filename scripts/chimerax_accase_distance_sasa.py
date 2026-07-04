@@ -22,7 +22,7 @@ from reference_conservation import _align  # noqa: E402
 session = session  # noqa: F821
 
 PDB_PATH = Path("data/raw/1UYS.pdb")
-AJ_FASTA = Path("data/raw/ACCase_Amyosuroides_AJ310767.fasta")
+AJ_FASTA = Path("data/raw/ACCase_Alopecurus_AJ310767_reference.fasta")
 PDB_FASTA = Path("data/raw/1UYS.fasta")
 OUTPUT_PATH = Path("data/processed/accase_1uys_distance_sasa.csv")
 

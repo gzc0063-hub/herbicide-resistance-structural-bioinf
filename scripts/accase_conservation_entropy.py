@@ -17,7 +17,7 @@ except ImportError:
 
 
 INPUT_PANEL = Path("data/raw/ACCase_conservation_plastidic_grass_named_accessions.fasta")
-AJ_FASTA = Path("data/raw/ACCase_Amyosuroides_AJ310767.fasta")
+AJ_FASTA = Path("data/raw/ACCase_Alopecurus_AJ310767_reference.fasta")
 PDB_FASTA = Path("data/raw/1UYS.fasta")
 OUTPUT_PANEL = Path("data/processed/accase_conservation_set.fasta")
 OUTPUT_ENTROPY = Path("data/processed/accase_conservation_entropy.csv")

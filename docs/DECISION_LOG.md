@@ -536,7 +536,9 @@ Asp2078, and Gly2096 invariant among sequences present at those columns.
 and a useful internal contrast: some TSR substitutions are direct ligand-contact
 core residues, some are adjacent-to-core pocket residues, and Cys2088Arg is the
 clearest ACCase candidate for a more distal cavity-context effect in the static
-pipeline. Move to HPPD next using the same verified-source-first workflow.
+pipeline. At the time, the next planned target was HPPD using the same
+verified-source-first workflow; that plan was later narrowed by the HPPD go/no-go
+audit in §25.
 
 ---
 
