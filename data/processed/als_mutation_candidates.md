@@ -1,7 +1,8 @@
-# ALS/AHAS Phase 2 pilot — mutation candidates
+# ALS/AHAS Phase 2 pilot — mutation candidates (resolved)
 
-Scope and sign-off decisions applied below; one item remains genuinely blocked
-pending a paywalled source (see status).
+All sign-off items resolved directly from Larran et al. 2017's own text (PDF now in
+`docs/references/Larran_et_al_2017_ALS_Argentina.pdf`). Working dataset is
+`als_mutations.csv`. This file keeps the resolution trail for reference.
 
 ## Scope (resolved)
 
@@ -10,61 +11,42 @@ this pilot's scope - they'd be scope creep on what's meant to be a quick second
 validation-gate check reusing PPO's now-proven pipeline, not a full ALS survey.
 They remain fair game for a later, fuller ALS pass if warranted.
 
-## Candidate crystal structures (real, confirmed via RCSB search)
+## Reference/wild-type accession (resolved from the paper's own Table 4)
 
-27 plant AHAS entries found. Best candidates: the McCourt et al. 2006 *PNAS* series -
-**Arabidopsis thaliana AHAS**, each with a different herbicide class bound:
+Larran et al. 2017, *Pest Manag Sci*, DOI 10.1002/ps.4662, Table 4 ("Amino acid
+differences found in the ALS open reading frame of resistant *Amaranthus palmeri*
+populations compared with the susceptible population"):
 
-| PDB | Herbicide class | Compound |
-|---|---|---|
-| 1YBH | Sulfonylurea | Chlorimuron ethyl |
-| 1YHY | Sulfonylurea | Metsulfuron methyl |
-| 1YHZ | Sulfonylurea | Chlorsulfuron |
-| 1YI0 | Sulfonylurea | Sulfometuron methyl |
-| 1YI1 | Sulfonylurea | Tribenuron methyl |
-| 1Z8N | Imidazolinone | Imazaquin |
-| 5K3S | Pyrimidinyl-benzoate | Bispyribac-sodium |
-| 5K6R | Sulfonylaminocarbonyltriazolinone | Thiencarbazone-methyl |
+| Population | Allelic version (frequency) | Substitution | Accession |
+|---|---|---|---|
+| S | A (8/8) | — (wild-type) | **KY781916** |
+| R1 | C (1/8) | **W574L** | **KY781918** |
+| R2 | H (2/8) | **S653N** | **KY781923** |
 
-Broader herbicide-class coverage than PPO's single 1SEZ structure had. Arabidopsis
-numbering is also the field-standard convention for ALS mutations - less of a
-numbering-offset problem than PPO's three-way tobacco/waterhemp/palmeri system,
-**but** the crystallized sequence (1Z8N chain, starts "TFISRFAPDQ...") looks like a
-transit-peptide-cleaved mature fragment, not the full preprotein - so raw sequence
-position ≠ literature position without an alignment-derived offset. Not yet resolved.
+**S/KY781916 is explicitly labeled the susceptible/wild-type population in the
+paper's own text and table** - not inferred by elimination. All 8/8 S-population
+clones were identical (100% amino acid identity), so there's no internal ambiguity
+about the reference.
 
-## Candidate real accessions - Amaranthus palmeri (continuing species used in Phase 1)
+**Cross-check against the earlier ASL-prefixed protein accessions:** confirmed
+byte-identical - ASL69930.1 ≡ KY781916.1 (S/WT), ASL69932.1 ≡ KY781918.1 (W574L),
+and both ASL69931.1 and ASL69937.1 ≡ KY781923.1 (S653N - matches Table 4's stated
+2/8 frequency for this allelic version, i.e. two separately-deposited identical
+clones). The original elimination-based guess (using ASL69930 as the diff baseline)
+turned out to be the correct sequence, but per the process this project follows,
+it wasn't trusted until the paper's own text confirmed it - the earlier "blocked,
+not resolved by elimination" status was the right call even though the guess
+happened to be right.
 
-**Source:** Larran, Palmieri, Perotti, Lieber, Tuesca & Permingeat, "Target-site
-resistance to acetolactate synthase (ALS)-inhibiting herbicides in *Amaranthus
-palmeri* from Argentina," *Pest Manag Sci* 2017, DOI 10.1002/ps.4662. Deposited
-accessions **ASL69930-ASL69937** (8 sequences, 669 aa each).
+## Numbering (resolved - no offset needed)
 
-Raw pairwise diffs (using ASL69930 as a provisional diff baseline only - **not
-confirmed as the correct susceptible/wild-type genotype**, see status below):
-
-| Accession | Raw diff positions vs ASL69930 | Candidate mutation (unconfirmed numbering) |
-|---|---|---|
-| ASL69931 | 652 (S→N) | possible Ser653Asn |
-| ASL69932 | 573 (W→L) | possible Trp574Leu |
-| ASL69933 | 573 (W→L), 600 (M→I) | possible Trp574Leu + unclear second change (out of pilot scope) |
-| ASL69934 | 117 (A→S), 282 (A→D) | out of pilot scope (neither Trp574 nor Ser653) |
-| ASL69935 | 282 (A→D), 652 (S→N) | Ser653Asn candidate, plus an out-of-scope second change |
-| ASL69936 | 79 (P→H), 282 (A→D), 652 (S→N) | Ser653Asn candidate, plus two out-of-scope changes |
-| ASL69937 | 652 (S→N) | possible Ser653Asn |
-
-Cleanest single-mutation candidates for the pilot's narrowed scope: **ASL69932**
-(Trp574Leu candidate, one clean diff besides the shared N-terminal block) and
-**ASL69931 or ASL69937** (Ser653Asn candidate, one clean diff besides the shared block).
-
-**Status: reference accession still blocked, not resolved by elimination.** All 8
-sequences share the same 8 N-terminal differences from ASL69930 (positions 4, 6,
-10, 11, 12, 16, 22, 31) before any of the diffs above. Per instruction, this is
-more likely a different transcript start than an error, but ASL69930 is **not**
-being used as the wild-type baseline until Larran et al. 2017's own methods or
-supplementary text confirms which accession is the labeled susceptible/wild-type
-population sample. Wiley blocked automated fetch attempts against this DOI (see
-`CONTRIBUTING.md`) - **waiting on the user to supply the PDF directly.**
+The paper states substitutions are numbered per the *Arabidopsis thaliana* ALS
+convention (except A282D, out of scope, which uses a third reference sequence -
+*Amaranthus retroflexus* - because it falls in an indel). **Verified directly
+against the 1Z8N crystal structure's own PDB numbering:** chain A residue 574 is
+TRP and residue 653 is SER - matching the literature convention exactly, with no
+alignment-derived offset required (unlike PPO's three-way tobacco/waterhemp/palmeri
+numbering). The crystallographers already used the standard convention.
 
 ## Excluded from the working mutation set
 
@@ -75,19 +57,22 @@ submission, not a peer-reviewed paper, the same category of problem as the origi
 QBB0236x mistake in Phase 1. Tag: `unpublished_lower_confidence`. Kept as a record
 here only; not used in anything the manuscript relies on.
 
-## Candidate structural/kinetic validation paper (Dayan-2010 role for ALS)
+## Active-site reference — resolved without needing McCourt et al. 2006's full text
+
+McCourt et al. 2006 (*PNAS* 103:569-573, the structural paper cited in Larran et
+al.'s own reference list) would be the natural Heinemann-2007-equivalent source for
+a defined active-site residue core, but a scite full-text fetch attempt for it came
+back empty. Rather than pushing further on that source, the active site was defined
+directly from the 1Z8N structure itself: residues in contact with the bound
+imazaquin ligand (1Z8N is a real herbicide-bound crystal structure, same approach
+used to confirm PPO's R98-OMN contact). This sidesteps the paywall/fetch-limit issue
+entirely and is arguably more faithful to the original panel-review design (compute
+structural features directly, don't lean on secondary literature more than needed).
+
+## Candidate structural/kinetic paper, lower priority now
 
 "Effects of resistance mutations of Pro197, Asp376 and Trp574 on the
 characteristics of acetohydroxyacid synthase (AHAS) isozymes" (DOI 10.1002/ps.4889)
-- found via literature search, not yet read in full, and covers Pro197/Asp376
-(now out of pilot scope) alongside Trp574 (in scope). Given the scope narrowing,
-this paper's usefulness as the ALS validation-gate anchor is now partial at best -
-revisit once Trp574Leu/Ser653Asn numbering is resolved to see if it's still the
-right anchor, or if a Ser653-specific paper is a better fit.
-
-## Next step
-
-Once the Larran et al. 2017 PDF is available, confirm the wild-type/susceptible
-accession from its text, then proceed with numbering resolution (align to 1Z8N/
-Arabidopsis) and the ChimeraX distance/SASA/conservation pipeline for Trp574Leu and
-Ser653Asn only, mirroring PPO's Phase 1 pipeline exactly.
+covers Trp574 (in scope) but leads with Pro197/Asp376 (out of scope) - not pursued
+further given the narrowed pilot scope. Revisit if a Ser653-specific validation
+anchor is wanted later.

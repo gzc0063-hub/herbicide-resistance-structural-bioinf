@@ -214,11 +214,58 @@ Giacomini et al. 2017 (§14).
 
 ---
 
-## 14. How the files in this repo relate
+## 14. ALS/AHAS reference accession and numbering resolved from Larran et al. 2017's own text
+
+The user supplied the PDF directly (per §13's convention) after Wiley blocked the
+automated fetch. Resolved, from the paper's own Table 4, not by inference:
+
+- **Wild-type/susceptible reference: KY781916** — explicitly labeled the S
+  population in Table 4, 8/8 clones with 100% amino acid identity to each other.
+- **Trp574Leu: KY781918** (R1 population, allelic version C, 1/8 clones) — a clean,
+  isolated substitution.
+- **Ser653Asn: KY781923** (R2 population, allelic version H, 2/8 clones) — also
+  clean and isolated.
+- **A282D uses a third numbering reference** (*Amaranthus retroflexus*, not
+  Arabidopsis) per the paper's own footnote, because it falls in an indel — this
+  position is out of the pilot's scope (§12) but worth remembering if a fuller ALS
+  pass is done later, as a fourth numbering layer alongside PPO's three.
+
+**Cross-check:** these three accessions are byte-identical to protein accessions
+already fetched during the initial candidate research - ASL69930.1 ≡ KY781916.1,
+ASL69932.1 ≡ KY781918.1, and both ASL69931.1 and ASL69937.1 ≡ KY781923.1 (matching
+Table 4's stated 2/8 frequency for that allelic version - two separate deposited
+clones of the same sequence). The original elimination-based guess at a wild-type
+reference (ASL69930) turned out to be correct, but per §12's decision it was
+correctly left unconfirmed until the paper's text settled it - the sequence being
+right doesn't retroactively justify skipping the verification step.
+
+**Numbering resolved with no offset needed**, unlike PPO's tobacco/waterhemp/palmeri
+system: the 1Z8N crystal structure's own PDB residue numbering already matches the
+paper's stated Arabidopsis-convention positions exactly (verified directly - chain A
+residue 574 is TRP, residue 653 is SER). The crystallographers used the standard
+literature convention directly, so `als_mutations.csv` needed no numbering_maps.json
+equivalent.
+
+**Active-site reference resolved without McCourt et al. 2006's full text.** That
+paper (*PNAS* 103:569-573) would be the natural Heinemann-2007-equivalent source,
+but a literature-search fetch attempt for its full text came back empty. Rather than
+pushing further on that specific source, the active site is defined directly from
+which residues contact the bound imazaquin ligand in 1Z8N itself - the same
+structural-contact approach already used to confirm PPO's R98-OMN relationship, and
+arguably closer to the panel review's original intent (compute structural features
+directly rather than depending on secondary literature more than necessary).
+
+**Decision: proceed to the ChimeraX distance/SASA/conservation pipeline for
+Trp574Leu and Ser653Asn**, per §12.
+
+---
+
+## 15. How the files in this repo relate
 
 - **This file (`DECISION_LOG.md`)** — the *why*: every directional decision and correction, in the order they were made.
 - **`CONTRIBUTING.md`** — working conventions for this repo (currently: how to handle paywalled/bot-blocked sources, §13).
 - **`PPO_Phase1_Final_Validated_Brief.md`** — the *what*: the current, fully-cross-checked dataset, numbering keys, mechanism classes, and validation-gate numbers, ready to feed into the pipeline.
 - **`rangani_2019_table2_cross_resistance.csv`** — external validation dataset (real IC50/resistance-factor data, 13 herbicides × 3 mutations, common genetic background).
-- **`docs/references/`** — primary-source PDFs now available directly in the repo (Dayan et al. 2010, Hao et al. 2009, Giacomini et al. 2017), not just summarized secondhand in the brief. Verification claims in `VERIFICATION_LOG.md` that cite these papers can be checked against the actual text.
+- **`docs/references/`** — primary-source PDFs now available directly in the repo (Dayan et al. 2010, Hao et al. 2009, Giacomini et al. 2017, Larran et al. 2017), not just summarized secondhand in the briefs. Verification claims in `VERIFICATION_LOG.md` that cite these papers can be checked against the actual text.
+- **`als_mutation_candidates.md`** / **`als_mutations.csv`** — Phase 2 (ALS/AHAS pilot) working candidate list (resolution trail) and final working dataset, mirroring Phase 1's `ppo_mutation_candidates.md` → `ppo_mutations.csv` pattern.
 - **`als_mutation_candidates.md`** — Phase 2 (ALS/AHAS pilot) working candidate list and open items, mirroring Phase 1's `ppo_mutation_candidates.md` checkpoint pattern.
