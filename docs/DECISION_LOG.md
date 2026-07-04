@@ -567,10 +567,11 @@ Ala122 and Pro197, which were intentionally excluded from the narrow ALS pilot, 
 real binding-pocket resistance hotspots and should be treated as such in any fuller
 ALS expansion.
 
-The review also correctly flagged that the project currently reports raw SASA in
-A^2, not residue-normalized RSA. Existing buried/exposed interpretations remain
-safe because the calls are clear-cut, but **Phase 4 cross-enzyme pooling must add
-RSA while preserving raw SASA for traceability.**
+The review also correctly flagged that the project at that point reported raw SASA
+in A^2, not residue-normalized RSA. Existing buried/exposed interpretations
+remained safe because the calls were clear-cut, but **Phase 4 cross-enzyme pooling
+needed RSA while preserving raw SASA for traceability.** This was later implemented
+in Decision 27.
 
 HPPD is now reframed before any metric work. Do **not** use Gly336 as a weed
 target-site resistance mutation: it is an engineered *Pseudomonas fluorescens*
@@ -582,9 +583,10 @@ resistance/metabolism/gene amplification, not forced into the TSR validation-gat
 template.
 
 **Decision:** keep ACCase and EPSPS as completed validation-gate phases; merge the
-ALS interface-core correction immediately; add RSA before Phase 4; and make HPPD's
-next step a source-first TSR eligibility audit rather than structure-metric
-generation.
+ALS interface-core correction immediately; require RSA before Phase 4; and make
+HPPD's next step a source-first TSR eligibility audit rather than structure-metric
+generation. The RSA and HPPD follow-through are recorded in Decisions 27 and 25,
+respectively.
 
 ---
 
@@ -679,3 +681,39 @@ of truth across Codex and Claude Code. Do not reintroduce the duplicate Yu 2007 
 or duplicate AJ310767 FASTA unless a future source-audit reason requires separate
 copies. The retained ACCase mapping remains: Cys2088Arg -> 1UYS chain B residue
 2014.
+
+---
+
+## 27. RSA normalization before Phase 4 pooling
+
+The external review correctly identified that raw per-residue SASA in A^2 is not
+the right pooled cross-enzyme exposure covariate because amino-acid side-chain size
+differs strongly among residue types. The existing raw `sasa_A2` values remain
+useful for traceability and for comparing back to the ChimeraX/static-SASA pipeline,
+but pooled buried/exposed analysis should use residue-normalized RSA.
+
+Implemented a dedicated post-processing step, `scripts/rsa.py`, that appends two
+columns to every current static metric output:
+
+- `max_sasa_tien2013_A2`, using the Tien et al. 2013 maximum allowed solvent
+  accessibility table;
+- `rsa_tien2013`, calculated as `sasa_A2 / max_sasa_tien2013_A2`.
+
+The script preserves raw `sasa_A2` and inserts the RSA columns directly beside it.
+Modified PDB residue names already present in the project are mapped conservatively:
+`MSE` uses the methionine maximum and `CSD` uses the cysteine maximum. Unknown
+residue names are left blank rather than guessed.
+
+Updated outputs:
+
+- `data/processed/ppo_1sez_distance_sasa.csv`
+- `data/processed/als_1z8n_distance_sasa.csv`
+- `data/processed/epsps_8umj_distance_sasa.csv`
+- `data/processed/accase_1uys_distance_sasa.csv`
+- `data/processed/hppd_5ywg_active_site_metrics.csv`
+
+**Decision:** Phase 4 cross-enzyme synthesis must use `rsa_tien2013` for exposure
+comparisons and retain `sasa_A2` only as a traceable raw metric. This change does
+not alter completed phase interpretations because the earlier buried/exposed calls
+were qualitatively clear-cut; it removes the main metric-scaling caveat before
+pooling targets.

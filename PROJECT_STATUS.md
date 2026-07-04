@@ -50,8 +50,11 @@ pushed to https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf
   `docs/EXTERNAL_REVIEW_RESPONSE.md` and `docs/DECISION_LOG.md` §24. Adopted
   corrections: ALS interface core, raw-SASA-vs-RSA caveat, and HPPD go/no-go
   TSR audit before any metrics. Do not use engineered HPPD Gly336 as weed TSR.
-- **Not completed:** RSA; Phase 3 (FAT,
-  DHODH - needs ColabFold), Phase 4 (cross-enzyme synthesis), Phase 5
+- **RSA normalization: COMPLETE.** All five current static metric outputs retain
+  raw `sasa_A2` and now add `max_sasa_tien2013_A2` plus `rsa_tien2013`, using
+  Tien et al. 2013 maximum allowed solvent-accessibility values.
+- **Not completed:** Phase 3 (FAT,
+  DHODH - needs structure decision), Phase 4 (cross-enzyme synthesis), Phase 5
   (deposit/submit).
 
 ---
@@ -84,26 +87,26 @@ pushed to https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf
 | `ppo_mutations.csv` | **The working PPO dataset** - 6 mutation rows with accessions, positions, mechanism, confidence, citations |
 | `ppo_numbering_key.csv` / `numbering_maps.json` | Tobacco ↔ waterhemp ↔ Palmer amaranth position conversions |
 | `ppo_active_site_reference.md` | The Heinemann et al. 2007 4-residue PPO active-site core used as the distance reference |
-| `ppo_1sez_distance_sasa.csv` | Raw per-residue distance/SASA output for all 465 residues of the PPO structure |
+| `ppo_1sez_distance_sasa.csv` | Per-residue distance/SASA/RSA output for all 465 residues of the PPO structure |
 | `ppo_conservation_entropy.csv` | Raw per-residue Shannon-entropy conservation scores (10-species panel) |
 | `ppo_validation_gate_results.md` | **The PPO results writeup** - the table, the ΔG210/V361A interpretation, the R98 SASA sanity check |
 | `als_mutation_candidates.md` | ALS's sign-off/resolution trail (mirrors PPO's candidates doc) |
 | `als_mutations.csv` | **The working ALS dataset** - 2 mutation rows |
-| `als_1z8n_distance_sasa.csv` | Raw per-residue distance/SASA for the ALS structure |
+| `als_1z8n_distance_sasa.csv` | Per-residue distance/SASA/RSA for the ALS structure |
 | `als_conservation_entropy.csv` | Raw per-residue conservation scores (9-species panel) |
 | `als_validation_gate_results.md` | **The ALS results writeup** |
 | `epsps_mutation_candidates.md` | EPSPS setup/resolution trail: 8UMJ structure choice, Baerson accession anchor, Chong lower-confidence context |
 | `epsps_mutations.csv` | **The working EPSPS mutation seed dataset** - currently Pro106Ser |
-| `epsps_8umj_distance_sasa.csv` | Raw per-residue EPSPS distance/SASA output for 8UMJ chain A |
+| `epsps_8umj_distance_sasa.csv` | Per-residue EPSPS distance/SASA/RSA output for 8UMJ chain A |
 | `epsps_conservation_entropy.csv` | Raw per-residue EPSPS conservation scores (8-sequence panel, reference-indexed to 8UMJ/PDB numbering) |
 | `epsps_validation_gate_results.md` | **The EPSPS results writeup** |
 | `accase_mutation_candidates.md` | ACCase setup/resolution trail: AJ310767 numbering, 1UYS structure, Yu 2007 2088 accessions |
 | `accase_mutations.csv` | **The working ACCase mutation seed dataset** - 6 reference-numbered TSR rows |
-| `accase_1uys_distance_sasa.csv` | Raw per-chain-residue ACCase distance/SASA output for the 1UYS B+C dimer |
+| `accase_1uys_distance_sasa.csv` | Per-chain-residue ACCase distance/SASA/RSA output for the 1UYS B+C dimer |
 | `accase_conservation_entropy.csv` | Raw per-residue ACCase conservation scores (14-sequence plastidic grass panel, reference-indexed to AJ310767) |
 | `accase_validation_gate_results.md` | **The ACCase results writeup** |
 | `hppd_tsr_audit.md` | HPPD source audit: no accepted weed-evolved target-site mutation; Gly336 excluded |
-| `hppd_5ywg_active_site_metrics.csv` | Raw per-chain-residue HPPD active-site distance/SASA output for the 5YWG A+B mesotrione-bound dimer |
+| `hppd_5ywg_active_site_metrics.csv` | Per-chain-residue HPPD active-site distance/SASA/RSA output for the 5YWG A+B mesotrione-bound dimer |
 | `hppd_active_site_contrast_results.md` | **The HPPD contrast-case writeup** |
 | `*_conservation_set.fasta` / `*_conservation_aligned.fasta` | The raw and MAFFT-aligned multi-species sequence sets behind each conservation score |
 
@@ -123,6 +126,7 @@ here has been edited - if you need to re-derive anything, start here.
 | `accase_distance_sasa.py` | ACCase: local fallback/reference implementation for 1UYS distance/SASA |
 | `accase_conservation_entropy.py` | ACCase: reference-indexed Shannon entropy from the 14-sequence plastidic grass ACCase panel |
 | `hppd_distance_sasa.py` | HPPD: standardized active-site distance/SASA on the 5YWG A+B mesotrione-bound dimer |
+| `rsa.py` | Adds Tien et al. 2013 max-SASA and RSA columns to the current static metric CSV outputs while preserving raw SASA |
 | `reference_conservation.py` | Shared helper for pairwise reference-indexed conservation when MAFFT is unavailable |
 | `pdb_static_metrics.py` | Lightweight PDB parser/contact/SASA helpers used when ChimeraX is unavailable |
 | `active_site_metrics.py` | Shared helper for standardized distance-to-core and nearest-other-core metrics |
@@ -143,11 +147,10 @@ case. Do not run HPPD as a TSR-positive validation gate unless a future
 peer-reviewed source verifies a weed-evolved target-site HPPD amino-acid
 substitution with accession-level support.
 
-Before Phase 4 pooling, add residue-normalized RSA alongside the existing raw SASA
-columns. Raw SASA remains useful for traceability, but RSA is the correct
-cross-enzyme exposure covariate.
+RSA normalization is now complete. Raw SASA remains useful for traceability, but
+Phase 4 should use `rsa_tien2013` as the cross-enzyme exposure covariate.
 
-After RSA addition, **Phase 4** is the cross-enzyme synthesis: pool
+**Phase 4** is the cross-enzyme synthesis: pool
 `ppo_mutations.csv` + `als_mutations.csv` + `epsps_mutations.csv` +
 `accase_mutations.csv` into one mutation table, and keep HPPD as a separate
 target-family contrast status/active-site descriptor table. Then run

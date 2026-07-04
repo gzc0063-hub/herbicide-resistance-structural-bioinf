@@ -1,7 +1,8 @@
 # HPPD active-site contrast results
 
 Pipeline: `scripts/hppd_distance_sasa.py` on 5YWG, with 1TG5 used as the Fe(II)
-plant-HPPD support structure.
+plant-HPPD support structure. The output CSV retains raw SASA and adds
+Tien et al. 2013 RSA columns for cross-family comparability.
 
 ## Structure choice
 

@@ -15,8 +15,8 @@ Shannon-entropy conservation) with two ALS-specific adaptations:
   **27 residues**.
 - **SASA computed on the author-determined biological tetramer** (assembly 1, via
   `sym #1 assembly 1`), not the single deposited chain - same oligomer-context fix
-  applied to PPO's 1SEZ. Values are still raw SASA in A^2; residue-normalized RSA
-  remains a cross-enzyme synthesis task before Phase 4 pooling.
+  applied to PPO's 1SEZ. The CSV retains raw SASA in A^2 and now also includes
+  Tien et al. 2013 RSA columns for Phase 4 pooling.
 
 ## Results
 
@@ -58,6 +58,6 @@ are straightforwardly explained by direct binding-pocket interference.
 
 The ALS correction should be kept as the template for any multimeric target:
 define the ligand-contact pocket in biological-assembly context, not only within a
-single chain. ACCase already used the 1UYS B+C dimer for this reason. Before Phase
-4, convert raw SASA to residue-normalized RSA so buried/exposed comparisons are not
-biased by residue size or enzyme-family composition.
+single chain. ACCase already used the 1UYS B+C dimer for this reason. Phase 4
+should use `rsa_tien2013`, not raw `sasa_A2`, for pooled buried/exposed
+comparisons.

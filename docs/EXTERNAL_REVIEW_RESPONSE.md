@@ -35,8 +35,10 @@ accessibility (RSA). That does not change current buried/exposed calls, which ar
 clear-cut, but raw SASA is not the right pooled cross-enzyme covariate because amino
 acid size and family composition can bias comparisons.
 
-Decision: retain raw SASA columns as primary outputs for traceability, but add RSA
-before Phase 4 cross-enzyme pooling.
+Decision implemented: retain raw SASA columns for traceability and add
+`max_sasa_tien2013_A2` plus `rsa_tien2013` to the current static metric CSVs before
+Phase 4 cross-enzyme pooling. Phase 4 should use RSA, not raw SASA, for pooled
+exposure comparisons.
 
 ### HPPD framing
 
@@ -76,7 +78,8 @@ established.
 
 ## Next Decisions Forced by This Review
 
-1. Add RSA while preserving raw SASA.
+1. Build Phase 4 pooled mutation and target-family contrast tables using RSA as
+   the exposure covariate.
 2. Keep HPPD out of the pooled mutation table unless a future verified weed TSR is
    found.
 3. Check DHODH for newer plant structures before assuming ColabFold is required.

@@ -316,3 +316,23 @@ fold-change (~10–55×) if citing Ki specifically.
   - HPPD is complete as a structural negative/contrast case, not a TSR-positive
     validation-gate family.
   - Gly336 remains excluded as engineered crop tolerance, not weed resistance.
+
+## RSA normalization check
+
+- Added `scripts/rsa.py` as a deterministic post-processing step for the current
+  static metric CSV outputs.
+- Reference values: Tien et al. 2013 maximum allowed solvent-accessibility table
+  for the 20 standard amino acids. Project-specific modified residue aliases:
+  - `MSE -> MET` maximum ASA = 224 A^2.
+  - `CSD -> CYS` maximum ASA = 167 A^2.
+- Formula checked in tests: `rsa_tien2013 = sasa_A2 / max_sasa_tien2013_A2`.
+- Raw `sasa_A2` values are preserved; the new columns are appended immediately
+  after `sasa_A2`.
+- Files verified by `tests/test_rsa.py`:
+  - `data/processed/ppo_1sez_distance_sasa.csv`
+  - `data/processed/als_1z8n_distance_sasa.csv`
+  - `data/processed/epsps_8umj_distance_sasa.csv`
+  - `data/processed/accase_1uys_distance_sasa.csv`
+  - `data/processed/hppd_5ywg_active_site_metrics.csv`
+- Verification command used in this session:
+  - `python -m unittest tests.test_rsa`
