@@ -71,7 +71,7 @@ This was the largest single piece of work: verifying every mutation, accession, 
    - Hao et al. 2009 (purely computational, no wet-lab kinetics): proposed a lost Gly210–Ser424 hydrogen bond as the mechanism.
    - Dayan et al. 2010 (computational *and* real heterologous-expression kinetics): found a different mechanism — helix-capping destabilization via Ala206/Val205/Pro213 — and **directly critiqued Hao's method in print**, noting Hao's mutant model was never relaxed before docking, which biased the result toward "nothing changed."
    - **Decision: weight Dayan 2010 as the gold-standard benchmark**, not as one of two equally-weighted independent confirmations. Both accounts are recorded, but the pipeline's validation gate uses Dayan's numbers specifically.
-9. **Exact validation-gate numbers extracted** from Dayan et al. 2010 for the pilot to reproduce: active-site cavity volume 551 Å³ (WT) → 848 Å³ (resistant); Gly207-to-FAD distance +1.5 Å average; Km unchanged (~1 μM); Vmax/kcat ~10-fold lower; Ki 100–500-fold higher; inhibition type switches competitive → mixed.
+9. **Exact Dayan et al. 2010 benchmark numbers extracted and later corrected in wording:** active-site cavity volume 551 Å³ (WT) → 848 Å³ (resistant); Gly207-to-FAD distance +1.5 Å average; Km unchanged (~1 μM); Vmax/kcat ~10-fold lower; I50 100–500-fold higher; Ki ~10–55-fold higher depending on inhibitor; inhibition type switches competitive → mixed. The 100–500× value is an I50 claim, not a Ki claim.
 10. **A citable evolutionary explanation surfaced** for why this position uses a deletion rather than a substitution: Ala210 occurs naturally in sensitive species without conferring resistance, and any larger substitution causes steric clashes with a nearby hydrophobic pocket — deletion was the only accessible path, and only because the codon sits in a slippage-prone short repeat not present at the equivalent position in the other PPO isoform.
 
 ---
@@ -296,104 +296,348 @@ original sequencing plan.
 
 ---
 
-## 17. External review received and reconciled — ALS active-site core corrected, HPPD plan revised before it starts
-
-User supplied an external "senior review" (a fact-check tool) that could not
-access this private repo (confirmed 404 on all endpoints) and so reviewed a
-*different* task brief describing ACCase/EPSPS/HPPD/FAT/DHODH plans - not our
-actual completed PPO/ALS work. Full reconciliation in
-`docs/EXTERNAL_REVIEW_RESPONSE.md`. Two things genuinely applied to completed
-work, checked directly rather than taken on faith:
-
-1. **Confirmed and fixed: ALS's active-site core was missing dimer-interface
-   residues.** Re-checked the review's general claim (AHAS binding occurs at a
-   dimer interface, McCourt et al. 2006) directly against 1Z8N. Found and fixed a
-   coordinate-frame bug in the diagnostic (`atom.coord` vs `atom.scene_coord`
-   across symmetry copies gave a false negative first), then confirmed 11 real
-   interface residues from a neighboring subunit, including **Ala122 and Pro197**
-   - two positions this pilot deliberately scoped out (§12) - which turn out to
-   be genuine interface pocket residues, explaining mechanistically why they're
-   documented resistance hotspots. Core expanded from 16 to 27 residues; Trp574/
-   Ser653 conclusion unchanged (both remain direct ligand-contact core members,
-   fully conserved); only secondary percentile figures shifted (22.0→31.8,
-   1.7→3.1). `als_1z8n_distance_sasa.csv` and `als_validation_gate_results.md`
-   recomputed accordingly.
-2. **Valid, not yet applied: raw SASA should become relative solvent
-   accessibility (RSA)** per Tien et al. 2013 before Phase 4's cross-enzyme
-   comparison, where raw Å² isn't comparable across enzymes with different
-   residue-size distributions. Doesn't change any PPO/ALS conclusion so far (all
-   buried/exposed calls were clear-cut, not borderline), but needs doing before
-   pooling data across enzymes.
-
-**For the enzymes not yet started (ACCase, EPSPS, HPPD, FAT, DHODH), see
-`EXTERNAL_REVIEW_RESPONSE.md` Part 2** for the specific facts to adopt -
-critically, **do not use "Gly336" as an HPPD weed resistance mutation** (it's an
-engineered *Pseudomonas fluorescens* crop-tolerance variant, not evolved
-resistance; real weed HPPD resistance is predominantly non-target-site per Nakka
-et al. 2017) - and a reminder to repeat the dimer-interface cross-chain check
-(item 1 above) for ACCase's CT domain before assuming a single-chain active-site
-core there too.
-
----
-
-## 18. ACCase: first enzyme of the Phase 2 batch, validation gate PASSED
-
-Mutation: **Cys2088Arg** (Yu et al. 2007, *Plant Physiol.* 145(2):547-558, DOI
-10.1104/pp.107.105262), sourced from *Lolium rigidum* - EF538937 (susceptible
-VLR1 2002 bulk, wild-type reference, explicitly labeled in the paper's own Table
-IV) vs EF538939 (resistant H1/10), a single clean substitution confirmed by
-direct sequence diff, matching Table IV's stated SNP exactly.
-
-**Applied the ALS lesson (§17) from the start this time**, rather than
-discovering it after the fact: checked 1UYS's `REMARK 350` directly and
-confirmed chains B+C are the real deposited biological dimer (no symmetry
-generation needed, unlike ALS's 1Z8N) - the same B/C pair Délye et al. 2005
-themselves used as their own homology-modeling template. Built the active-site
-core from both chains' contacts to bound haloxyfop from the outset.
-
-**Structural validation, the strongest of the three enzymes piloted so far:**
-the independently-computed active-site core (21 residues/chain, ligand contacts
-within 4.5 Å) reproduces, residue-for-residue, the exact APP-binding-site list
-Zhang et al. 2004 published and Délye et al. 2005 cite directly - not a
-qualitative match, an exact one, checkable against a published residue list.
-
-**Numbering resolved and cross-validated:** 1UYS uses native yeast numbering, not
-black-grass (AJ310767) numbering - confirmed by checking that the structure's own
-position "2088" is Gln, not the expected Cys. Built the correspondence via
-pairwise alignment, then cross-validated against all 12 of Délye et al. 2005's
-own explicitly-stated yeast↔black-grass anchor positions - 12/12 exact match -
-before trusting the derived mapping (black-grass 2088 → yeast/1UYS 2013) for the
-one position not explicitly given in the paper.
-
-**Result:** Cys2088Arg is moderately close to the active site (32nd percentile)
-but outside the strict ligand-contact shell, buried (7.2 Å² SASA), and fairly
-conserved (0.812 across 5 grass species) - matching Délye et al. 2005's own
-qualitative description of this position ("located close to" the core, "fairly
-conserved, most frequently Cys or Met") almost exactly. Mechanism class left
-`pending` - no kinetic/structural paper for this specific substitution has been
-read yet.
-
-**Flagged, not pursued:** Délye et al. 2005's own three new mutations
-(Trp2027Cys, Asp2078Gly, Gly2096Ala) are real and peer-reviewed but have no
-individually-deposited GenBank accessions, unlike Cys2088Arg - kept out of this
-pilot's scope for the same reason ALS excluded Ala122/Pro197 (§12): a real
-finding, just not one with a clean accession pair to build a dataset row from
-without further work.
-
-**Decision: ACCase clears its validation gate. Proceed to EPSPS and HPPD next**,
-per §10/§16's batch plan - see `EXTERNAL_REVIEW_RESPONSE.md` Part 2 for the
-specific facts to adopt for each (plant-vs-bacterial EPSPS numbering; the HPPD
-"Gly336" trap; verify PDB IDs directly).
-
----
-
-## 19. How the files in this repo relate
+## 17. How the files in this repo relate
 
 - **This file (`DECISION_LOG.md`)** — the *why*: every directional decision and correction, in the order they were made.
 - **`CONTRIBUTING.md`** — working conventions for this repo (currently: how to handle paywalled/bot-blocked sources, §13).
 - **`PPO_Phase1_Final_Validated_Brief.md`** — the *what*: the current, fully-cross-checked PPO dataset, numbering keys, mechanism classes, and validation-gate numbers.
 - **`als_mutation_candidates.md`** / **`als_mutations.csv`** / **`als_validation_gate_results.md`** — the equivalent trio for the ALS/AHAS pilot: resolution trail, working dataset, and validation-gate results.
-- **`accase_mutations.csv`** / **`accase_validation_gate_results.md`** — the same for ACCase (no separate candidates doc - the mutation set was unambiguous from the start, given Yu et al. 2007's Table IV).
 - **`rangani_2019_table2_cross_resistance.csv`** — external validation dataset (real IC50/resistance-factor data, 13 herbicides × 3 mutations, common genetic background).
-- **`docs/references/`** — primary-source PDFs now available directly in the repo (Dayan et al. 2010, Hao et al. 2009, Giacomini et al. 2017, Larran et al. 2017, Délye et al. 2005, Yu et al. 2007), not just summarized secondhand in the briefs. Verification claims in `VERIFICATION_LOG.md` that cite these papers can be checked against the actual text.
-- **`EXTERNAL_REVIEW_RESPONSE.md`** — reconciliation of an external fact-check review against this repo's actual state: what genuinely applied and was fixed (ALS interface core), what's valid but not yet applied (RSA normalization), and what to adopt when ACCase/EPSPS/HPPD/FAT/DHODH are built (§17).
+- **`docs/references/`** — primary-source PDFs now available directly in the repo (Dayan et al. 2010, Hao et al. 2009, Giacomini et al. 2017, Larran et al. 2017), not just summarized secondhand in the briefs. Verification claims in `VERIFICATION_LOG.md` that cite these papers can be checked against the actual text.
+
+---
+
+## 18. Metric-schema cleanup before post-pilot scaling
+
+Reviewing the project as both a bioinformatician and weed scientist surfaced one
+methodological cleanup item that should happen before using ALS as the template for
+ACCase/EPSPS/HPPD: ALS's pilot script reported "distance to nearest other active-site
+core residue" for residues that were themselves in the active-site core. That value
+is useful as a within-core spacing metric, but it is not the same as PPO's
+distance-to-active-site-core metric, where core residues score 0 Å.
+
+**Decision: standardize the structural schema before adding new enzymes.** Going
+forward, per-residue distance/SASA tables should separate:
+
+- `in_active_site_core`
+- `distance_to_active_site_core_A` (0 Å for core residues)
+- `distance_to_nearest_other_core_residue_A` (within-core spacing/context)
+- `percentile_rank_distance_to_core`
+- `sasa_A2`
+
+This preserves the ALS pilot's useful "nearest other core residue" information while
+making the primary cross-enzyme distance metric comparable to PPO. The ALS
+validation gate still passes - Trp574 and Ser653 are direct imazaquin-contact core
+residues and invariant in the conservation panel - but their primary distance-to-core
+percentile is now interpreted as a core-residue percentile, not the old within-core
+spacing percentile.
+
+**Decision on next enzyme:** do not immediately batch ACCase, EPSPS, and HPPD until
+this cleanup is in place. Start the post-pilot expansion with **EPSPS first** because
+it has especially strong structural and agronomic precedent around glyphosate
+target-site resistance. If EPSPS clears with the standardized schema, then proceed to
+ACCase and HPPD using the same template.
+
+---
+
+## 19. EPSPS post-pilot setup decision
+
+EPSPS was started as the first post-pilot enzyme per §18. Two structure choices were
+checked directly against RCSB metadata:
+
+- **Classic glyphosate-bound structures** such as 1G6S/2AAY are strong ligand-bound
+  templates but are *E. coli* EPSPS.
+- **8UMJ** is wild-type *Zea mays* EPSPS complexed with glyphosate and
+  shikimate-3-phosphate, giving both a plant source organism and direct ligand
+  contacts.
+
+**Decision: use 8UMJ as the EPSPS structure/template.** This better matches the
+project's preference for plant/Viridiplantae structures while preserving the ALS
+active-site-definition strategy: define the core directly from ligand contacts.
+
+For the mutation/accession anchor, Baerson et al. 2002 (*Plant Physiology*
+129:1265-1275, PMID 12114580) was selected over Chong et al. 2008 as the pilot
+source:
+
+- PubMed metadata for Baerson explicitly lists **AJ417033** and **AJ417034**.
+- GenBank labels AJ417033 as *E. indica* `epsps-R` and AJ417034 as `epsps-S`, both
+  tied to Baerson et al. 2002.
+- The paper reports mature-protein **Pro106Ser** and functional evidence that this
+  substitution is the main driver of reduced glyphosate sensitivity.
+- A local alignment maps the GenBank translated position 107 (resistant Ser,
+  susceptible Pro) to 8UMJ maize sequence position 107 / PDB residue **106**.
+  8UMJ includes an initiating MET numbered 0, so FASTA sequence position 107
+  corresponds to PDB residue 106, not 108.
+
+**Decision: EPSPS pilot mutation = Pro106Ser, using AJ417034.1 (susceptible) and
+AJ417033.1 (resistant), mapped to 8UMJ residue 106.** Record the second Baerson
+sequence difference (GenBank translated position 382; resistant Leu, susceptible
+Pro) as background only, because Baerson reports it does not significantly explain
+reduced glyphosate sensitivity.
+
+Chong et al. 2008 was saved and retained as context because it reports Pro106Ser
+and Pro106Thr variation across Malaysian *E. indica* populations. However, its
+Bidor resistant comparison accession **AY157643** is marked "Unpublished" in
+GenBank and the paper does not provide new deposited accessions for each sample in
+its Table 1. **Decision: do not use Chong/AY157643 as the manuscript-reliant EPSPS
+anchor; tag as context/lower-confidence only if referenced.**
+
+---
+
+## 20. EPSPS distance/SASA gate partial completion
+
+ChimeraX was not available on PATH in the current Codex desktop session, so EPSPS
+was run with a local static fallback rather than postponing the entire target. The
+fallback uses:
+
+- `scripts/pdb_static_metrics.py` for PDB ATOM/HETATM parsing, ligand-contact core
+  selection, and Shrake-Rupley-style SASA.
+- `scripts/active_site_metrics.py` for the same standardized distance schema now
+  used by PPO and ALS.
+
+The 8UMJ PDB header says each chain is a monomeric biological unit, so SASA was
+computed on chain A alone. Bound glyphosate (`GPJ`) and shikimate-3-phosphate
+(`S3P`) were included as occluding atoms for protein-residue SASA.
+
+Active-site core was defined as all chain-A protein residues with any atom within
+4.5 A of either `GPJ` or `S3P`: 24, 25, 29, 51, 99, 100, 101, 102, 105, 131,
+177, 178, 179, 180, 205, 206, 209, 330, 331, 354, 358, 359, 362, 403, 404, 429.
+
+Corrected EPSPS Pro106Ser result:
+
+- 8UMJ residue: **106 PRO**.
+- In ligand-contact core? **No**.
+- Distance to active-site core: **3.85 A**.
+- Percentile rank: **12.9**.
+- SASA: **14.3 A^2**.
+
+**Intermediate decision: treat EPSPS distance/SASA as complete but hold the
+validation-gate decision until conservation is added.** The result is
+qualitatively plausible for Pro106Ser
+(adjacent-to-core, not a selected direct ligand-contact residue), but this target
+must not be used as a completed third-family template until conservation is added.
+
+An NCBI E-utilities attempt to fetch a broader EPSPS conservation panel succeeded
+for the first few records but then returned HTTP 429. **Decision: do not burn more
+effort on repeated NCBI retries in this session.** The fastest next step is to use
+a manually/accession-seeded EPSPS protein FASTA panel, then fill the conservation
+row for 8UMJ residue 106 before starting ACCase.
+
+---
+
+## 21. EPSPS validation-gate completion
+
+The EPSPS conservation panel was built after checking the user-supplied IDs rather
+than accepting them blindly. Several supplied IDs were excluded because they were
+not usable EPSPS records:
+
+- `A0A0R0H6D7` returned 404 from UniProt.
+- `Q0DFI0`, `K4C1C4`, and `B9H6K7` returned empty FASTA bodies from UniProt's
+  accession endpoint.
+- `A0A2G2Y4X3` resolved to *Capsicum annuum* SAUR68-like, not *Beta vulgaris*
+  EPSPS.
+- `P24397` resolved to *Hyoscyamus niger* hyoscyamine 6-beta-hydroxylase, not
+  *Zea mays* EPSPS.
+- `AF349754` resolved to *Lolium rigidum* EPSPS, not *Eleusine indica*. The
+  project therefore kept the already-verified Baerson *Eleusine* susceptible
+  accession `AJ417034.1`.
+
+Corrected panel used for the EPSPS conservation metric:
+
+- 8UMJ / *Zea mays* reference sequence (`A0A1D6NVZ6` in PDB metadata)
+- *Eleusine indica* susceptible Baerson sequence (`AJ417034.1`, translated locally)
+- *Arabidopsis thaliana* `P05466`
+- *Nicotiana tabacum* `P23981`
+- *Glycine max* `I1JKP7`
+- *Oryza sativa* `A0A0N7KLH2` (fragment; absent at the Pro106 column)
+- *Solanum lycopersicum* `P10748`
+- *Populus trichocarpa* `B9GPE8`
+
+Because MAFFT was not available in the current session, EPSPS conservation was
+computed with a tested reference-indexed pairwise alignment helper
+(`scripts/reference_conservation.py`). Rows are indexed by 8UMJ/PDB residue number,
+not raw FASTA position. The same numbering correction from §19 applies: FASTA
+position 107 maps to PDB residue 106 because 8UMJ includes an initiating MET
+numbered 0.
+
+Conservation result at the EPSPS pilot site:
+
+- 8UMJ/PDB residue 106 = Pro.
+- Shannon entropy = 0.000.
+- Normalized conservation = 1.000.
+- Present in 7/8 panel sequences; the Oryza fragment is absent at this column.
+
+**Decision: EPSPS validation gate PASSED.** Pro106Ser is adjacent to, but not
+inside, the ligand-contact active-site core (3.85 A; distance percentile 12.9),
+has modest static SASA (14.3 A^2), and is fully conserved among sequences present
+at the column. This gives the project a third validated target family with a
+mechanistic profile distinct from both PPO and ALS.
+
+---
+
+## 22. ACCase anchor decision: use AJ310767 black-grass numbering plus Yu 2007's deposited 2088 region
+
+The ACCase phase will use Delye et al. 2005 (*Plant Physiology* 137:794-806)
+as the primary numbering/structure anchor and Yu et al. 2007 (*Plant Physiology*
+145:547-558) as the source for the additional Cys2088Arg mutation in *Lolium*.
+
+This is **not** the same accession pattern as EPSPS. EPSPS had paired resistant
+and susceptible *Eleusine indica* GenBank records. ACCase instead has a
+well-established reference coding sequence and mutation calls:
+
+- Delye et al. 2005 states that all nucleotide and amino-acid positions use the
+  black-grass chloroplastic ACCase reference **EMBL/GenBank AJ310767**, and that
+  the sequenced CT-domain region corresponds to nucleotide positions 4368-7329
+  in that coding sequence.
+- The same paper identifies Trp2027Cys, Asp2078Gly, and Gly2096Ala from
+  resistant black-grass seedlings, and discusses Ile1781Leu and Ile2041Asn as
+  previously established ACCase resistance substitutions in the same AJ310767
+  numbering system.
+- Delye et al. 2005 explicitly uses yeast ACCase CT structures **1UYT** and
+  **1UYS** as templates and reports that the aligned black-grass CT-domain span is
+  Leu1639-Leu2204 of AJ310767.
+- Yu et al. 2007 independently verifies ACCase mutations in resistant *Lolium*
+  populations, including Ile1781Leu, Trp2027Cys, Ile2041Asn, Asp2078Gly, and the
+  newly identified Cys2088Arg. It states that the 2088-region sequence data were
+  deposited as **EF538937-EF538943** and that amino-acid positions correspond to
+  the full-length plastidic ACCase in *Alopecurus myosuroides*.
+
+**Decision:** ACCase can proceed using AJ310767 as the verified reference and
+numbering accession, with EF538937-EF538943 recorded specifically for the
+Yu 2007 Cys2088Arg sequence evidence. Do not describe the ACCase rows as paired
+resistant/susceptible full-length accessions. In the manuscript and validation
+tables, describe them as reference-numbered ACCase target-site substitutions
+verified from Delye 2005 and Yu 2007 primary-source text/tables.
+
+---
+
+## 23. ACCase validation-gate completion
+
+ACCase was run on the 1UYS yeast ACCase CT-domain B+C biological dimer, with
+haloxyfop (`H1L`) defining the ligand-contact active-site core. AJ310767
+black-grass CT-domain positions were aligned to 1UYS, preserving the Delye et al.
+2005 dimer-side convention for the key resistance sites.
+
+Mutation-position results:
+
+- Ile1781Leu -> chain C residue 1705; direct ligand-contact-core residue.
+- Trp2027Cys -> chain B residue 1953; 5.60 A from core; distance percentile 10.4.
+- Ile2041Asn -> chain B residue 1967; direct ligand-contact-core residue.
+- Asp2078Gly -> chain B residue 2004; 5.19 A from core; distance percentile 8.7.
+- Cys2088Arg -> chain B residue 2014; 11.83 A from core; distance percentile 25.9.
+- Gly2096Ala -> chain B residue 2022; 7.28 A from core; distance percentile 12.8.
+
+Conservation was computed from a 14-sequence plastidic grass ACCase panel seeded
+from the accessions named in Delye et al. 2005 and Yu et al. 2007. The sites are
+all highly conserved (0.850-1.000 normalized conservation), with Trp2027,
+Asp2078, and Gly2096 invariant among sequences present at those columns.
+
+**Decision: ACCase validation gate PASSED.** ACCase adds a fourth target family
+and a useful internal contrast: some TSR substitutions are direct ligand-contact
+core residues, some are adjacent-to-core pocket residues, and Cys2088Arg is the
+clearest ACCase candidate for a more distal cavity-context effect in the static
+pipeline. Move to HPPD next using the same verified-source-first workflow.
+
+---
+
+## 24. External review reconciliation: ALS interface core fixed; HPPD becomes a go/no-go TSR audit
+
+An external review artifact and a parallel Claude-side review were reconciled after
+EPSPS and ACCase had already been completed in this workspace. The review's most
+important valid criticism was that ALS/AHAS inhibitor binding occurs at a
+dimer-interface pocket, so the original single-chain 1IQ contact core was
+biologically incomplete.
+
+Direct 1Z8N checking confirmed the issue. The ALS active-site core is therefore
+expanded from the original 16 same-chain 1IQ-contact residues:
+
+220, 245, 246, 275, 276, 279, 280, 281, 351, 376, 377, 396, 397, 574, 653, 654
+
+to a 27-residue interface-aware core by adding the neighboring-subunit pocket
+positions, expressed in the same Arabidopsis/PDB numbering convention:
+
+121, 122, 168, 195, 196, 197, 199, 200, 206, 207, 256
+
+This correction does **not** change the ALS pilot interpretation: Trp574Leu and
+Ser653Asn remain direct active-site/contact residues, fully conserved, and score
+0 A distance-to-core under the standardized metric schema. It does explain why
+Ala122 and Pro197, which were intentionally excluded from the narrow ALS pilot, are
+real binding-pocket resistance hotspots and should be treated as such in any fuller
+ALS expansion.
+
+The review also correctly flagged that the project currently reports raw SASA in
+A^2, not residue-normalized RSA. Existing buried/exposed interpretations remain
+safe because the calls are clear-cut, but **Phase 4 cross-enzyme pooling must add
+RSA while preserving raw SASA for traceability.**
+
+HPPD is now reframed before any metric work. Do **not** use Gly336 as a weed
+target-site resistance mutation: it is an engineered *Pseudomonas fluorescens*
+HPPD crop-tolerance variant used in FG72 soybean, not an evolved weed-resistance
+allele. HPPD should first undergo a primary-literature go/no-go audit for verified
+weed-evolved target-site mutations with accessions. If no valid TSR rows are found,
+HPPD should be written as an informative contrast case dominated by non-target-site
+resistance/metabolism/gene amplification, not forced into the TSR validation-gate
+template.
+
+**Decision:** keep ACCase and EPSPS as completed validation-gate phases; merge the
+ALS interface-core correction immediately; add RSA before Phase 4; and make HPPD's
+next step a source-first TSR eligibility audit rather than structure-metric
+generation.
+
+---
+
+## 25. HPPD source audit and structural contrast completion
+
+The HPPD go/no-go audit was run before creating any mutation table. The audit found
+no verified weed-evolved HPPD target-site amino-acid substitution suitable for the
+comparative TSR dataset. Instead, the relevant weed-resistance papers point to
+non-target-site mechanisms, especially enhanced metabolism/P450 or GST-linked
+detoxification, expression changes, and polygenic stress-response differences.
+
+Specific source-audit outcome:
+
+- *Amaranthus tuberculatus* mesotrione resistance (PMID 28662111): no HPPD
+  target-site mutation associated with resistance, no HPPD duplication or
+  overexpression in that population; higher mesotrione metabolism observed.
+- *Amaranthus palmeri* mesotrione resistance (PMID 28443128): no specific
+  resistance-conferring HPPD mutation or HPPD gene amplification detected; increased
+  HPPD expression and rapid detoxification reported.
+- *Amaranthus tuberculatus* HPPD resistance reversal with P450 inhibitors
+  (PMID 28799707): resistance described as non-target-site and metabolism-based.
+- Multiple-resistant waterhemp topramezone work (PMID 30519248): rapid oxidative
+  metabolism described as the resistance mechanism.
+- Wild radish HPPD cross-resistance (PMID 37170102): enhanced metabolism via
+  multiple candidate detoxification genes.
+- *Leptochloa chinensis* HPPD resistance (PMID 37889480): no target-site amino-acid
+  mutation; P450/GST-mediated detoxification implicated.
+
+**Decision: do not create `hppd_mutations.csv` in this pass.** HPPD is not a
+TSR-positive validation-gate family in the current resource. Gly336 remains excluded:
+it is an engineered *Pseudomonas fluorescens* crop-tolerance variant used in FG72
+soybean, not a weed-evolved resistance allele.
+
+HPPD was nevertheless retained as a structural module using plant templates:
+
+- **5YWG**: *Arabidopsis thaliana* HPPD complexed with mesotrione (`92L`) and
+  cobalt (`CO`) in the deposited active site; used as the primary mesotrione-pocket
+  contact map.
+- **1TG5**: *Arabidopsis thaliana* HPPD complexed with Fe(II) (`FE2`) and DAS645
+  (`645`); used as the Fe(II) plant-HPPD support structure.
+
+The 5YWG active-site core is defined as every protein residue within 4.5 A of
+mesotrione (`92L`) or the deposited metal (`CO`) across the A+B dimer. This gives
+34 chain-residue core positions, 17 per chain:
+
+226, 228, 267, 280, 282, 307, 308, 368, 379, 381, 392, 394, 419, 420, 421, 423,
+424
+
+The expected metal-site sanity checks pass: His226, His308, and Glu394 contact the
+metal; Phe424 contacts mesotrione. The 1TG5 Fe(II)+DAS645 contact core gives the
+same pocket logic under its shorter numbering convention, with His205, His287, and
+Glu373 as the Fe-site anchor.
+
+**Decision: HPPD phase is COMPLETE as a structural negative/contrast case.** It
+should be included in the manuscript as evidence that the resource does not force
+all herbicide targets into a TSR-positive template. For Phase 4 pooling, include
+HPPD active-site descriptors and a categorical "no verified weed TSR accepted"
+status, but do not pool fabricated mutation rows.

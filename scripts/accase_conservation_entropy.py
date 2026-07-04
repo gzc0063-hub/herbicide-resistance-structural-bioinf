@@ -1,54 +1,138 @@
 """
-Shannon-entropy conservation for ACCase, mirroring conservation_entropy.py (PPO)
-and als_conservation_entropy.py (ALS). Reference numbering: AJ310767 (black-grass),
-the field-standard convention used throughout Delye et al. 2005 and Yu et al. 2007
-- no offset needed at this step (that's only needed to map onto the yeast 1UYS
-structure, done separately in accase_numbering_map.json).
+Reference-indexed Shannon entropy conservation for ACCase.
+
+The reference is the black-grass plastidic ACCase protein CAC84161.1 from
+AJ310767. Rows are filtered to the 1UYS-mapped CT-domain positions so they can be
+joined directly to accase_1uys_distance_sasa.csv by blackgrass_position.
 """
-import math
-from collections import Counter
-from Bio import SeqIO
+
 import csv
+import re
+from pathlib import Path
 
-records = list(SeqIO.parse("data/processed/accase_conservation_aligned.fasta", "fasta"))
-seqs = {r.id: str(r.seq) for r in records}
-ref_id = [k for k in seqs if k.startswith("AJ310767")][0]
-ref_aligned = seqs[ref_id]
-n_seqs = len(seqs)
+try:
+    from scripts.reference_conservation import _align, conservation_rows
+except ImportError:
+    from reference_conservation import _align, conservation_rows
 
-def shannon_entropy(column):
-    residues = [c for c in column if c != "-"]
-    if not residues:
-        return None
-    counts = Counter(residues)
-    total = len(residues)
-    return -sum((c / total) * math.log2(c / total) for c in counts.values())
 
-max_entropy = math.log2(20)
+INPUT_PANEL = Path("data/raw/ACCase_conservation_plastidic_grass_named_accessions.fasta")
+AJ_FASTA = Path("data/raw/ACCase_Amyosuroides_AJ310767.fasta")
+PDB_FASTA = Path("data/raw/1UYS.fasta")
+OUTPUT_PANEL = Path("data/processed/accase_conservation_set.fasta")
+OUTPUT_ENTROPY = Path("data/processed/accase_conservation_entropy.csv")
 
-rows = []
-ref_pos = 0
-for col_idx in range(len(ref_aligned)):
-    column = [seqs[k][col_idx] for k in seqs]
-    ent = shannon_entropy(column)
-    ref_char = ref_aligned[col_idx]
-    if ref_char != "-":
-        ref_pos += 1
-        n_present = sum(1 for c in column if c != "-")
-        rows.append({
-            "position": ref_pos, "residue": ref_char, "shannon_entropy": ent,
-            "normalized_conservation": 1 - (ent / max_entropy) if ent is not None else None,
-            "n_species_present": n_present, "n_species_total": n_seqs,
-        })
+REFERENCE_ID = "AJ310767_Alopecurus_myosuroides_reference"
+PDB_SEQUENCE_START = 1482
+BLACKGRASS_CT_START = 1639
+BLACKGRASS_CT_END = 2204
 
-with open("data/processed/accase_conservation_entropy.csv", "w", newline="") as f:
-    writer = csv.DictWriter(f, fieldnames=["position", "residue", "shannon_entropy", "normalized_conservation", "n_species_present", "n_species_total"])
-    writer.writeheader()
-    writer.writerows(rows)
 
-print(f"wrote {len(rows)} positions from {n_seqs} species")
-by_pos = {r["position"]: r for r in rows}
-print("\n--- Conservation at Cys2088 (black-grass numbering) ---")
-r = by_pos.get(2088)
-if r:
-    print(f"position 2088 ({r['residue']}): entropy={r['shannon_entropy']:.3f}, conservation={r['normalized_conservation']:.3f}, present in {r['n_species_present']}/{r['n_species_total']}")
+def read_fasta(path):
+    records = []
+    current_id = None
+    seq = []
+    with open(path, encoding="utf-8") as handle:
+        for line in handle:
+            line = line.strip()
+            if not line:
+                continue
+            if line.startswith(">"):
+                if current_id is not None:
+                    records.append((current_id, "".join(seq)))
+                current_id = line[1:]
+                seq = []
+            else:
+                seq.append(line)
+    if current_id is not None:
+        records.append((current_id, "".join(seq)))
+    return records
+
+
+def read_fasta_sequence(path):
+    return next(seq for _, seq in read_fasta(path))
+
+
+def accession_from_header(header):
+    match = re.search(r"\|([A-Z]{1,3}\d{5,6}(?:\.\d+)?)_", header)
+    if match:
+        return match.group(1).split(".")[0]
+    match = re.search(r"\|([A-Z]{1,3}\d{5,6}(?:\.\d+)?)\|", header)
+    if match:
+        return match.group(1).split(".")[0]
+    match = re.search(r"lcl\|([A-Z]{1,3}\d{5,6})(?:\.\d+)?", header)
+    if match:
+        return match.group(1)
+    raise ValueError(f"Could not parse accession from FASTA header: {header}")
+
+
+def write_wrapped(handle, record_id, seq):
+    handle.write(f">{record_id}\n")
+    for idx in range(0, len(seq), 70):
+        handle.write(seq[idx:idx + 70] + "\n")
+
+
+def blackgrass_to_pdb_map():
+    blackgrass = read_fasta_sequence(AJ_FASTA)
+    pdb = read_fasta_sequence(PDB_FASTA).replace("X", "M")
+    aligned_bg, aligned_pdb = _align(blackgrass[BLACKGRASS_CT_START - 1:BLACKGRASS_CT_END], pdb)
+    bg_idx = 0
+    pdb_idx = 0
+    mapping = {}
+    for bg_char, pdb_char in zip(aligned_bg, aligned_pdb):
+        if bg_char != "-":
+            bg_idx += 1
+        if pdb_char != "-":
+            pdb_idx += 1
+        if bg_char != "-" and pdb_char != "-":
+            mapping[BLACKGRASS_CT_START + bg_idx - 1] = PDB_SEQUENCE_START + pdb_idx - 1
+    return mapping
+
+
+def main():
+    records = {}
+    for header, seq in read_fasta(INPUT_PANEL):
+        accession = accession_from_header(header)
+        record_id = REFERENCE_ID if accession == "AJ310767" else accession
+        records[record_id] = seq
+
+    with open(OUTPUT_PANEL, "w", encoding="utf-8") as handle:
+        for record_id, seq in records.items():
+            write_wrapped(handle, record_id, seq)
+
+    structured_map = blackgrass_to_pdb_map()
+    rows = [
+        row for row in conservation_rows(records, REFERENCE_ID)
+        if row["position"] in structured_map
+    ]
+    for row in rows:
+        row["blackgrass_position"] = row.pop("position")
+        row["pdb_position"] = structured_map[row["blackgrass_position"]]
+
+    with open(OUTPUT_ENTROPY, "w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=[
+            "blackgrass_position",
+            "pdb_position",
+            "residue",
+            "shannon_entropy",
+            "normalized_conservation",
+            "n_species_present",
+            "n_species_total",
+        ])
+        writer.writeheader()
+        writer.writerows(rows)
+
+    by_pos = {row["blackgrass_position"]: row for row in rows}
+    print(f"wrote {len(records)} sequences to {OUTPUT_PANEL}")
+    print(f"wrote {len(rows)} structured AJ310767/1UYS positions to {OUTPUT_ENTROPY}")
+    for pos in [1781, 2027, 2041, 2078, 2088, 2096]:
+        row = by_pos[pos]
+        print(
+            f"{pos}: residue={row['residue']}, entropy={row['shannon_entropy']:.3f}, "
+            f"conservation={row['normalized_conservation']:.3f}, "
+            f"present={row['n_species_present']}/{row['n_species_total']}"
+        )
+
+
+if __name__ == "__main__":
+    main()

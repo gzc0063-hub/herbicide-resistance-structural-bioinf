@@ -1,106 +1,180 @@
 """
-Run inside ChimeraX (headless): ChimeraX --nogui --script chimerax_accase_distance_sasa.py
+Run inside ChimeraX:
+  ChimeraX-console.exe --nogui --script scripts/chimerax_accase_distance_sasa.py
 
-For each chain-B residue of 1UYS (yeast ACCase CT domain + haloxyfop), computes:
-  - min CA-CA distance to the active-site core, defined directly from the
-    structure as every residue (chain B OR chain C) within 4.5 A of any bound
-    haloxyfop (H1L) copy. Chains B+C are the real deposited biological dimer
-    (REMARK 350 biomolecule 2, confirmed directly from the PDB file - no
-    symmetry generation needed, unlike ALS's 1Z8N). Délye et al. 2005 used
-    this same B/C chain pair as their homology-modeling template, confirming
-    this is the correct functional pair, not assumed.
-  - percentile rank of that distance within chain B's own distribution
-  - per-residue SASA, computed on the B+C dimer as deposited (correct
-    biological context directly, no assembly command needed this time)
-Writes data/processed/accase_1uys_distance_sasa.csv
-
-Learned from the ALS correction (DECISION_LOG #17): check cross-chain contacts
-from the start, using consistent coordinates (both chains are in the same
-asymmetric unit / same coordinate frame here, so plain atom.coord works for
-both chains - no scene_coord issue, unlike ALS's symmetry-generated tetramer).
+For the 1UYS yeast ACCase CT-domain B+C biological dimer, computes static
+distance/SASA metrics with active-site core defined from 4.5 A contacts to bound
+haloxyfop (H1L).
 """
+
+import bisect
+import csv
+import math
+from pathlib import Path
+import sys
+
 from chimerax.core.commands import run
 import numpy as np
-import csv
-import bisect
+
+sys.path.insert(0, str(Path("scripts").resolve()))
+from reference_conservation import _align  # noqa: E402
 
 session = session  # noqa: F821
 
-run(session, "open data/raw/1UYS.pdb")
-m1 = session.models[0]
+PDB_PATH = Path("data/raw/1UYS.pdb")
+AJ_FASTA = Path("data/raw/ACCase_Amyosuroides_AJ310767.fasta")
+PDB_FASTA = Path("data/raw/1UYS.fasta")
+OUTPUT_PATH = Path("data/processed/accase_1uys_distance_sasa.csv")
 
-# Active-site core: union of B+C residues within 4.5 A of either bound haloxyfop (H1L) copy
-lig_residues = [r for r in m1.residues if r.name == "H1L"]
-print(f"Found {len(lig_residues)} haloxyfop (H1L) copies: {[(r.chain_id, r.number) for r in lig_residues]}")
+PDB_CHAIN_IDS = {"B", "C"}
+PDB_SEQUENCE_START = 1482
+BLACKGRASS_CT_START = 1639
+BLACKGRASS_CT_END = 2204
+CONTACT_CUTOFF_A = 4.5
 
-core = set()  # (chain_id, number)
-for lig in lig_residues:
-    lig_atoms = np.array([a.coord for a in lig.atoms])
-    for r in m1.residues:
-        if r.polymer_type != 1 or r.chain_id not in ("B", "C"):
-            continue
-        prot_atoms = np.array([a.coord for a in r.atoms])
-        d = np.linalg.norm(prot_atoms[:, None, :] - lig_atoms[None, :, :], axis=-1)
-        if d.min() < 4.5:
-            core.add((r.chain_id, r.number))
+CHECK_POSITIONS = {
+    "Ile1781Leu": ("C", 1781),
+    "Trp2027Cys": ("B", 2027),
+    "Ile2041Asn": ("B", 2041),
+    "Asp2078Gly": ("B", 2078),
+    "Cys2088Arg": ("B", 2088),
+    "Gly2096Ala": ("B", 2096),
+}
 
-print("Active-site core (chain, residue number), contacts to either H1L copy:")
-for c in sorted(core):
-    print(" ", c)
-n_chainB_core = sum(1 for c in core if c[0] == "B")
-n_chainC_core = sum(1 for c in core if c[0] == "C")
-print(f"chain B core residues: {n_chainB_core}, chain C core residues: {n_chainC_core}")
 
-res_by_key = {(r.chain_id, r.number): r for r in m1.residues if r.polymer_type == 1 and r.chain_id in ("B", "C")}
-core_ca = {}
-for key in core:
-    r = res_by_key.get(key)
-    ca = r.find_atom("CA") if r else None
-    if ca is not None:
-        core_ca[key] = ca.coord
+def read_fasta_sequence(path):
+    seq = []
+    with open(path, encoding="utf-8") as handle:
+        for line in handle:
+            if not line.startswith(">"):
+                seq.append(line.strip())
+    return "".join(seq)
 
-def min_dist_to_core(ca_coord, exclude=None):
-    coords = [c for k, c in core_ca.items() if k != exclude]
-    return min(float(np.linalg.norm(np.asarray(ca_coord) - np.asarray(c))) for c in coords)
 
-# Report chain B residues only (chain C is symmetric/equivalent per Delye et al.)
-chainB_residues = {r.number: r for r in m1.residues if r.chain_id == "B" and r.polymer_type == 1}
-dist_rows = []
-for num, r in sorted(chainB_residues.items()):
-    ca = r.find_atom("CA")
+def blackgrass_to_pdb_map():
+    blackgrass = read_fasta_sequence(AJ_FASTA)
+    pdb = read_fasta_sequence(PDB_FASTA).replace("X", "M")
+    aligned_bg, aligned_pdb = _align(blackgrass[BLACKGRASS_CT_START - 1:BLACKGRASS_CT_END], pdb)
+    bg_idx = 0
+    pdb_idx = 0
+    mapping = {}
+    for bg_char, pdb_char in zip(aligned_bg, aligned_pdb):
+        if bg_char != "-":
+            bg_idx += 1
+        if pdb_char != "-":
+            pdb_idx += 1
+        if bg_char != "-" and pdb_char != "-":
+            mapping[BLACKGRASS_CT_START + bg_idx - 1] = PDB_SEQUENCE_START + pdb_idx - 1
+    return mapping
+
+
+def distance(a, b):
+    return math.sqrt(sum((x - y) ** 2 for x, y in zip(a, b)))
+
+
+def percentile_distance_rows(residue_coords, core_keys):
+    core_coords = {key: residue_coords[key] for key in core_keys if key in residue_coords}
+    if not core_coords:
+        raise ValueError("No active-site core residues were found in CA coordinates")
+
+    rows = []
+    for key, coord in sorted(residue_coords.items()):
+        in_core = key in core_coords
+        distance_to_core = 0.0 if in_core else min(distance(coord, c) for c in core_coords.values())
+        other_core = [c for core_key, c in core_coords.items() if core_key != key]
+        rows.append({
+            "chain_id": key[0],
+            "pdb_position": key[1],
+            "in_active_site_core": in_core,
+            "distance_to_active_site_core_A": distance_to_core,
+            "distance_to_nearest_other_core_residue_A": min(distance(coord, c) for c in other_core) if other_core else None,
+        })
+
+    dists = sorted(row["distance_to_active_site_core_A"] for row in rows)
+    for row in rows:
+        row["percentile_rank_distance_to_core"] = 100.0 * bisect.bisect_right(
+            dists, row["distance_to_active_site_core_A"]
+        ) / len(dists)
+    return rows
+
+
+run(session, f"open {PDB_PATH}")
+model = session.models[0]
+
+# Keep the B+C biological dimer only. Chain A is a separate crystallographic
+# dimer representative in the deposited coordinates.
+run(session, "delete /A")
+
+ligand_residues = [
+    r for r in model.residues
+    if r.chain_id in PDB_CHAIN_IDS and r.name == "H1L"
+]
+ligand_atoms = np.array([a.coord for r in ligand_residues for a in r.atoms])
+if ligand_atoms.size == 0:
+    raise ValueError("No H1L atoms found in chains B/C")
+
+core_keys = set()
+residue_coords = {}
+residue_names = {}
+for residue in model.residues:
+    if residue.chain_id not in PDB_CHAIN_IDS or residue.name in {"H1L", "HOH"}:
+        continue
+    ca = residue.find_atom("CA")
     if ca is None:
         continue
-    dist = min_dist_to_core(ca.coord, exclude=("B", num))
-    dist_rows.append({"position": num, "residue_name": r.name, "min_dist_to_active_site_core_A": dist})
+    key = (residue.chain_id, residue.number)
+    residue_coords[key] = tuple(float(x) for x in ca.coord)
+    residue_names[key] = residue.name
 
-dists_sorted = sorted(r["min_dist_to_active_site_core_A"] for r in dist_rows)
-n = len(dists_sorted)
-for r in dist_rows:
-    idx = bisect.bisect_right(dists_sorted, r["min_dist_to_active_site_core_A"])
-    r["percentile_rank_distance"] = 100.0 * idx / n
+    atom_coords = np.array([a.coord for a in residue.atoms])
+    if np.linalg.norm(atom_coords[:, None, :] - ligand_atoms[None, :, :], axis=-1).min() <= CONTACT_CUTOFF_A:
+        core_keys.add(key)
 
-# SASA on the B+C dimer as deposited (already the correct biological context)
-run(session, "measure sasa /B,C")
-sasa_by_pos = {}
-for num, r in chainB_residues.items():
-    sasa = sum(a.area for a in r.atoms if a.area is not None)
-    sasa_by_pos[num] = sasa
-for r in dist_rows:
-    r["sasa_A2"] = sasa_by_pos.get(r["position"])
+run(session, "measure sasa #1")
+sasa_by_key = {}
+for residue in model.residues:
+    key = (residue.chain_id, residue.number)
+    if key in residue_coords:
+        sasa_by_key[key] = sum(a.area for a in residue.atoms if a.area is not None)
 
-with open("data/processed/accase_1uys_distance_sasa.csv", "w", newline="") as f:
-    writer = csv.DictWriter(f, fieldnames=["position", "residue_name", "min_dist_to_active_site_core_A", "sasa_A2", "percentile_rank_distance"])
+bg_to_pdb = blackgrass_to_pdb_map()
+pdb_to_bg = {pdb_pos: bg_pos for bg_pos, pdb_pos in bg_to_pdb.items()}
+
+rows = percentile_distance_rows(residue_coords, core_keys)
+for row in rows:
+    key = (row["chain_id"], row["pdb_position"])
+    row["blackgrass_position"] = pdb_to_bg.get(row["pdb_position"])
+    row["residue_name"] = residue_names[key]
+    row["sasa_A2"] = sasa_by_key.get(key)
+
+with open(OUTPUT_PATH, "w", newline="", encoding="utf-8") as handle:
+    writer = csv.DictWriter(handle, fieldnames=[
+        "chain_id",
+        "pdb_position",
+        "blackgrass_position",
+        "residue_name",
+        "in_active_site_core",
+        "distance_to_active_site_core_A",
+        "distance_to_nearest_other_core_residue_A",
+        "sasa_A2",
+        "percentile_rank_distance_to_core",
+    ])
     writer.writeheader()
-    writer.writerows(dist_rows)
+    writer.writerows(rows)
 
-print(f"\nwrote {len(dist_rows)} chain-B residues to data/processed/accase_1uys_distance_sasa.csv")
-
-# Validation check: Cys2088 equivalent position in this structure's own numbering
-by_pos = {r["position"]: r for r in dist_rows}
-print("\n--- Structure numbering check (residues 2085-2092, chain B) ---")
-for num in range(2085, 2093):
-    r = by_pos.get(num)
-    if r:
-        print(f"  {num}: {r['residue_name']}, dist={r['min_dist_to_active_site_core_A']:.2f} A, percentile={r['percentile_rank_distance']:.1f}, SASA={r['sasa_A2']:.1f} A^2, in_core={('B',num) in core}")
+print(f"Active-site core from {CONTACT_CUTOFF_A} A contacts to H1L: {len(core_keys)} residues")
+print(f"wrote {len(rows)} chain-residue rows to {OUTPUT_PATH}")
+print("\n--- ACCase mutation-position check ---")
+by_key = {(row["chain_id"], row["blackgrass_position"]): row for row in rows}
+for mutation_id, key in CHECK_POSITIONS.items():
+    row = by_key[key]
+    print(
+        f"{mutation_id}: chain={row['chain_id']}, pdb={row['pdb_position']}, "
+        f"blackgrass={row['blackgrass_position']}, residue={row['residue_name']}, "
+        f"in_core={row['in_active_site_core']}, "
+        f"dist_to_core={row['distance_to_active_site_core_A']:.2f} A, "
+        f"percentile={row['percentile_rank_distance_to_core']:.1f}, "
+        f"SASA={row['sasa_A2']:.1f} A^2"
+    )
 
 run(session, "exit")

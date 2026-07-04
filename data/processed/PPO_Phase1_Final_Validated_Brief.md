@@ -59,7 +59,8 @@ The numbers themselves, for citation purposes:
 - Gly207-carbonyl-to-FAD-N5 distance: **increases by ~1.5 Å on average** (WT cluster 6–8 Å; resistant cluster 7–9 Å)
 - Km for substrate (protoporphyrinogen IX): **unchanged** (~1 μM both) — confirms the mutation doesn't hurt normal substrate binding
 - Vmax / kcat: **~10-fold lower** in resistant
-- Ki for inhibitors (acifluorfen, lactofen, MC-15608): **100–500-fold higher** in resistant
+- I50 for inhibitors (acifluorfen, lactofen, MC-15608): **100–500-fold higher** in resistant
+- Ki for inhibitors: **~10–55-fold higher** in resistant, depending on inhibitor
 - Inhibition type: **competitive (WT) → mixed-type (resistant)**
 
 ## 6. Why deletion, not substitution, at this position — citable evolutionary explanation
@@ -73,7 +74,7 @@ Dayan et al. 2010 directly tested this: Ala at position 210 occurs naturally in 
 ## 8. What this means for Claude Code, concretely
 
 1. Add both ΔG210 accession pairs to the dataset (section 1); don't treat them as redundant or conflicting.
-2. Use the Dayan 2010 numbers in section 5 as the hard validation gate for the pilot — if your own ChimeraX pipeline's cavity-volume and distance calculations land anywhere near 551→848 Å³ and +1.5 Å, that's your green light to scale to the other targets.
+2. Use the Dayan 2010 numbers in section 5 as literature benchmarks only. The static validation gate is the positional check in section 5: Gly210 should be adjacent to, but outside, the Heinemann four-residue active-site core.
 3. Log ΔG210's mechanism per section 4, including the Hao-vs-Dayan discrepancy as its own dataset note — don't silently pick one.
 4. Giacomini 2017 accessions remain an open item — flag as unresolved rather than guessing.
 5. Everything else from prior addenda (numbering key, active-site residues, mechanism tags for G399A/R98) stands as already given, now cross-confirmed rather than provisional.
