@@ -260,12 +260,47 @@ Trp574Leu and Ser653Asn**, per §12.
 
 ---
 
-## 15. How the files in this repo relate
+## 16. ALS/AHAS pilot validation gate: PASS — a different kind of result than PPO's
+
+Full results in `als_validation_gate_results.md`. Active-site core defined directly
+from the 1Z8N structure (residues within 4.5 Å of either bound imazaquin copy),
+sidestepping the need for McCourt et al. 2006's full text. SASA computed on the
+author-determined biological tetramer (assembly 1), same fix applied to PPO's
+dimer.
+
+| Mutation | In active-site core? | Percentile (vs. rest of core) | Conservation (9 species) |
+|---|---|---|---|
+| Trp574Leu | Yes - direct imazaquin contact, 3.4 Å | 22.0 | 1.000 (invariant) |
+| Ser653Asn | Yes - direct imazaquin contact, 3.65 Å | 1.7 | 1.000 (invariant) |
+
+**Not an outlier finding like ΔG210** - both mutations are themselves genuine
+ligand-contact residues, completely conserved across the 9-species panel. This is
+the textbook profile for direct steric interference with herbicide binding,
+matching decades of established ALS literature (Tranel & Wright 2002) for these
+specific substitutions. **The gate still passes**: the pipeline correctly
+identifies known active-site residues as active-site residues when applied to a
+well-characterized case, a complementary check to PPO's gate (which confirmed the
+pipeline could correctly place a genuinely non-obvious, surprising position).
+Together the two pilots validate both ends of the spectrum.
+
+**No new outlier/allosteric candidate surfaced from ALS.** Useful negative result
+for the eventual cross-enzyme synthesis (Phase 4): PPO's ΔG210 and ALS's
+Trp574/Ser653 sit at opposite ends of the distance-to-core spectrum while both
+being highly conserved - a good internal check that the normalized distance metric
+behaves sensibly across enzymes with different active-site architectures, matching
+the panel review's original cross-enzyme-comparability concern (§2).
+
+**Decision: ALS/AHAS pilot clears its validation gate. Proceed to batch ACCase,
+EPSPS, and HPPD together, reusing the now twice-proven pipeline**, per §10's
+original sequencing plan.
+
+---
+
+## 17. How the files in this repo relate
 
 - **This file (`DECISION_LOG.md`)** — the *why*: every directional decision and correction, in the order they were made.
 - **`CONTRIBUTING.md`** — working conventions for this repo (currently: how to handle paywalled/bot-blocked sources, §13).
-- **`PPO_Phase1_Final_Validated_Brief.md`** — the *what*: the current, fully-cross-checked dataset, numbering keys, mechanism classes, and validation-gate numbers, ready to feed into the pipeline.
+- **`PPO_Phase1_Final_Validated_Brief.md`** — the *what*: the current, fully-cross-checked PPO dataset, numbering keys, mechanism classes, and validation-gate numbers.
+- **`als_mutation_candidates.md`** / **`als_mutations.csv`** / **`als_validation_gate_results.md`** — the equivalent trio for the ALS/AHAS pilot: resolution trail, working dataset, and validation-gate results.
 - **`rangani_2019_table2_cross_resistance.csv`** — external validation dataset (real IC50/resistance-factor data, 13 herbicides × 3 mutations, common genetic background).
 - **`docs/references/`** — primary-source PDFs now available directly in the repo (Dayan et al. 2010, Hao et al. 2009, Giacomini et al. 2017, Larran et al. 2017), not just summarized secondhand in the briefs. Verification claims in `VERIFICATION_LOG.md` that cite these papers can be checked against the actual text.
-- **`als_mutation_candidates.md`** / **`als_mutations.csv`** — Phase 2 (ALS/AHAS pilot) working candidate list (resolution trail) and final working dataset, mirroring Phase 1's `ppo_mutation_candidates.md` → `ppo_mutations.csv` pattern.
-- **`als_mutation_candidates.md`** — Phase 2 (ALS/AHAS pilot) working candidate list and open items, mirroring Phase 1's `ppo_mutation_candidates.md` checkpoint pattern.
