@@ -336,12 +336,64 @@ core there too.
 
 ---
 
-## 18. How the files in this repo relate
+## 18. ACCase: first enzyme of the Phase 2 batch, validation gate PASSED
+
+Mutation: **Cys2088Arg** (Yu et al. 2007, *Plant Physiol.* 145(2):547-558, DOI
+10.1104/pp.107.105262), sourced from *Lolium rigidum* - EF538937 (susceptible
+VLR1 2002 bulk, wild-type reference, explicitly labeled in the paper's own Table
+IV) vs EF538939 (resistant H1/10), a single clean substitution confirmed by
+direct sequence diff, matching Table IV's stated SNP exactly.
+
+**Applied the ALS lesson (§17) from the start this time**, rather than
+discovering it after the fact: checked 1UYS's `REMARK 350` directly and
+confirmed chains B+C are the real deposited biological dimer (no symmetry
+generation needed, unlike ALS's 1Z8N) - the same B/C pair Délye et al. 2005
+themselves used as their own homology-modeling template. Built the active-site
+core from both chains' contacts to bound haloxyfop from the outset.
+
+**Structural validation, the strongest of the three enzymes piloted so far:**
+the independently-computed active-site core (21 residues/chain, ligand contacts
+within 4.5 Å) reproduces, residue-for-residue, the exact APP-binding-site list
+Zhang et al. 2004 published and Délye et al. 2005 cite directly - not a
+qualitative match, an exact one, checkable against a published residue list.
+
+**Numbering resolved and cross-validated:** 1UYS uses native yeast numbering, not
+black-grass (AJ310767) numbering - confirmed by checking that the structure's own
+position "2088" is Gln, not the expected Cys. Built the correspondence via
+pairwise alignment, then cross-validated against all 12 of Délye et al. 2005's
+own explicitly-stated yeast↔black-grass anchor positions - 12/12 exact match -
+before trusting the derived mapping (black-grass 2088 → yeast/1UYS 2013) for the
+one position not explicitly given in the paper.
+
+**Result:** Cys2088Arg is moderately close to the active site (32nd percentile)
+but outside the strict ligand-contact shell, buried (7.2 Å² SASA), and fairly
+conserved (0.812 across 5 grass species) - matching Délye et al. 2005's own
+qualitative description of this position ("located close to" the core, "fairly
+conserved, most frequently Cys or Met") almost exactly. Mechanism class left
+`pending` - no kinetic/structural paper for this specific substitution has been
+read yet.
+
+**Flagged, not pursued:** Délye et al. 2005's own three new mutations
+(Trp2027Cys, Asp2078Gly, Gly2096Ala) are real and peer-reviewed but have no
+individually-deposited GenBank accessions, unlike Cys2088Arg - kept out of this
+pilot's scope for the same reason ALS excluded Ala122/Pro197 (§12): a real
+finding, just not one with a clean accession pair to build a dataset row from
+without further work.
+
+**Decision: ACCase clears its validation gate. Proceed to EPSPS and HPPD next**,
+per §10/§16's batch plan - see `EXTERNAL_REVIEW_RESPONSE.md` Part 2 for the
+specific facts to adopt for each (plant-vs-bacterial EPSPS numbering; the HPPD
+"Gly336" trap; verify PDB IDs directly).
+
+---
+
+## 19. How the files in this repo relate
 
 - **This file (`DECISION_LOG.md`)** — the *why*: every directional decision and correction, in the order they were made.
 - **`CONTRIBUTING.md`** — working conventions for this repo (currently: how to handle paywalled/bot-blocked sources, §13).
 - **`PPO_Phase1_Final_Validated_Brief.md`** — the *what*: the current, fully-cross-checked PPO dataset, numbering keys, mechanism classes, and validation-gate numbers.
 - **`als_mutation_candidates.md`** / **`als_mutations.csv`** / **`als_validation_gate_results.md`** — the equivalent trio for the ALS/AHAS pilot: resolution trail, working dataset, and validation-gate results.
+- **`accase_mutations.csv`** / **`accase_validation_gate_results.md`** — the same for ACCase (no separate candidates doc - the mutation set was unambiguous from the start, given Yu et al. 2007's Table IV).
 - **`rangani_2019_table2_cross_resistance.csv`** — external validation dataset (real IC50/resistance-factor data, 13 herbicides × 3 mutations, common genetic background).
-- **`docs/references/`** — primary-source PDFs now available directly in the repo (Dayan et al. 2010, Hao et al. 2009, Giacomini et al. 2017, Larran et al. 2017), not just summarized secondhand in the briefs. Verification claims in `VERIFICATION_LOG.md` that cite these papers can be checked against the actual text.
+- **`docs/references/`** — primary-source PDFs now available directly in the repo (Dayan et al. 2010, Hao et al. 2009, Giacomini et al. 2017, Larran et al. 2017, Délye et al. 2005, Yu et al. 2007), not just summarized secondhand in the briefs. Verification claims in `VERIFICATION_LOG.md` that cite these papers can be checked against the actual text.
 - **`EXTERNAL_REVIEW_RESPONSE.md`** — reconciliation of an external fact-check review against this repo's actual state: what genuinely applied and was fixed (ALS interface core), what's valid but not yet applied (RSA normalization), and what to adopt when ACCase/EPSPS/HPPD/FAT/DHODH are built (§17).

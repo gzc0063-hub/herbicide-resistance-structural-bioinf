@@ -31,7 +31,16 @@ https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf (private r
   the Trp574/Ser653 conclusion is unchanged. One valid, not-yet-applied point:
   switch from raw SASA (Å²) to relative solvent accessibility (RSA, Tien et al.
   2013) before Phase 4's cross-enzyme comparison.
-- **Not started:** Phase 2 batch (ACCase, EPSPS, HPPD), Phase 3 (FAT, DHODH -
+- **ACCase (first of the Phase 2 batch): COMPLETE, validation gate PASSED.**
+  Cys2088Arg (Yu et al. 2007, *Lolium rigidum*) run through the same pipeline on
+  1UYS (yeast ACCase + haloxyfop). Applied the ALS dimer-interface lesson from
+  the start this time - confirmed chains B+C are the real biological dimer
+  directly from the PDB file's own `REMARK 350`, no correction needed after the
+  fact. The independently-computed active-site core reproduces the published
+  APP-binding-site residue list exactly, and the numbering mapping (black-grass
+  2088 → yeast 2013) was cross-validated against all 12 of Délye et al. 2005's
+  own stated anchor positions before use - 12/12 exact match.
+- **Not started:** EPSPS, HPPD (rest of Phase 2 batch), Phase 3 (FAT, DHODH -
   needs ColabFold, though DHODH may already have a public plant structure - see
   §3), Phase 4 (cross-enzyme synthesis), Phase 5 (deposit/submit).
 
