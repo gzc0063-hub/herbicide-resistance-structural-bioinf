@@ -122,7 +122,29 @@ Static distance-to-active-site results (full data in `ppo_validation_gate_result
 
 ---
 
-## 9. How the files in this repo relate
+## 9. Phase 1 closed out: conservation metric built, flagship finding identified
+
+All three items flagged in section 8 are resolved:
+
+- **Conservation metric built** — Shannon entropy from a 10-species plant PPO2 MAFFT alignment (tobacco, both *Amaranthus* spp., Arabidopsis, soybean, tomato, sugar beet, poplar, rice, maize), mapped to tobacco numbering. Phase 1 is now complete against the original three-metric design (distance, SASA, conservation).
+- **R98 SASA confirmed genuine, not an artifact** — correct dimer context, standard 1.4 Å probe, ligand (OMN) present and in direct contact (2.62 Å). R98 coordinates the substrate's peripheral propionate group at the pocket mouth, so partial solvent exposure is the expected result for that specific role, not a bug. Carrying "buried vs. exposed" forward as a feature for Phase 2, with the explicit caveat that pocket-rim residues coordinating peripheral substrate groups can legitimately read as exposed — don't assume "core residue ⇒ buried" as a blanket rule when interpreting other enzymes.
+- **V361A re-evaluated and downgraded; ΔG210 promoted to flagship finding.** With conservation data in hand, V361A is the *least* conserved of the four positions (0.573) as well as the farthest from the core (percentile 20.2) — the profile of a naturally variable, structurally permissive site, not a hidden allosteric hotspot. **Decision: don't build the manuscript's central claim around V361A.** Its mechanism_class stays `pending`, and it remains a valid, correctly-cited resistance mutation in the dataset. **ΔG210 is the stronger candidate**: meaningfully conserved (0.769) *and* structurally adjacent-to-but-outside the core — a pattern independently corroborated by this project's own entropy calculation and by Dayan et al. 2010's own reported cross-species Gly/Ala survey at this position.
+
+**Open quality check before leaning on "two independent lines of evidence" in the manuscript:** confirm whether the 10-species conservation panel includes the specific herbicide-sensitive species Dayan et al. 2010 cited as naturally carrying Ala at this position (GenBank AF273767 — species not confirmed in this log). If that species is already inside the 10-species panel, the two lines of evidence partially overlap rather than being fully independent, and the manuscript should say so rather than claim full independence. Cheap to check; do it before writing the convergent-evidence claim into a draft.
+
+---
+
+## 10. Phase 2 sequencing decision
+
+**Decision: do not batch-launch ALS/AHAS, ACCase, EPSPS, and HPPD together. Pilot one enzyme fully first, the same way PPO was piloted in Phase 1, then batch the remaining three once that pilot clears its own validation gate.**
+
+Reasoning: Phase 1's value wasn't just the pipeline — it was catching enzyme-specific wrinkles (wrong accessions, an ambiguous SASA reading, a numbering-layer nobody had accounted for) *before* they propagated across multiple targets. Batch-launching four enzymes at once would spend that same discipline four times as expensively, after the fact, instead of once, up front.
+
+**ALS/AHAS selected as the Phase 2 pilot enzyme**, over ACCase, EPSPS, and HPPD, because it has the deepest combination of real crystal structures and well-characterized, structurally-mapped TSR mutations across many species (e.g., Pro197, Trp574, Ser653, Ala122, Asp376 substitutions, each independently documented) — the same kind of resource depth that made PPO the right Phase 1 choice over the originally-planned ALS pilot. EPSPS is the next-strongest candidate on the same grounds (extensive crystal structures, well-characterized Pro106 substitutions) if ALS turns up a blocking problem. HPPD is likely the weakest candidate to pilot with, since fewer TSR mutations are well-documented for it relative to NTSR/metabolic resistance, which sits outside this pipeline's scope.
+
+---
+
+## 11. How the files in this repo relate
 
 - **This file (`DECISION_LOG.md`)** — the *why*: every directional decision and correction, in the order they were made.
 - **`PPO_Phase1_Final_Validated_Brief.md`** — the *what*: the current, fully-cross-checked dataset, numbering keys, mechanism classes, and validation-gate numbers, ready to feed into the pipeline.

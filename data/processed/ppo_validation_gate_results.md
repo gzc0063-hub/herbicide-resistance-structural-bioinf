@@ -64,13 +64,25 @@ in) the active-site core, as established, but is *also* meaningfully conserved
 (0.769 - most species carry Gly, a minority tolerate Ala) rather than freely
 variable. That specific pattern - conserved position, structurally proximal to but
 distinct from the core, resistant only via an unusual deletion rather than
-substitution - is independently corroborated by Dayan et al. 2010's own
-species survey (Ala occurs naturally at this position in some herbicide-sensitive
-species, e.g. GenBank AF273767, but larger substitutions are sterically blocked).
-Two independent lines of evidence (this project's own entropy calculation; Dayan's
-literature-reported cross-species survey) converge on the same structural story for
-ΔG210. That convergence is the stronger candidate for the manuscript's central
-claim, not V361A.
+substitution - is corroborated by Dayan et al. 2010's own species survey (Ala
+occurs naturally at this position in some herbicide-sensitive species, e.g. GenBank
+AF273767, but larger substitutions are sterically blocked).
+
+**Correction - not fully independent evidence:** checked whether AF273767 falls
+inside our own 10-species panel. **It does** - AF273767 is *Zea mays* (confirmed via
+NCBI esummary), and our panel already includes maize (PWZ38740.1), which does show
+Ala at the equivalent alignment column. This is the *same* data point Dayan cited,
+not a second independent confirmation - the manuscript must not claim "two
+independent lines of evidence" here. What **is** a genuine (partial) extension:
+three *other* species in our panel that Dayan's paper didn't specifically name also
+carry Ala at this position - Arabidopsis (KAL9810292.1), soybean (KAH1193770.1),
+and poplar (XP_002298607.3) - plus tomato (NP_001335308.1). Dayan's text only cites
+one example accession ("e.g., GenBank AF273767") without enumerating every
+Ala-carrying species, so these three-to-four additional data points do broaden the
+evidence base beyond what Dayan reported, even though the specific species he named
+overlaps with ours. Correct framing for the manuscript: **"consistent with, and
+partially extending, Dayan et al. 2010's cross-species survey"** - not "two
+independent lines of evidence."
 
 **Recommendation:** don't build the central claim around V361A being an "outlier
 allosteric mechanism" pending further evidence. It remains a valid, correctly-cited
