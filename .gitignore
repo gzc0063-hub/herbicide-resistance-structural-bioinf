@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.Rhistory
+.RData
+.Rproj.user/
+.DS_Store
+*.log
