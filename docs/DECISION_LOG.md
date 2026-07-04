@@ -717,3 +717,37 @@ comparisons and retain `sasa_A2` only as a traceable raw metric. This change doe
 not alter completed phase interpretations because the earlier buried/exposed calls
 were qualitatively clear-cut; it removes the main metric-scaling caveat before
 pooling targets.
+
+---
+
+## 28. Phase 4 pooled mutation table foundation
+
+Phase 4 was started by building the pooled mutation table before any statistical
+testing. The current accepted TSR-positive mutation families are PPO, ALS/AHAS,
+EPSPS, and ACCase. HPPD remains excluded from the mutation pool because the HPPD
+source audit found no accepted weed-evolved target-site amino-acid substitution.
+
+Implemented `scripts/build_phase4_tables.py` as a deterministic join from the
+family mutation tables to the matching per-residue static metrics and conservation
+outputs. The resulting pooled table is:
+
+- `output/tables/phase4_master_mutation_table.csv`
+
+It contains 15 mutation rows: PPO 6, ALS 2, EPSPS 1, and ACCase 6. Each row carries
+native and structure positions, active-site-core membership, distance-to-core,
+raw SASA, Tien-normalized RSA, conservation, source, confidence, and mechanism
+metadata. Family-specific numbering is preserved rather than flattened away:
+ACCase keeps chain-qualified structure positions such as `B:2014`, while PPO,
+ALS, and EPSPS use their established structure numbering columns.
+
+HPPD is represented separately in:
+
+- `output/tables/phase4_target_family_contrast.csv`
+
+with `accepted_tsr_rows = 0` and status `no_verified_weed_tsr_accepted`.
+
+**Decision:** use `phase4_master_mutation_table.csv` as the canonical input for
+the next cross-enzyme permutation/enrichment analysis, and keep HPPD in a separate
+contrast/status table unless a future primary source verifies a weed-evolved HPPD
+TSR mutation with accession-level support. This step is table integration only;
+the permutation/enrichment statistics and manuscript figures remain next.

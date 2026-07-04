@@ -336,3 +336,30 @@ fold-change (~10–55×) if citing Ki specifically.
   - `data/processed/hppd_5ywg_active_site_metrics.csv`
 - Verification command used in this session:
   - `python -m unittest tests.test_rsa`
+
+## Phase 4 pooled table foundation check
+
+- Reconciled the local checkout to pushed `origin/master` commit `6b34186` before
+  starting Phase 4 work. The pre-reconciliation dirty local state was preserved as
+  git stash entry `stash@{0}` named `pre-phase4-reconcile-local-dirty-state`.
+- Baseline unit test command after reconciliation:
+  - `.venv\Scripts\python.exe -m unittest discover -s tests -v`
+  - Result: 15 tests run, all passed.
+- Added `scripts/build_phase4_tables.py` and `tests/test_phase4_tables.py`.
+- Test-driven check:
+  - First focused run failed because `scripts.build_phase4_tables` did not exist,
+    confirming the test covered missing Phase 4 behavior.
+  - After implementation, `.venv\Scripts\python.exe -m unittest tests.test_phase4_tables -v`
+    passed.
+- Generated outputs:
+  - `output/tables/phase4_master_mutation_table.csv`
+  - `output/tables/phase4_target_family_contrast.csv`
+- Output sanity checks:
+  - Master mutation table row count: 15.
+  - Family counts: PPO 6, ALS 2, EPSPS 1, ACCase 6.
+  - HPPD is absent from the pooled mutation table and appears only in the contrast
+    table with `accepted_tsr_rows = 0` and status
+    `no_verified_weed_tsr_accepted`.
+  - Spot-checked joined rows include PPO `deltaG210_pair1`, ALS `Trp574Leu`,
+    EPSPS `Pro106Ser`, and ACCase `Cys2088Arg`; each has joined RSA and
+    conservation values.

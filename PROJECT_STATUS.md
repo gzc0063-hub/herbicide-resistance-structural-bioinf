@@ -53,9 +53,14 @@ pushed to https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf
 - **RSA normalization: COMPLETE.** All five current static metric outputs retain
   raw `sasa_A2` and now add `max_sasa_tien2013_A2` plus `rsa_tien2013`, using
   Tien et al. 2013 maximum allowed solvent-accessibility values.
+- **Phase 4 starter tables: COMPLETE.** `scripts/build_phase4_tables.py` pools
+  the current PPO, ALS, EPSPS, and ACCase mutation rows into
+  `output/tables/phase4_master_mutation_table.csv` with joined distance/RSA and
+  conservation metrics, and writes HPPD separately to
+  `output/tables/phase4_target_family_contrast.csv`.
 - **Not completed:** Phase 3 (FAT,
-  DHODH - needs structure decision), Phase 4 (cross-enzyme synthesis), Phase 5
-  (deposit/submit).
+  DHODH - needs structure decision), Phase 4 permutation/enrichment analysis and
+  manuscript figures, Phase 5 (deposit/submit).
 
 ---
 
@@ -127,6 +132,7 @@ here has been edited - if you need to re-derive anything, start here.
 | `accase_conservation_entropy.py` | ACCase: reference-indexed Shannon entropy from the 14-sequence plastidic grass ACCase panel |
 | `hppd_distance_sasa.py` | HPPD: standardized active-site distance/SASA on the 5YWG A+B mesotrione-bound dimer |
 | `rsa.py` | Adds Tien et al. 2013 max-SASA and RSA columns to the current static metric CSV outputs while preserving raw SASA |
+| `build_phase4_tables.py` | Phase 4 table builder: joins mutation rows to family-specific distance/RSA and conservation metrics, while keeping HPPD separate as a contrast family |
 | `reference_conservation.py` | Shared helper for pairwise reference-indexed conservation when MAFFT is unavailable |
 | `pdb_static_metrics.py` | Lightweight PDB parser/contact/SASA helpers used when ChimeraX is unavailable |
 | `active_site_metrics.py` | Shared helper for standardized distance-to-core and nearest-other-core metrics |
@@ -135,8 +141,12 @@ here has been edited - if you need to re-derive anything, start here.
 | `als_conservation_entropy.py` | ALS: same, 9-species alignment |
 
 ### `output/`
-Empty placeholders (`figures/`, `tables/`) - reserved for Phase 4 synthesis figures,
-nothing generated yet.
+`tables/phase4_master_mutation_table.csv` is the first Phase 4 pooled mutation
+table (15 mutation rows: PPO 6, ALS 2, EPSPS 1, ACCase 6). It joins each accepted
+mutation row to structure distance/SASA/RSA and conservation metrics. HPPD is kept
+out of that mutation table and is represented in
+`tables/phase4_target_family_contrast.csv` as a no-verified-weed-TSR contrast
+family. `figures/` is still reserved for Phase 4 synthesis figures.
 
 ---
 
@@ -150,14 +160,11 @@ substitution with accession-level support.
 RSA normalization is now complete. Raw SASA remains useful for traceability, but
 Phase 4 should use `rsa_tien2013` as the cross-enzyme exposure covariate.
 
-**Phase 4** is the cross-enzyme synthesis: pool
-`ppo_mutations.csv` + `als_mutations.csv` + `epsps_mutations.csv` +
-`accase_mutations.csv` into one mutation table, and keep HPPD as a separate
-target-family contrast status/active-site descriptor table. Then run
-the permutation/enrichment test the panel review recommended (see
+**Phase 4** has its starter pooled/contrast tables. Next, run the
+permutation/enrichment test the panel review recommended (see
 `docs/panel_review_and_plan.md` §Part A, biostatistician reviewer) instead of a
 naive logistic regression, and explicitly look for more outlier mutations like
-ΔG210 across the full set.
+ΔG210 across the full set. Use `rsa_tien2013` as the exposure covariate.
 
 **Phase 3 (FAT, DHODH)** is the one phase that needs something beyond what's set
 up so far - these two targets don't have existing crystal structures, so they need
