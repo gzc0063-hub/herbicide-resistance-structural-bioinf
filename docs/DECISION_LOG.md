@@ -643,3 +643,39 @@ should be included in the manuscript as evidence that the resource does not forc
 all herbicide targets into a TSR-positive template. For Phase 4 pooling, include
 HPPD active-site descriptors and a categorical "no verified weed TSR accepted"
 status, but do not pool fabricated mutation rows.
+
+---
+
+## 26. Post-rebase reconciliation and duplicate-source cleanup
+
+After pushing the broad EPSPS/ACCase/HPPD completion commit, the local Codex work
+was rebased on top of Claude Code's intervening ACCase commits, including the
+correction that black-grass/AJ310767 Cys2088 maps to 1UYS chain B residue **2014**,
+not 2013. The rebase preserved Claude's history and then applied the broader
+six-mutation ACCase, EPSPS, ALS-interface, and HPPD contrast-case work on top.
+
+A follow-up audit checked for:
+
+- unresolved merge-conflict markers;
+- stale ACCase `2088 -> 2013` wording;
+- duplicate ACCase source PDFs/FASTA files;
+- stale instructions saying HPPD was still next/not started;
+- missing ALS interface-core correction;
+- missing EPSPS/ACCase/HPPD output tests.
+
+Two duplicate source artifacts were found and removed:
+
+- `docs/references/Yu_et_al_2007_ACCase_Lolium_Cys2088Arg.pdf`, which was
+  byte-identical to `docs/references/Yu_et_al_2007_ACCase_Lolium.pdf`;
+- `data/raw/ACCase_Amyosuroides_AJ310767.fasta`, which contained the same
+  2320-aa AJ310767 sequence as `data/raw/ACCase_Alopecurus_AJ310767_reference.fasta`
+  but had a less accurate filename for the black-grass reference.
+
+The ACCase scripts now use the retained canonical file:
+`data/raw/ACCase_Alopecurus_AJ310767_reference.fasta`.
+
+**Decision:** treat GitHub `master` after commit `f2ac466` as the reconciled source
+of truth across Codex and Claude Code. Do not reintroduce the duplicate Yu 2007 PDF
+or duplicate AJ310767 FASTA unless a future source-audit reason requires separate
+copies. The retained ACCase mapping remains: Cys2088Arg -> 1UYS chain B residue
+2014.
