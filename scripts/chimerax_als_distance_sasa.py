@@ -4,12 +4,27 @@ Run inside ChimeraX (headless): ChimeraX --nogui --script chimerax_als_distance_
 For each chain-A residue of 1Z8N (Arabidopsis AHAS + imazaquin), computes:
   - min CA-CA distance to the active-site core, defined directly from the
     structure as every residue within 4.5 A of either bound imazaquin (1IQ)
-    copy - no need for a McCourt-et-al.-2006-style literature core list.
+    copy, INCLUDING residues contributed by the neighboring subunit across
+    the dimer interface (AHAS's herbicide-binding site is a composite pocket
+    formed by both protomers - McCourt et al. 2006; confirmed here directly
+    by checking cross-chain contacts in the generated biological tetramer
+    with correct scene coordinates). Because AHAS is a symmetric homotetramer,
+    chain A's own copies of the interface-contributing residues are added to
+    the core (by symmetry, chain A plays the same interface role for its own
+    neighbor's pocket).
   - percentile rank of that distance within chain A's own distribution
   - per-residue SASA, computed on the full author-determined tetrameric
     biological assembly (assembly 1) for correct oligomeric context,
     same fix applied to PPO's dimer in Phase 1.
 Writes data/processed/als_1z8n_distance_sasa.csv
+
+CORRECTION HISTORY: an earlier version of this script defined the core from
+chain-A-internal ligand contacts only (16 residues). A follow-up check found
+11 additional residues (121, 122, 168, 195, 196, 197, 199, 200, 206, 207, 256)
+contributed by a neighboring subunit, within 4.5 A of the second imazaquin
+copy - notably including Ala122 and Pro197, two classically-documented ALS
+resistance positions excluded from this pilot's scope (DECISION_LOG #12) but
+now understood to be genuine interface pocket residues, not incidental.
 """
 from chimerax.core.commands import run
 import numpy as np
@@ -21,7 +36,7 @@ session = session  # noqa: F821
 run(session, "open 1z8n")
 m1 = session.models[0]
 
-# Active-site core: union of residues within 4.5 A of either 1IQ copy
+# Active-site core, part 1: residues within 4.5 A of either 1IQ copy, chain-A-internal
 lig_residues = [r for r in m1.residues if r.name == "1IQ"]
 core_numbers = set()
 for lig in lig_residues:
@@ -33,8 +48,15 @@ for lig in lig_residues:
         d = np.linalg.norm(prot_atoms[:, None, :] - lig_atoms[None, :, :], axis=-1)
         if d.min() < 4.5:
             core_numbers.add(r.number)
+
+# Active-site core, part 2: interface residues contributed by a neighboring subunit
+# (found via direct cross-chain scene-coordinate check on the generated tetramer;
+# added here as chain A's own copies of the same positions, by tetramer symmetry)
+interface_core_numbers = {121, 122, 168, 195, 196, 197, 199, 200, 206, 207, 256}
+core_numbers |= interface_core_numbers
+
 core_numbers = sorted(core_numbers)
-print("Active-site core (chain A residue numbers, contacts to either 1IQ copy):", core_numbers)
+print("Active-site core (chain A residue numbers, intramolecular + symmetry-added interface):", core_numbers)
 
 res_by_number = {r.number: r for r in m1.residues if r.chain_id == "A" and r.polymer_type == 1}
 core_ca = {}

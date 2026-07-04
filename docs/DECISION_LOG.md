@@ -296,7 +296,47 @@ original sequencing plan.
 
 ---
 
-## 17. How the files in this repo relate
+## 17. External review received and reconciled — ALS active-site core corrected, HPPD plan revised before it starts
+
+User supplied an external "senior review" (a fact-check tool) that could not
+access this private repo (confirmed 404 on all endpoints) and so reviewed a
+*different* task brief describing ACCase/EPSPS/HPPD/FAT/DHODH plans - not our
+actual completed PPO/ALS work. Full reconciliation in
+`docs/EXTERNAL_REVIEW_RESPONSE.md`. Two things genuinely applied to completed
+work, checked directly rather than taken on faith:
+
+1. **Confirmed and fixed: ALS's active-site core was missing dimer-interface
+   residues.** Re-checked the review's general claim (AHAS binding occurs at a
+   dimer interface, McCourt et al. 2006) directly against 1Z8N. Found and fixed a
+   coordinate-frame bug in the diagnostic (`atom.coord` vs `atom.scene_coord`
+   across symmetry copies gave a false negative first), then confirmed 11 real
+   interface residues from a neighboring subunit, including **Ala122 and Pro197**
+   - two positions this pilot deliberately scoped out (§12) - which turn out to
+   be genuine interface pocket residues, explaining mechanistically why they're
+   documented resistance hotspots. Core expanded from 16 to 27 residues; Trp574/
+   Ser653 conclusion unchanged (both remain direct ligand-contact core members,
+   fully conserved); only secondary percentile figures shifted (22.0→31.8,
+   1.7→3.1). `als_1z8n_distance_sasa.csv` and `als_validation_gate_results.md`
+   recomputed accordingly.
+2. **Valid, not yet applied: raw SASA should become relative solvent
+   accessibility (RSA)** per Tien et al. 2013 before Phase 4's cross-enzyme
+   comparison, where raw Å² isn't comparable across enzymes with different
+   residue-size distributions. Doesn't change any PPO/ALS conclusion so far (all
+   buried/exposed calls were clear-cut, not borderline), but needs doing before
+   pooling data across enzymes.
+
+**For the enzymes not yet started (ACCase, EPSPS, HPPD, FAT, DHODH), see
+`EXTERNAL_REVIEW_RESPONSE.md` Part 2** for the specific facts to adopt -
+critically, **do not use "Gly336" as an HPPD weed resistance mutation** (it's an
+engineered *Pseudomonas fluorescens* crop-tolerance variant, not evolved
+resistance; real weed HPPD resistance is predominantly non-target-site per Nakka
+et al. 2017) - and a reminder to repeat the dimer-interface cross-chain check
+(item 1 above) for ACCase's CT domain before assuming a single-chain active-site
+core there too.
+
+---
+
+## 18. How the files in this repo relate
 
 - **This file (`DECISION_LOG.md`)** — the *why*: every directional decision and correction, in the order they were made.
 - **`CONTRIBUTING.md`** — working conventions for this repo (currently: how to handle paywalled/bot-blocked sources, §13).
@@ -304,3 +344,4 @@ original sequencing plan.
 - **`als_mutation_candidates.md`** / **`als_mutations.csv`** / **`als_validation_gate_results.md`** — the equivalent trio for the ALS/AHAS pilot: resolution trail, working dataset, and validation-gate results.
 - **`rangani_2019_table2_cross_resistance.csv`** — external validation dataset (real IC50/resistance-factor data, 13 herbicides × 3 mutations, common genetic background).
 - **`docs/references/`** — primary-source PDFs now available directly in the repo (Dayan et al. 2010, Hao et al. 2009, Giacomini et al. 2017, Larran et al. 2017), not just summarized secondhand in the briefs. Verification claims in `VERIFICATION_LOG.md` that cite these papers can be checked against the actual text.
+- **`EXTERNAL_REVIEW_RESPONSE.md`** — reconciliation of an external fact-check review against this repo's actual state: what genuinely applied and was fixed (ALS interface core), what's valid but not yet applied (RSA normalization), and what to adopt when ACCase/EPSPS/HPPD/FAT/DHODH are built (§17).
