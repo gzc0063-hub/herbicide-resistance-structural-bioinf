@@ -28,6 +28,12 @@ R packages (run once from an R console): `install.packages(c("lme4", "ggplot2"))
 
 ChimeraX must be installed separately: https://www.cgl.ucsf.edu/chimerax/download.html
 
+MAFFT (multiple sequence alignment, used for the conservation-entropy metric) must
+also be installed separately - no pip package, and no Windows binary is bundled in
+this repo. Download the native Windows build (no Cygwin needed) from
+https://mafft.cbrc.jp/alignment/software/windows_without_cygwin.html, unzip it
+anywhere, and point scripts at `<unzip-dir>/mafft-win/mafft.bat`.
+
 ## Pipeline phases
 
 0. Setup — repo scaffold, environment checks

@@ -30,17 +30,82 @@ the pocket itself (consistent with "not in" the defined catalytic core). This is
 directional, geometric confirmation of Dayan's finding using only the static
 structure - no MD required, matching the scope decision.
 
-## A secondary observation worth flagging
+## Third metric added: Shannon-entropy conservation (per DECISION_LOG §8 item 1)
 
-**V361A is farther from the active-site core (percentile 20.2) than ΔG210 or
-G399A**, despite being causal for resistance (per Nie et al. 2023's site-directed
-mutagenesis). Its mechanism class is still marked `pending` in the dataset - no
-structural paper has resolved it yet. This is exactly the kind of "doesn't fit the
-expected near-active-site pattern" case the panel review (DECISION_LOG §2, fix #5)
-said would be the more citable finding if it turned up. Worth keeping an eye on once
-the other enzymes are added - if V361A's relative distance holds up as an outlier
-across the full permutation-test analysis (Phase 4), it's a candidate for the
-"allosteric-acting resistance" angle the panel recommended foregrounding.
+Computed locally (no ConSurf dependency) from a MAFFT alignment of 10 diverse plant
+PPO2 orthologs (tobacco, both *Amaranthus* species, Arabidopsis, soybean, tomato,
+sugar beet, poplar, rice, maize - dicots and monocots both represented). Full data
+in `ppo_conservation_entropy.csv`; script in `scripts/conservation_entropy.py`.
+
+| Mutation | Tobacco pos | Distance percentile | Conservation (0-1) |
+|---|---|---|---|
+| ΔG210 | 178 | 8.2 | 0.769 |
+| G399A | 370 | 2.8 | 1.000 (invariant across all 10 species) |
+| R98 (core) | 98 | 0.9 | 1.000 (invariant across all 10 species) |
+| V361A | 332 | 20.2 | 0.573 (lowest of the four) |
+
+## V361A re-evaluated with conservation data in hand
+
+**Revised interpretation:** V361A is not just the farthest of the four mutations
+from the active-site core - it is also the **least conserved**, by a clear margin,
+across a 10-species plant panel spanning both major angiosperm lineages. That
+combination (moderate-low distance percentile + low conservation) is the profile of
+a naturally variable, structurally permissive site, not a tightly-conserved
+allosteric hotspot. This is the "unremarkable, poorly-conserved position" outcome
+DECISION_LOG §8 flagged as the alternative to rule in or out before treating V361A
+as a manuscript-central finding - **the data currently points toward the more
+mundane explanation.** A plausible reading: resistance may have emerged here
+precisely because this position tolerates substitution more readily than most
+(less purifying selection to overcome), rather than because it's an unexpected
+functional site.
+
+**ΔG210 is the stronger outlier candidate**, not V361A. It sits adjacent to (not
+in) the active-site core, as established, but is *also* meaningfully conserved
+(0.769 - most species carry Gly, a minority tolerate Ala) rather than freely
+variable. That specific pattern - conserved position, structurally proximal to but
+distinct from the core, resistant only via an unusual deletion rather than
+substitution - is independently corroborated by Dayan et al. 2010's own
+species survey (Ala occurs naturally at this position in some herbicide-sensitive
+species, e.g. GenBank AF273767, but larger substitutions are sterically blocked).
+Two independent lines of evidence (this project's own entropy calculation; Dayan's
+literature-reported cross-species survey) converge on the same structural story for
+ΔG210. That convergence is the stronger candidate for the manuscript's central
+claim, not V361A.
+
+**Recommendation:** don't build the central claim around V361A being an "outlier
+allosteric mechanism" pending further evidence. It remains a valid, correctly-cited
+resistance mutation in the dataset (mechanism class stays `pending`), just not the
+flagship non-obvious finding. Revisit once the other enzymes (Phase 2) are added -
+if a *different* mutation elsewhere shows ΔG210's pattern (conserved + proximal-but-
+outside-core) that would strengthen the cross-enzyme version of this story; if V361A's
+low-distance/low-conservation profile recurs in other enzymes' "permissive site"
+mutations, that's a distinct, still-worth-reporting pattern, just a different one.
+
+## R98 SASA sanity check (per DECISION_LOG §8 item 3)
+
+R98 reads as solvent-exposed (58.96 Å²) despite being a core catalytic residue -
+confirmed this is correct, not an artifact, via `scripts/chimerax_sasa_diagnostic.py`
+and `scripts/chimerax_probe_check.py`:
+
+- **Chain/oligomer:** correct - SASA computed with both dimer chains present (see
+  caveat below); R98 is not at the dimer interface, confirmed by comparing
+  single-chain vs. dimer SASA (identical for this residue).
+- **Probe radius:** ChimeraX's default matches the explicit standard 1.4 Å water
+  probe (verified by running both and comparing totals - identical, 40311 Å² for
+  all atoms either way).
+- **Ligand context:** 1SEZ has a bound phenyl-pyrazole inhibitor (OMN) and FAD
+  cofactor present throughout - not stripped out. R98 sits **2.62 Å from OMN**,
+  i.e. genuinely at the pocket, in direct contact range with the bound inhibitor.
+
+**Conclusion: the exposure is real, not a bug.** R98 coordinates the substrate's
+peripheral propionate carboxylate group (Heinemann et al. 2007) - a substituent
+that sits at the mouth of the pocket rather than buried in the hydrophobic tunnel,
+so partial solvent exposure even with an inhibitor bound is exactly what's expected
+for this specific functional role. "Buried vs. exposed" as a feature is safe to
+carry forward into the Phase 2 cross-enzyme comparison, but this case is a reminder
+that pocket-rim residues coordinating peripheral substrate groups can legitimately
+read as exposed - worth keeping in mind rather than assuming "core residue = buried"
+as a blanket rule when interpreting other enzymes' active sites.
 
 ## Caveat
 

@@ -99,7 +99,30 @@ This also fixes a wording problem in `PPO_Phase1_Final_Validated_Brief.md` secti
 
 ---
 
-## 8. How the files in this repo relate
+## 8. Phase 1 validation gate: PASS — and a decision to finish Phase 1 before scaling
+
+Static distance-to-active-site results (full data in `ppo_validation_gate_results.md`):
+
+| Mutation | Distance to core | Percentile | SASA |
+|---|---|---|---|
+| ΔG210 | 8.37 Å | 8.2 (top ~8%) | buried |
+| G399A | 4.20 Å | 2.8 | buried |
+| V361A | 11.73 Å | 20.2 | buried |
+| R98G/R98M | 0 Å (is a core residue) | 0.9 | solvent-exposed |
+
+**Gate passed:** Gly210 lands close (top decile) but clearly outside the four-residue core — geometrically confirming Dayan's "adjacent to, not in, the active site" finding, with no MD required, exactly as scoped in section 7.
+
+**Two items flagged before moving to Phase 2, rather than starting Phase 2 immediately:**
+
+1. **Complete Phase 1's third metric (conservation score) before scaling**, not after. The original design specifies three metrics per mutation (distance, SASA, conservation); only two exist as of this gate. Building the conservation step now, on one target, is far cheaper than retrofitting it onto five targets later.
+2. **V361A is a candidate outlier** (percentile 20.2, notably farther from the core than the other two causal TSR mutations) — earmarked for the panel review's "look for allosteric/non-obvious mechanisms" recommendation (section 2). Conservation data will help distinguish "genuine structural surprise" from "unremarkable, poorly-conserved position" — get this before moving past PPO, while the finding is still the active focus.
+3. **Sanity-check the R98 SASA classification** before treating "buried vs. exposed" as a reliable feature for later cross-enzyme comparison. R98 coordinates the substrate's entry point per Heinemann 2007, so pocket-mouth solvent exposure is plausible — but confirm this isn't an artifact of chain selection or oligomeric state before it propagates into four more targets' worth of data.
+
+**Decision: Phase 2 (ALS/AHAS, ACCase, EPSPS, HPPD) starts after the conservation step is built and the R98 SASA check is confirmed — not before.**
+
+---
+
+## 9. How the files in this repo relate
 
 - **This file (`DECISION_LOG.md`)** — the *why*: every directional decision and correction, in the order they were made.
 - **`PPO_Phase1_Final_Validated_Brief.md`** — the *what*: the current, fully-cross-checked dataset, numbering keys, mechanism classes, and validation-gate numbers, ready to feed into the pipeline.
