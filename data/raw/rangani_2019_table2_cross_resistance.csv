@@ -1,0 +1,14 @@
+chemical_family,herbicide,wt_ic50_M,rf_G399A,rf_deltaG210,rf_R128L,rf_note
+diphenyl_ether,acifluorfen,1.85E-08,541,541,541,"all three RF values are lower-bound (>) - true IC50 for resistant variant exceeded max tested concentration"
+diphenyl_ether,fomesafen,1.32E-09,7576,12315,1479,"G399A RF is lower-bound (>7576)"
+diphenyl_ether,lactofen,5.60E-11,28167,18271,2812,
+diphenyl_ether,oxyfluorfen,3.42E-11,18548,982,74,
+pyrimidinedione,saflufenacil,1.10E-09,570,1455,202,
+pyrimidinedione,butafenacil,8.96E-12,741,17578,23,
+triazolinone,carfentrazone,1.96E-10,116,3957,3,
+triazolinone,sulfentrazone,1.75E-08,282,571,571,
+N-phenylphthalimide,flumioxazin,3.90E-11,868,3157,2631,
+phenylpyrazole,pyraflufen-ethyl,5.19E-11,11816,1083,1,
+thiadiazole,fluthiacet-methyl,6.69E-10,3567,94,4,
+oxadiazole,oxadiazon,7.00E-10,285,151,1,
+other,pyraclonil,1.39E-09,799,782,0,
