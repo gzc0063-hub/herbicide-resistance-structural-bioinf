@@ -1,0 +1,9 @@
+residue_role,tobacco_1SEZ,waterhemp_native,palmeri_native,notes
+substrate_carboxylate_coordination,Arg98,Arg128,Arg128,"Heinemann 2007 core residue; confirmed directly in Dayan et al. 2010 text (Arg128 equivalent to Arg98 in N. tabacum)"
+ring_B_stack,Gly354,Leu384,Gly383,"Hao 2009 footnote flags Leu384(waterhemp)/Gly383(palmeri) as an inconsistency worth tracking - not yet reconciled"
+ring_B_stack_2,Leu356,Leu384,Leu385,"Both papers' independently-derived numbering agree here - internal consistency check passed per brief"
+unlabeled_1,Leu369,,Leu398,"No waterhemp equivalent given in source"
+steric_clash_site,Gly370,,Gly399 (=G398 waterhemp per Rangani footnote),"This is the G399A mutation site - third numbering layer (waterhemp G398 vs palmeri G399 for the same physical residue)"
+unlabeled_2,Tyr371,,Tyr400,"No waterhemp equivalent given in source"
+ring_B_stack_3,Leu372,Leu400,Leu401,"Heinemann 2007 core residue"
+ring_A_anchor,Phe392,,Phe421,"Heinemann 2007 core residue; mutation to His abolishes activity entirely per Heinemann 2007 (citation only, not yet read directly)"
