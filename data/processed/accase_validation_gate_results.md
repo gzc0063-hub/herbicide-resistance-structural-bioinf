@@ -29,7 +29,7 @@ Gly-1997C, Gly-1998C, Val-2002C, among others) - computed independently here via
 a simple 4.5 Å ligand-contact search, not copied from the paper. This is a clean,
 direct structural validation of the whole pipeline's core-definition method.
 
-## Numbering: black-grass (AJ310767) 2088 → yeast (1UYS) 2013
+## Numbering: black-grass (AJ310767) 2088 → yeast (1UYS) 2014
 
 1UYS uses **native yeast numbering**, not black-grass numbering - checking the
 structure's own position "2088" directly would have been wrong (it's Gln there,
@@ -38,14 +38,32 @@ not Cys). Resolved via pairwise alignment between AJ310767 (black-grass, full
 all 12 of Délye et al. 2005's own explicitly-stated yeast↔black-grass position
 correspondences - 12/12 exact match** (e.g. black-grass 1781→yeast 1705,
 black-grass 2041→yeast 1967, black-grass 2076→yeast 2002, etc.), giving strong
-confidence in the alignment before trusting the derived 2088→2013 mapping for a
-position not explicitly stated in the paper.
+confidence in the alignment method before trusting it for a position not
+explicitly stated in the paper.
 
-## Results
+**Correction:** the position not explicitly given by Délye (2088) was initially
+mapped to yeast position 2013. Caught via cross-check against an independent
+parallel analysis of this same repository (a separate agent working from another
+local clone) that computed 2014 instead. Direct verification: 1UYS position 2014
+is **MSE (selenomethionine = Met)**, matching Délye et al. 2005's Table III
+statement that yeast has Met at this position; position 2013 is **Glu**, which
+does not match. **Corrected to 2014.** This position falls in a locally
+ambiguous stretch - Délye's own text describes positions 2027-2096 as "a more
+variable region," and the alignment places a 2-residue gap spanning yeast
+2012-2014, all of which sit adjacent to or are themselves Met. Positions 2012
+and 2014 give near-identical distance/SASA profiles (see below), so which exact
+one is the true homolog doesn't change the qualitative conclusion - but 2013 was
+clearly wrong, and is now fixed.
+
+## Results (corrected)
 
 | Mutation | Native position | 1UYS position | In active-site core? | Percentile (distance) | SASA | Conservation (5 grass species) |
 |---|---|---|---|---|---|---|
-| Cys2088Arg | 2088 | 2013 | No (34% closer than most, but outside the strict <4.5 Å contact shell) | 32.1 | 7.2 Å² (buried) | 0.812 (fairly conserved) |
+| Cys2088Arg | 2088 | 2014 | No (moderately close, but outside the strict <4.5 Å contact shell) | 25.7 | 0.7 Å² (buried) | 0.812 (fairly conserved) |
+
+(For reference, the adjacent candidate position 2012 - also Met, on the other
+side of the ambiguous gap - gives percentile 27.4 and SASA 6.1 Å², essentially
+the same qualitative picture.)
 
 ## Validation gate: PASS
 
@@ -62,8 +80,8 @@ Two independent checks both hold up:
    own account.** Délye et al. 2005 describe position 2088's side chain as
    "located close to that in residue Asp-2078B" (i.e., in the broader active-site
    cavity) without listing it among the direct APP-contact residues - consistent
-   with our finding that it's moderately close (32nd percentile) but outside the
-   strict 4.5 Å contact shell. Buried (7.2 Å² SASA) and fairly conserved (0.812,
+   with our finding that it's moderately close (25.7th percentile) but outside the
+   strict 4.5 Å contact shell. Buried (0.7 Å² SASA) and fairly conserved (0.812,
    "most frequently Cys or Met" per Délye's own Table III) - matches the
    literature's qualitative description of this position almost exactly.
 
