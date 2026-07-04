@@ -1,7 +1,14 @@
-# ALS/AHAS Phase 2 pilot — mutation candidates, needs your sign-off before proceeding
+# ALS/AHAS Phase 2 pilot — mutation candidates
 
-Preliminary research only - mirroring the Phase 1 `ppo_mutation_candidates.md` checkpoint.
-Nothing built on top of this yet.
+Scope and sign-off decisions applied below; one item remains genuinely blocked
+pending a paywalled source (see status).
+
+## Scope (resolved)
+
+**Pilot covers Trp574Leu and Ser653Asn only.** Ala122 and Pro197 are dropped from
+this pilot's scope - they'd be scope creep on what's meant to be a quick second
+validation-gate check reusing PPO's now-proven pipeline, not a full ALS survey.
+They remain fair game for a later, fuller ALS pass if warranted.
 
 ## Candidate crystal structures (real, confirmed via RCSB search)
 
@@ -20,75 +27,67 @@ Nothing built on top of this yet.
 | 5K6R | Sulfonylaminocarbonyltriazolinone | Thiencarbazone-methyl |
 
 Broader herbicide-class coverage than PPO's single 1SEZ structure had. Arabidopsis
-numbering is also the field-standard convention for ALS mutations (Pro197, Trp574,
-Ser653, etc. are always reported in this numbering) - less of a numbering-offset
-problem than PPO's three-way tobacco/waterhemp/palmeri system, **but** the
-crystallized sequence (1Z8N chain, starts "TFISRFAPDQ...") looks like a
+numbering is also the field-standard convention for ALS mutations - less of a
+numbering-offset problem than PPO's three-way tobacco/waterhemp/palmeri system,
+**but** the crystallized sequence (1Z8N chain, starts "TFISRFAPDQ...") looks like a
 transit-peptide-cleaved mature fragment, not the full preprotein - so raw sequence
 position ≠ literature position without an alignment-derived offset. Not yet resolved.
 
 ## Candidate real accessions - Amaranthus palmeri (continuing species used in Phase 1)
 
-**Peer-reviewed source (preferred):** Larran, Palmieri, Perotti, Lieber, Tuesca &
-Permingeat, "Target-site resistance to ALS-inhibiting herbicides in *Amaranthus
-palmeri* from Argentina," *Pest Manag Sci* 2017 (matches DOI 10.1002/ps.4662 found
-via literature search). Deposited accessions **ASL69930-ASL69937** (8 sequences,
-669 aa each).
+**Source:** Larran, Palmieri, Perotti, Lieber, Tuesca & Permingeat, "Target-site
+resistance to acetolactate synthase (ALS)-inhibiting herbicides in *Amaranthus
+palmeri* from Argentina," *Pest Manag Sci* 2017, DOI 10.1002/ps.4662. Deposited
+accessions **ASL69930-ASL69937** (8 sequences, 669 aa each).
 
-Raw pairwise diffs (using ASL69930 as reference - **not yet confirmed this is the
-correct susceptible/wild-type genotype**, see caveat below):
+Raw pairwise diffs (using ASL69930 as a provisional diff baseline only - **not
+confirmed as the correct susceptible/wild-type genotype**, see status below):
 
 | Accession | Raw diff positions vs ASL69930 | Candidate mutation (unconfirmed numbering) |
 |---|---|---|
 | ASL69931 | 652 (S→N) | possible Ser653Asn |
 | ASL69932 | 573 (W→L) | possible Trp574Leu |
-| ASL69933 | 573 (W→L), 600 (M→I) | possible Trp574Leu + unclear second change |
-| ASL69934 | 117 (A→S), 282 (A→D) | unclear - doesn't cleanly match a classic hotspot at raw numbering |
-| ASL69935 | 282 (A→D), 652 (S→N) | double mutant candidate |
-| ASL69936 | 79 (P→H), 282 (A→D), 652 (S→N) | triple - two of three unclear |
+| ASL69933 | 573 (W→L), 600 (M→I) | possible Trp574Leu + unclear second change (out of pilot scope) |
+| ASL69934 | 117 (A→S), 282 (A→D) | out of pilot scope (neither Trp574 nor Ser653) |
+| ASL69935 | 282 (A→D), 652 (S→N) | Ser653Asn candidate, plus an out-of-scope second change |
+| ASL69936 | 79 (P→H), 282 (A→D), 652 (S→N) | Ser653Asn candidate, plus two out-of-scope changes |
 | ASL69937 | 652 (S→N) | possible Ser653Asn |
 
-**Caveat - all 8 sequences share the same 8 N-terminal differences from ASL69930**
-(positions 4, 6, 10, 11, 12, 16, 22, 31), before any of the above. This looks like
-ASL69930 has a different transit-peptide sequence/length than the other seven, not
-a real biotype difference - likely means ASL69930 is *not* a clean wild-type
-reference to diff against. Needs resolving before trusting any position number
-above; the "cleanest" internal reference is probably one of the other seven, not
-ASL69930. **Numbering also not yet converted to the standard Arabidopsis-based
-convention** - the raw positions above may not equal the literature names even
-after fixing the reference-choice issue.
+Cleanest single-mutation candidates for the pilot's narrowed scope: **ASL69932**
+(Trp574Leu candidate, one clean diff besides the shared N-terminal block) and
+**ASL69931 or ASL69937** (Ser653Asn candidate, one clean diff besides the shared block).
 
-**Lower-confidence source (flagging, not recommending yet):** Palmieri, Permingeat
-& Perotti, "Comparative analysis of five resistant acetolactate synthase isoforms
-from *Amaranthus palmeri*" - GenBank accessions QYC94980/QYC94981 (and reportedly
-3 more not yet located). **This is marked "Unpublished" in the GenBank record
-itself** - a direct database submission, not a peer-reviewed paper. Same
-verification standard problem as the original QBB0236x mistake in Phase 1 -
-recommend treating this as lower-priority until/unless it turns out to be published
-elsewhere, or cross-confirmed against a peer-reviewed source.
+**Status: reference accession still blocked, not resolved by elimination.** All 8
+sequences share the same 8 N-terminal differences from ASL69930 (positions 4, 6,
+10, 11, 12, 16, 22, 31) before any of the diffs above. Per instruction, this is
+more likely a different transcript start than an error, but ASL69930 is **not**
+being used as the wild-type baseline until Larran et al. 2017's own methods or
+supplementary text confirms which accession is the labeled susceptible/wild-type
+population sample. Wiley blocked automated fetch attempts against this DOI (see
+`CONTRIBUTING.md`) - **waiting on the user to supply the PDF directly.**
+
+## Excluded from the working mutation set
+
+**QYC94980 / QYC94981** ("Comparative analysis of five resistant acetolactate
+synthase isoforms from *Amaranthus palmeri*," Palmieri, Permingeat & Perotti) -
+**excluded**. Marked "Unpublished" in the GenBank record itself - a direct database
+submission, not a peer-reviewed paper, the same category of problem as the original
+QBB0236x mistake in Phase 1. Tag: `unpublished_lower_confidence`. Kept as a record
+here only; not used in anything the manuscript relies on.
 
 ## Candidate structural/kinetic validation paper (Dayan-2010 role for ALS)
 
 "Effects of resistance mutations of Pro197, Asp376 and Trp574 on the
 characteristics of acetohydroxyacid synthase (AHAS) isozymes" (DOI 10.1002/ps.4889)
-- found via literature search, not yet read in full. Title suggests direct kinetic
-characterization of exactly three of the five target mutations - a plausible
-validation-gate anchor paper, but needs the same full-text verification pass PPO's
-Dayan/Hao/Giacomini papers got before relying on it.
+- found via literature search, not yet read in full, and covers Pro197/Asp376
+(now out of pilot scope) alongside Trp574 (in scope). Given the scope narrowing,
+this paper's usefulness as the ALS validation-gate anchor is now partial at best -
+revisit once Trp574Leu/Ser653Asn numbering is resolved to see if it's still the
+right anchor, or if a Ser653-specific paper is a better fit.
 
-## Open questions for you (domain sign-off needed)
+## Next step
 
-1. Is the Larran et al. 2017 Argentine population dataset (ASL69930-69937) the
-   right primary source to build the ALS mutation set from, or is there a
-   better-established reference paper/dataset you'd rather anchor to (e.g., a US
-   Palmer amaranth population, given the PPO work's continuity with that context)?
-2. Which accession should serve as the wild-type/susceptible reference within this
-   set, given the apparent N-terminal issue with ASL69930?
-3. Do you want Ala122 and Pro197 candidates specifically sourced (neither turned up
-   in this particular 8-accession set - Pro197 does have its own dedicated paper,
-   "A New Pro-197-Ile Mutation in *Amaranthus palmeri*," DOI 10.3390/plants14040525,
-   not yet pulled), or is a subset of the five classic positions acceptable for the
-   ALS pilot (mirroring how PPO's pilot only covered 4, not every documented
-   mutation)?
-4. Should the "Unpublished" QYC94980/94981 pair be excluded entirely, or kept with
-   an explicit lower-confidence flag the way PPO's non-causal background variants were?
+Once the Larran et al. 2017 PDF is available, confirm the wild-type/susceptible
+accession from its text, then proceed with numbering resolution (align to 1Z8N/
+Arabidopsis) and the ChimeraX distance/SASA/conservation pipeline for Trp574Leu and
+Ser653Asn only, mirroring PPO's Phase 1 pipeline exactly.

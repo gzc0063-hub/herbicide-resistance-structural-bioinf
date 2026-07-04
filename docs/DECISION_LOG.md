@@ -144,8 +144,81 @@ Reasoning: Phase 1's value wasn't just the pipeline — it was catching enzyme-s
 
 ---
 
-## 11. How the files in this repo relate
+## 11. AF273767 resolved — ΔG210 evidence framing corrected
+
+Checked directly (NCBI esummary) whether Dayan et al. 2010's cited example of a
+naturally Ala-carrying herbicide-sensitive species (GenBank AF273767) falls inside
+our own 10-species conservation panel. **It does** — AF273767 is *Zea mays*, and our
+panel already includes maize (PWZ38740.1), which shows Ala at the equivalent
+alignment column. This is the same data point Dayan reported, not a second,
+independent confirmation of it.
+
+**Decision: retract the "two independent lines of evidence converge" framing for
+ΔG210.** Corrected framing, applied in `ppo_validation_gate_results.md`: "consistent
+with, and partially extending, Dayan et al. 2010's cross-species survey." The
+"partially extending" part is genuine, not just a hedge — three other panel species
+Dayan's text didn't specifically name (Arabidopsis, soybean, poplar; also tomato)
+independently carry Ala at this position too, so the panel does add real data beyond
+his one cited example. But since one of our ten data points is the exact species he
+already reported, this cannot be described as fully independent corroboration.
+
+---
+
+## 12. ALS/AHAS pilot — sign-off decisions
+
+Three open items from the pilot's initial candidate research (`als_mutation_candidates.md`),
+resolved as follows rather than by Claude Code's own inference:
+
+1. **Reference/wild-type accession: not resolved by elimination.** The eight
+   Larran et al. 2017 accessions (ASL69930–ASL69937) all share the same 8
+   N-terminal differences relative to ASL69930, which looked at first glance like
+   ASL69930 might be the odd one out. **Decision: don't treat that as grounds to
+   pick a different diff baseline.** The N-terminus mismatch is more likely a
+   different transcript start than a real biotype difference, but the correct fix
+   is to find which accession Larran et al. 2017's own methods/supplementary text
+   explicitly labels as the susceptible/wild-type population sample — not to guess
+   from the sequence data alone, given how the QBB0236x accession inference went
+   wrong in Phase 1. **Status: blocked** — Wiley blocked automated fetch attempts
+   against this DOI (10.1002/ps.4662); waiting on the user to supply the PDF
+   directly per the new standing convention (§13).
+2. **Scope narrowed: Ala122 and Pro197 dropped from this pilot.** Trp574Leu and
+   Ser653Asn (both present in the Larran et al. 2017 accession set) are sufficient
+   to clear a pilot validation gate reusing PPO's proven pipeline. Adding the other
+   three classically-documented ALS positions now would be scope creep on a
+   quick second check, not the point of piloting one enzyme before batching the rest
+   (§10). Ala122/Pro197 remain fair game for a fuller ALS pass later if warranted.
+3. **QYC94980/QYC94981 excluded from the working mutation set.** These accessions
+   ("Comparative analysis of five resistant acetolactate synthase isoforms from
+   *Amaranthus palmeri*," Palmieri, Permingeat & Perotti) are marked "Unpublished"
+   in the GenBank record itself — a direct database submission, not a peer-reviewed
+   paper, the same category of problem as the original QBB0236x mistake. Tagged
+   `unpublished_lower_confidence` and kept as a record in `als_mutation_candidates.md`
+   only; excluded from anything the manuscript relies on.
+
+**Decision: proceed with Trp574Leu and Ser653Asn only, once the reference accession
+is confirmed from Larran et al. 2017's own text** — not before.
+
+---
+
+## 13. Standing convention — paywalled or bot-blocked sources
+
+Raised after a Wiley fetch attempt against the Larran et al. 2017 DOI was blocked
+(403, same pattern seen before with other publishers). **Convention going forward,
+recorded in `CONTRIBUTING.md`:** if full-text verification requires a paper that's
+paywalled or blocks automated access, stop after one attempt rather than spending
+tokens on repeated workarounds (alternate URLs, scraping, proxies). Ask the user for
+the paper by full citation instead — they can search for it, download it through
+their own institutional access, and upload it directly to the session. This is the
+same path already used successfully for Dayan et al. 2010, Hao et al. 2009, and
+Giacomini et al. 2017 (§14).
+
+---
+
+## 14. How the files in this repo relate
 
 - **This file (`DECISION_LOG.md`)** — the *why*: every directional decision and correction, in the order they were made.
+- **`CONTRIBUTING.md`** — working conventions for this repo (currently: how to handle paywalled/bot-blocked sources, §13).
 - **`PPO_Phase1_Final_Validated_Brief.md`** — the *what*: the current, fully-cross-checked dataset, numbering keys, mechanism classes, and validation-gate numbers, ready to feed into the pipeline.
 - **`rangani_2019_table2_cross_resistance.csv`** — external validation dataset (real IC50/resistance-factor data, 13 herbicides × 3 mutations, common genetic background).
+- **`docs/references/`** — primary-source PDFs now available directly in the repo (Dayan et al. 2010, Hao et al. 2009, Giacomini et al. 2017), not just summarized secondhand in the brief. Verification claims in `VERIFICATION_LOG.md` that cite these papers can be checked against the actual text.
+- **`als_mutation_candidates.md`** — Phase 2 (ALS/AHAS pilot) working candidate list and open items, mirroring Phase 1's `ppo_mutation_candidates.md` checkpoint pattern.
