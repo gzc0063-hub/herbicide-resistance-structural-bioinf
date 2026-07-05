@@ -65,20 +65,19 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
   baseline first," and the typology section is retitled "A Structural Typology of Resistance Positions
   (the main contribution)." EPSPS relabelled binding-site-associated. Remaining polish for a later pass:
   per-family "resistance-zone map" figure (2.3) and citation formatting.
-- [~] **2.2 Expand ALS.** MOSTLY DONE (n=2 -> n=4). Added **Ala122Ser** and **Pro197Ala** (A. palmeri, Larran 2017 / KY781920, medium
-  confidence — co-occurs with A282D so individual causality not isolated). ALS is now n=3, all
-  direct-core; enrichment strengthened to obs=4.64 vs 50.28, p=0.000200 (was p=0.0027 at n=2). Master
-  table, permutation, manuscript tables/figures, manuscript numbers, and tests all regenerated/updated;
-  19 tests pass. **Still to add: Pro197 and Asp376** — both are established ALS TSR sites and are already
-  present + mapped in 1Z8N (residue 197=PRO, 376=ASP, both in-core, fully conserved), so only a verified
-  clean single-allele Palmer amaranth SOURCE is missing. The best source is paywalled:
-  **Küpper et al., "Target-site mutation accumulation among ALS inhibitor-resistant Palmer amaranth,"
-  Pest Manag Sci, DOI 10.1002/ps.5232** — user should supply this PDF (Wiley, blocked automated fetch).
-  The "A New Pro-197-Ile Mutation in Amaranthus palmeri" paper (Plants 2025, DOI 10.3390/plants14040525)
-  is an alternative Pro197 source to verify. Once a PDF is in hand, add rows exactly like Ala122Ser
-  (add to `als_mutations.csv`, add WEED_RESIDUES entry in build_phase4_tables.py, add MECHANISM_ANNOTATIONS
-  ("ALS","197")/("ALS","376") in build_review_driven_outputs.py, bump the row-count asserts in the three
-  affected tests, regenerate the chain, update manuscript ALS numbers).
+- [x] **2.2 Expand ALS (n=2 → n=4).** DONE with verified primary sources.
+  - **Ala122Ser** — Larran 2017 (KY781920), medium confidence (co-occurs with A282D, causality not isolated).
+  - **Pro197Ala** — Singh et al. 2018 (DOI 10.1002/ps.5232, PDF read in full) detected it in A. palmeri
+    (with Trp574Leu); reference-numbered to KT833339.1 (Singh's "accessions" are field localities, not
+    GenBank deposits). Nie/Young 2025 is a second A. palmeri Pro197 report (its Data Availability oddly
+    points to Larran's KY781922/923, so no new accession from it).
+  - ALS now n=4, all direct-core; enrichment p=0.000100. All outputs/manuscript/tests updated; 19 pass.
+  - **Asp376 deliberately NOT added:** Singh 2018 lists it only as a known locus and did not detect it in
+    their A. palmeri plants; no A. palmeri Asp376 primary source is in hand. To add it later, either get a
+    verified A. palmeri (or clearly-labelled other-species) Asp376 source, or drop it. Residue 376 is
+    present in 1Z8N (ASP, in-core) so only the source is missing.
+  - *Optional upgrade:* attach paired resistant/susceptible GenBank accessions for the reference-numbered
+    ALS rows (Ala122, Pro197) if a source deposits them.
 - [ ] **2.3 Per-family "resistance-zone map" figure** (one structure cartoon per family, positions
   colored by proximity class).
 
@@ -93,10 +92,10 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
   (do not promise the Kang et al. 2023 PNAS structure without a specific verified PDB accession from the
   user or the paper's own Data Availability). FAT (acyl-ACP thioesterase) likewise unverified. Both remain
   out of the current manuscript's pooled analysis.
-- [~] **3.3 Reproducibility scaffolding.** DONE: pinned `requirements.txt` to exact tested versions
-  (Python 3.14.4) and added `CITATION.cff`. **Still to do:** add a `LICENSE` file (user's call — review
-  recommended MIT for code + CC-BY-4.0 for data; CITATION.cff currently declares MIT), and cut a tagged
-  release + Zenodo deposit at submission time.
+- [x] **3.3 Reproducibility scaffolding.** DONE: pinned `requirements.txt`, added `CITATION.cff`,
+  `LICENSE` (MIT, per user), and `scripts/rebuild_all.py` (one-command deterministic regen). **Remaining
+  at submission time only:** cut a tagged release and Zenodo deposit for a data DOI; optionally note in
+  README that data/tables are CC-BY-4.0 (code MIT).
 
 ## "Even better" ideas (beyond current scope — see final section of SENIOR_REVIEW)
 
@@ -129,6 +128,11 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 > without a primary-source-verified substitution.
 
 ## Change log (append newest at top)
+
+- 2026-07-05 (f): User confirmed MIT + supplied 6 PDFs. Added LICENSE (MIT). Expanded ALS with
+  Pro197Ala (Singh 2018) -> ALS n=4, p=0.0001; Asp376 left out (no A. palmeri source). Added the 6
+  PDFs to docs/references/ (Singh 2018, Nie/Young 2025, McCourt 2006, Tranel&Wright 2002, Heinemann
+  2007, Hao 2013). Items 2.2, 3.3, 1.8 now closed. Committed.
 
 - 2026-07-05 (e): Verified no public plant DHODH inhibitor structure via RCSB (3.2 → stays unconfirmed
   future work). Added pinned requirements.txt + CITATION.cff (3.3); LICENSE still a user decision.
