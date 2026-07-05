@@ -51,8 +51,13 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 
 ## Tier 2 — turns a resource into a finding
 
-- [ ] **2.1 Reframe manuscript around the outlier typology** (ΔG210, V361A, Cys2088Arg, Pro106Ser) as
-  the thesis; demote enrichment to expected baseline. Source: `docs/MANUSCRIPT_DRAFT.md`.
+- [~] **2.1 Manuscript updated for Tier 1 (numbers + caveats); full reframe still pending.** DONE so far:
+  corrected all enrichment p-values to the regenerated tables; added the non-core-survives result
+  (the non-tautological finding) to Abstract + Results; added a "Template-Residue Transparency" Methods
+  subsection and an ACCase side-chain caveat to Limitations; corrected the EPSPS Pro106Ser text from
+  "allosteric" to binding-site-associated. *Still to do (the actual reframe):* restructure so the outlier
+  typology (ΔG210 deletion, V361A permissive, Cys2088Arg distal, Pro106Ser second-shell) is the lead
+  thesis and raw enrichment is the expected-baseline control — currently enrichment still leads.
 - [ ] **2.2 Expand ALS** to Ala122/Pro197/Asp376 (biggest single power gain; structure + sequences in
   hand). Needs new `als_mutations.csv` rows + re-run.
 - [ ] **2.3 Per-family "resistance-zone map" figure** (one structure cartoon per family, positions
@@ -80,9 +85,11 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 
 ## Change log (append newest at top)
 
+- 2026-07-05 (c): Updated MANUSCRIPT_DRAFT.md to match regenerated tables — corrected all p-values,
+  added the non-core-survives result and the template-residue transparency section + ACCase Limitations
+  caveat, fixed EPSPS "allosteric"→binding-site-associated. 19 tests pass. Full outlier reframe (2.1)
+  still pending. Committed.
 - 2026-07-05 (b): Completed Tier 1 items 1.1, 1.3, 1.4, 1.5, 1.6, 1.7 (1.2 partial, 1.8 still needs
   ChimeraX). Regenerated master table + permutation summary + manuscript tables + figures; all 19 tests
-  pass (added pytest to requirements). Manuscript numbers now need updating to match the regenerated
-  tables (Table 1 gained the `all`/`non_core_only` split; ALS "all" p shifted slightly to 0.0027 with
-  the new seed pass) — see Tier 2 item 2.1. Committed.
+  pass (added pytest to requirements). Committed.
 - 2026-07-05 (a): Created this handoff tracker. Senior review committed. EPSPS verified vs Baerson PDF.
