@@ -5,7 +5,9 @@ sites of action (PPO, ALS/AHAS, ACCase, EPSPS, HPPD, FAT, DHODH), testing whethe
 resistance mutations cluster in a statistically distinguishable structural zone
 relative to the active site.
 
-**Start with [PROJECT_STATUS.md](PROJECT_STATUS.md)** for what's done, what every
+**Start with [REPO_INDEX.md](REPO_INDEX.md)** for a practical map of the repo,
+branches, code, data, figures, outputs, and next-step files. Then read
+[PROJECT_STATUS.md](PROJECT_STATUS.md) for what's done, what every
 file is for, and exactly what to do next. See
 [docs/panel_review_and_plan.md](docs/panel_review_and_plan.md) for the original
 panel review and phase-by-phase plan, [docs/DECISION_LOG.md](docs/DECISION_LOG.md)
