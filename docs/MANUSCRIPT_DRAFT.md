@@ -161,6 +161,8 @@ Figure 3. Unique mutation-position screen. Direct-core positions are separated f
 
 Figure 4. Distance percentile versus RSA and conservation. The scatter view shows how accepted positions combine active-site proximity, solvent exposure, and conservation. These static metrics provide structural context but do not replace literature-supported dynamic or biochemical mechanism evidence.
 
+Figure 5. Resistance-zone map. One lane per enzyme family; each accepted position is placed by its within-family distance-to-core percentile (left = closest to the ligand-contact core) and colored by mechanism label. The shaded left band marks the direct-contact core zone. This schematic view summarizes the typology: ALS positions cluster in the direct-contact zone, PPO and ACCase span direct-core through second-shell/adjacent to more distal interface positions, and EPSPS Pro106Ser sits just outside the contact core. A structure-rendered version (per-family cartoons with positions as spheres) can be produced from `scripts/chimerax_resistance_zone_figures.py` in a ChimeraX GUI/OSMesa environment. Source: `output/figures/figure_5_resistance_zone_map.svg`.
+
 ## Citation and Submission To-Do
 
 - Convert the source-paper names in this draft into journal-formatted citations.

@@ -22,6 +22,7 @@ STEPS = [
     [sys.executable, "scripts/build_phase4_tables.py"],
     [sys.executable, "scripts/build_phase4_analysis.py"],
     [sys.executable, "scripts/build_review_driven_outputs.py"],
+    [sys.executable, "scripts/build_resistance_zone_figure.py"],
     [sys.executable, "-m", "pytest", "-q"],
 ]
 

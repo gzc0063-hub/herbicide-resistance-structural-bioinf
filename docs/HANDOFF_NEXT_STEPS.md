@@ -78,8 +78,10 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
     present in 1Z8N (ASP, in-core) so only the source is missing.
   - *Optional upgrade:* attach paired resistant/susceptible GenBank accessions for the reference-numbered
     ALS rows (Ala122, Pro197) if a source deposits them.
-- [ ] **2.3 Per-family "resistance-zone map" figure** (one structure cartoon per family, positions
-  colored by proximity class).
+- [x] **2.3 Resistance-zone map figure.** DONE as an OpenGL-free schematic SVG (`figure_5_resistance_zone_map.svg`,
+  built by `scripts/build_resistance_zone_figure.py`, wired into `rebuild_all.py`, referenced in the
+  manuscript). A 3D structure-rendered version is scripted in `scripts/chimerax_resistance_zone_figures.py`
+  but needs a ChimeraX GUI/OSMesa environment (headless --nogui has no OpenGL on this machine).
 
 ## Tier 3 — depth / higher-tier journals
 
@@ -128,6 +130,11 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 > without a primary-source-verified substitution.
 
 ## Change log (append newest at top)
+
+- 2026-07-05 (g): Added manuscript References section (19 grounded refs; corrected Ji et al. 2025).
+  Added Figure 5 resistance-zone map (schematic SVG; 3D ChimeraX version scripted but needs OSMesa).
+  Items 2.2, 2.3, 3.3, 1.8, LICENSE all closed. Remaining: 1.2 (weed homology model, needs SWISS-MODEL),
+  3.1 (docking/MD citations), Nakka 2017 PDF, Zenodo at submission. Committed.
 
 - 2026-07-05 (f): User confirmed MIT + supplied 6 PDFs. Added LICENSE (MIT). Expanded ALS with
   Pro197Ala (Singh 2018) -> ALS n=4, p=0.0001; Asp376 left out (no A. palmeri source). Added the 6
