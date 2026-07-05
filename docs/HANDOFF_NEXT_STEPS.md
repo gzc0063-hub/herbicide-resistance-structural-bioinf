@@ -96,17 +96,36 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
   PPO R98/substrate-recognition context (Heinemann 2007 + Hao 2013), and ACCase CT-domain cavity
   interpretation (Delye 2005 + Zhang 2004 + Yu 2007). This remains literature interpretation, not a
   new docking/MD analysis.
-- [~] **3.2 FAT/DHODH future-work verification.** CHECKED: RCSB full-text search for
-  "dihydroorotate dehydrogenase tetflupyrolimet" returned **no hit**, and the broad Viridiplantae-DHODH
-  hits were false matches (phototropin LOV domains). So a public plant DHODH inhibitor-bound structure is
-  **not confirmed available** — Phase 3 DHODH must stay "future work, structure availability unconfirmed"
-  (do not promise the Kang et al. 2023 PNAS structure without a specific verified PDB accession from the
-  user or the paper's own Data Availability). FAT (acyl-ACP thioesterase) likewise unverified. Both remain
-  out of the current manuscript's pooled analysis.
+- [x] **3.2 FAT/DHODH future-work verification.** UPDATED. Phase 5 design gate now exists at
+  `docs/superpowers/specs/2026-07-05-fat-dhodh-phase5-design.md`. New structured RCSB audit found:
+  FAT is structurally actionable first (plant acyl-ACP thioesterase structures include Lemna inhibitor
+  complexes 8P8K, 8QRT, 8QS0 and Arabidopsis FatA fragment structures 7HQQ-7HQU), while structured DHODH
+  entity search found 278 DHODH polymer entities across 273 entries but **zero plant-like organisms**.
+  Decision: start Phase 5 as an emerging-target validation/audit module; do not merge FAT/DHODH into
+  Phase 4 pooled enrichment unless mutation evidence and structure/model mapping pass the same evidence
+  gate as PPO/ALS/EPSPS/ACCase.
 - [x] **3.3 Reproducibility scaffolding.** DONE: pinned `requirements.txt`, added `CITATION.cff`,
   `LICENSE` (MIT, per user), and `scripts/rebuild_all.py` (one-command deterministic regen). **Remaining
   at submission time only:** cut a tagged release and Zenodo deposit for a data DOI; optionally note in
   README that data/tables are CC-BY-4.0 (code MIT).
+
+## Tier 4 — Phase 5 / emerging targets
+
+- [x] **4.1 FAT/DHODH design gate.** DONE. Wrote and committed
+  `docs/superpowers/specs/2026-07-05-fat-dhodh-phase5-design.md` (`b92f5b0`). Recommendation: FAT-first
+  because plant inhibitor-complex structures are available; keep DHODH behind source/model verification.
+- [ ] **4.2 Build Phase 5 audit artifacts.** NEXT. Create `docs/PHASE5_FAT_DHODH_AUDIT.md` and
+  `data/processed/phase5_target_status.csv`. Classify each target by target/MoA evidence, structure/model
+  status, mutation evidence type, and go/no-go state. Do not add FAT/DHODH to `build_phase4_tables.py`
+  during this audit.
+- [ ] **4.3 FAT mutation-source audit.** NEXT after 4.2. Verify the original plan's "FAT-A R171-region"
+  claim from primary sources. Record exact substitution, species, sequence/accession if present, whether
+  it is weed-evolved vs lab-selected vs engineered, and whether it can support a Phase 5 risk table.
+- [ ] **4.4 DHODH mutation/model audit.** NEXT after 4.2. Verify tetflupyrolimet/DHODH mutation evidence
+  and determine whether a public plant structure, paper-supplied coordinates, SWISS-MODEL template, or
+  AlphaFold/ColabFold model is needed.
+- [x] **4.5 Repo navigation index.** DONE. Added root `REPO_INDEX.md` and linked it from `README.md`
+  (`a4100f2`). This is the first file to hand to any new agent before asking it to work in the repo.
 
 ## "Even better" ideas (beyond current scope — see final section of SENIOR_REVIEW)
 
@@ -120,7 +139,47 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 
 ---
 
-## Ready-to-paste Codex prompt (for the paywalled ALS expansion, 2.2 remainder)
+## Ready-to-paste Claude Code prompt (current handoff)
+
+> You are continuing the repository `herbicide-resistance-structural-bioinf` on `master`.
+> First read `REPO_INDEX.md`, then `docs/HANDOFF_NEXT_STEPS.md`, `docs/DECISION_LOG.md`,
+> `docs/VERIFICATION_LOG.md`, and `docs/superpowers/specs/2026-07-05-fat-dhodh-phase5-design.md`.
+> Current head should include:
+> - `a4100f2 Add repository navigation index`
+> - `b92f5b0 Design Phase 5 FAT DHODH validation gate`
+> - `1c6f711 Use SWISS-MODEL ACCase weed dimer metrics`
+>
+> What was done in the latest Codex session and why:
+> 1. ACCase was upgraded from yeast-template side-chain metrics to a SWISS-MODEL black-grass
+>    AJ310767 CT-domain homodimer. The active ACCase metric file is now
+>    `data/processed/accase_swissmodel_1uys_distance_sasa.csv`; H1L was excluded by SWISS-MODEL, so the
+>    active-site core is transferred from aligned 1UYS H1L-contact residues. This closed the senior-review
+>    ACCase caveat without overclaiming crystal-observed weed side chains.
+> 2. Phase 5 FAT/DHODH was scoped as an emerging-target validation gate, not immediate Phase 4 pooling.
+>    Structured RCSB checks found plant FAT/acyl-ACP thioesterase structures (Lemna 8P8K/8QRT/8QS0 and
+>    Arabidopsis 7HQQ-7HQU), but structured DHODH entity search found 278 DHODH polymer entities across
+>    273 entries with zero plant-like organisms. Therefore FAT is the likely first actionable Phase 5
+>    target; DHODH needs mutation evidence plus a plant structure/model route.
+> 3. `REPO_INDEX.md` was added as the navigation map for branches, data, scripts, figures, tests,
+>    output tables, docs, and future-work rules.
+>
+> Your next task is Phase 5 audit work, not pipeline integration yet:
+> - Create `docs/PHASE5_FAT_DHODH_AUDIT.md`.
+> - Create `data/processed/phase5_target_status.csv`.
+> - For FAT, verify primary-source evidence for the planned "FAT-A R171-region" resistant variant(s):
+>   exact mutation, species, accession/source, evidence type (weed-evolved, lab-selected, engineered, or
+>   hypothetical), and whether it can enter a separate Phase 5 risk table.
+> - For DHODH, verify tetflupyrolimet/DHODH target evidence and any mutation/source/model evidence.
+>   Do not claim a public plant DHODH structure unless you identify a specific PDB accession or
+>   paper-supplied coordinate/model source.
+> - Update `docs/HANDOFF_NEXT_STEPS.md`, `docs/DECISION_LOG.md`, and `docs/VERIFICATION_LOG.md` with all
+>   evidence and decisions.
+> - Do not add FAT or DHODH to `scripts/build_phase4_tables.py` or the pooled Phase 4 manuscript tables
+>   until their mutation evidence and structure/model mapping pass the validation gate.
+> - Keep the project rule: no mutation row without primary-source support, and never describe lab-selected
+>   or engineered variants as weed-evolved TSR.
+
+## Historical Codex prompt (paywalled ALS expansion, now closed)
 
 > In the repo `herbicide-resistance-structural-bioinf`, expand the ALS family with Pro197 and Asp376.
 > I have supplied the PDF(s): Küpper et al. Pest Manag Sci (DOI 10.1002/ps.5232) and/or the A. palmeri
@@ -139,6 +198,21 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 > without a primary-source-verified substitution.
 
 ## Change log (append newest at top)
+
+- 2026-07-05 (n): Refreshed the handoff/log layer for cross-agent continuation. Added the current
+  Claude Code prompt above, updated `PROJECT_STATUS.md`, and recorded that `REPO_INDEX.md` is now the
+  first navigation file for future agents. This is a docs-only continuation commit.
+
+- 2026-07-05 (l): Designed the Phase 5 FAT/DHODH validation gate and committed
+  `docs/superpowers/specs/2026-07-05-fat-dhodh-phase5-design.md` (`b92f5b0`). Structured RCSB/Crossref
+  checks found plant FAT/acyl-ACP thioesterase structures (Lemna 8P8K/8QRT/8QS0 and Arabidopsis
+  7HQQ-7HQU), while DHODH had 278 polymer entities across 273 RCSB entries but zero plant-like
+  organisms. Decision: FAT-first audit; DHODH remains behind mutation/model verification; neither joins
+  the Phase 4 pooled tables yet.
+
+- 2026-07-05 (m): Added root `REPO_INDEX.md` and linked it from `README.md` (`a4100f2`) so a new
+  agent can understand branches, commits, scripts, data, outputs, figures, tests, and future-work rules
+  before touching code.
 
 - 2026-07-05 (k): Completed the ACCase SWISS-MODEL follow-through. Downloaded the AJ310767 CT-domain
   1UYS homomer model (GMQE 0.76; QMEANDisCo global 0.72 ± 0.05), added

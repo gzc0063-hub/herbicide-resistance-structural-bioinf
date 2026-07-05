@@ -476,3 +476,54 @@ fold-change (~10–55×) if citing Ki specifically.
   - `tests/test_accase_swissmodel_outputs.py`
   - Updated Phase 4 table/analysis expectations so Cys2088Arg maps to `B:450`
     in the active master/non-core outputs.
+
+## Phase 5 FAT/DHODH structure-evidence audit check
+
+- Wrote the Phase 5 design spec:
+  - `docs/superpowers/specs/2026-07-05-fat-dhodh-phase5-design.md`
+- FAT/acyl-ACP thioesterase evidence checked through structured RCSB and Crossref
+  lookups:
+  - Lemna FAT inhibitor-complex structures identified: 8P8K, 8QRT, 8QS0.
+  - Arabidopsis FatA fragment structures identified: 7HQQ, 7HQR, 7HQS, 7HQT,
+    7HQU.
+  - 8P8K citation metadata: DOI `10.1021/acs.jafc.3c02490`, Journal of
+    Agricultural and Food Chemistry 2023, thiazolopyridine FAT inhibitor
+    discovery/optimization.
+  - 8QRT/8QS0 citation metadata: DOI `10.1002/ps.8015`, Pest Management Science
+    2025, spirocyclic lactam FAT inhibitor discovery/optimization.
+- DHODH evidence checked through structured RCSB entity search:
+  - Query target: polymer entity description containing "dihydroorotate
+    dehydrogenase".
+  - Result: 278 DHODH polymer entities across 273 unique RCSB entries.
+  - Metadata filtering found zero plant-like organisms among those DHODH entries.
+  - Interpretation: no public plant DHODH structure was identified by this
+    structured search; DHODH needs a plant structure/model route before structural
+    metrics can be claimed.
+- Tetflupyrolimet/DHODH literature anchor checked through Crossref:
+  - DOI `10.1021/acs.jafc.3c01634` for the JAFC 2023 tetflupyrolimet discovery
+    paper.
+- Verification decision:
+  - FAT is structurally actionable first.
+  - DHODH remains a target/MoA audit item until mutation evidence and structure or
+    model provenance are verified.
+  - Neither target should be added to the Phase 4 pooled outputs during the audit.
+
+## Repository index and handoff refresh check
+
+- Added root navigation map:
+  - `REPO_INDEX.md`
+- Linked the index from:
+  - `README.md`
+- Updated the active handoff:
+  - `docs/HANDOFF_NEXT_STEPS.md`
+- Added a ready-to-paste Claude Code prompt that tells the next agent to read:
+  - `REPO_INDEX.md`
+  - `docs/HANDOFF_NEXT_STEPS.md`
+  - `docs/DECISION_LOG.md`
+  - `docs/VERIFICATION_LOG.md`
+  - `docs/superpowers/specs/2026-07-05-fat-dhodh-phase5-design.md`
+- Handoff prompt records the three current-session reasons:
+  - ACCase moved to SWISS-MODEL weed CT-domain metrics to close the senior-review
+    side-chain caveat.
+  - FAT/DHODH moved forward as Phase 5 audit work, not Phase 4 integration.
+  - `REPO_INDEX.md` is now the first-file navigation map for new agents.

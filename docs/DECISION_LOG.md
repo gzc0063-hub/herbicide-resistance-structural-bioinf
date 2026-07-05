@@ -911,3 +911,56 @@ percentile 18.00 versus random 50.14 (p = 0.010199).
 metrics and manuscript tables. Keep the old 1UYS metric files/scripts as
 provenance, but describe current ACCase side-chain metrics as homology-model
 derived, with active-site-core membership transferred from 1UYS H1L contacts.
+
+---
+
+## 33. Phase 5 FAT/DHODH validation-gate design
+
+The FAT/DHODH expansion was scoped as Phase 5 emerging-target validation rather
+than immediate integration into the Phase 4 pooled mutation/manuscript tables.
+The reason is evidentiary: the project rule is that every mutation row needs
+primary-source support and defensible structure/model mapping before it can join
+the comparative analysis.
+
+A structured RCSB/Crossref audit found that FAT is the more actionable first
+candidate. Plant acyl-ACP thioesterase structures exist, including Lemna
+inhibitor-complex entries 8P8K, 8QRT, and 8QS0 and Arabidopsis FatA fragment
+entries 7HQQ-7HQU. The 8P8K citation metadata points to the 2023 JAFC
+thiazolopyridine inhibitor paper, and 8QRT/8QS0 point to the 2025 Pest
+Management Science spirocyclic lactam inhibitor paper.
+
+The same structured audit did not find a public plant DHODH structure in RCSB.
+The DHODH entity search returned 278 DHODH polymer entities across 273 unique
+PDB entries, but metadata filtering found zero plant-like organisms. The
+tetflupyrolimet discovery literature is still relevant target/MoA evidence, but
+DHODH needs mutation-source verification and a plant structure/model route before
+it can be used in any risk table.
+
+**Decision:** build Phase 5 as an audit module first:
+`docs/PHASE5_FAT_DHODH_AUDIT.md` plus
+`data/processed/phase5_target_status.csv`. FAT should be audited first because
+plant inhibitor-complex structures exist. DHODH remains behind source/model
+verification. Do not add FAT or DHODH to `scripts/build_phase4_tables.py`, the
+pooled enrichment test, or the manuscript tables until their mutation evidence
+and structure/model mapping pass the validation gate.
+
+---
+
+## 34. Repository index and cross-agent handoff convention
+
+A root navigation index was added as `REPO_INDEX.md` and linked from
+`README.md`. The index explains the branch/commit state, repo layout, major
+scripts, working data products, output tables, figures, tests, manuscript files,
+and rules for future target-family additions.
+
+The handoff file was also refreshed with a ready-to-paste Claude Code prompt
+that summarizes what happened in this Codex session and why: ACCase was moved to
+a weed-sequence SWISS-MODEL dimer to close the senior-review caveat; FAT/DHODH
+were scoped as Phase 5 audit work rather than Phase 4 pooling; and
+`REPO_INDEX.md` became the first-file navigation map for any new agent.
+
+**Decision:** future agents should start by reading `REPO_INDEX.md`, then
+`docs/HANDOFF_NEXT_STEPS.md`, `docs/DECISION_LOG.md`, `docs/VERIFICATION_LOG.md`,
+and any target-specific spec named in the handoff. Keep handoff updates in the
+same commit as substantive docs/code changes so the next agent does not have to
+infer session state from git history alone.

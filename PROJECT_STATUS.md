@@ -1,10 +1,12 @@
 # Project status — read this first
 
-Snapshot of what's done, what every file is for, and what to do next. Treat this
-file plus `docs/DECISION_LOG.md` as the handoff state for the current workspace;
-check `git status` before assuming every listed change has been committed and
-pushed to https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf
-(private repo).
+Snapshot of what's done, what every file is for, and what to do next. For a full
+navigation map, read `REPO_INDEX.md` first; for current live work, read this file
+plus `docs/HANDOFF_NEXT_STEPS.md`, `docs/DECISION_LOG.md`, and
+`docs/VERIFICATION_LOG.md`. Check `git status` before assuming every listed
+change has been committed and pushed to
+https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf (private
+repo).
 
 ---
 
@@ -20,13 +22,13 @@ pushed to https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf
   candidate (conserved, adjacent-to-but-outside the active site); V361A was
   investigated as a candidate outlier but downgraded after conservation data showed
   it's a poorly-conserved, likely-permissive site instead.
-- **Phase 2, ALS/AHAS pilot: COMPLETE, validation gate PASSED.** Two mutations
-  (Trp574Leu, Ser653Asn) sourced from Larran et al. 2017 and run through the same
-  pipeline. External review correctly flagged that the AHAS pocket includes
-  dimer-interface residues; fixed core size is now 27 residues, including Ala122
-  and Pro197 as interface-pocket residues. The pilot result is unchanged: Trp574
-  and Ser653 are direct herbicide-contact residues, fully conserved across 9
-  species.
+- **Phase 2, ALS/AHAS pilot: COMPLETE, validation gate PASSED.** Four accepted
+  mutation positions are now represented (Ala122Ser, Pro197Ala, Trp574Leu,
+  Ser653Asn). Larran et al. 2017 anchors Ala122/Trp574/Ser653; Singh et al. 2018
+  anchors Pro197Ala in *A. palmeri*. External review correctly flagged that the
+  AHAS pocket includes dimer-interface residues; fixed core size is now 27
+  residues, including Ala122 and Pro197 as interface-pocket residues. Asp376 was
+  deliberately left out because no primary *A. palmeri* source was verified.
 - **Metric-schema cleanup: COMPLETE.** PPO and ALS distance/SASA tables now separate
   true distance-to-active-site-core from nearest-other-core spacing, so direct
   active-site residues score 0 Å for the primary cross-enzyme distance metric.
@@ -38,9 +40,10 @@ pushed to https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf
   column (7/8).
 - **Phase 2, ACCase: COMPLETE, validation gate PASSED.** Six TSR rows
   (Ile1781Leu, Trp2027Cys, Ile2041Asn, Asp2078Gly, Cys2088Arg, Gly2096Ala)
-  were verified from Delye et al. 2005 / Yu et al. 2007, mapped from AJ310767
-  black-grass numbering to the 1UYS yeast ACCase B+C haloxyfop-bound dimer, and
-  run through distance/SASA/conservation.
+  were verified from Delye et al. 2005 / Yu et al. 2007. Active Phase 4 metrics
+  now use the SWISS-MODEL black-grass AJ310767 CT-domain homodimer built on 1UYS;
+  H1L was not transferred by SWISS-MODEL, so active-site-core membership is
+  transferred from aligned 1UYS H1L-contact residues.
 - **Phase 2, HPPD: COMPLETE as structural contrast case, not TSR-positive.**
   Source audit found no accepted weed-evolved HPPD target-site amino-acid
   substitution. HPPD is retained using plant templates 5YWG/1TG5 and a
@@ -67,16 +70,18 @@ pushed to https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf
 - **Review-driven Phase 4 manuscript outputs: COMPLETE.** The later static-vs-
   dynamic critique is reconciled in `docs/REVIEW_RESPONSE_STATIC_VS_DYNAMIC.md`.
   `scripts/build_review_driven_outputs.py` writes mechanism annotations,
-  manuscript summary tables, and four SVG figures. `docs/MANUSCRIPT_RESULTS_PHASE4.md`
+  manuscript summary tables, and five SVG figures. `docs/MANUSCRIPT_RESULTS_PHASE4.md`
   contains the first concise Results draft and limitations framing.
 - **First manuscript draft: COMPLETE as an internal review draft.**
   `docs/MANUSCRIPT_DRAFT.md` now assembles the abstract, introduction, methods,
   results, discussion, limitations, data/code availability, figure captions, and
   submission to-do list around the Phase 4 tables and figures. It still needs
   sentence-level citation polishing and a gap audit before submission.
-- **Not completed:** Phase 3 (FAT,
-  DHODH - needs structure decision), final citation-polished manuscript, Phase 5
-  (deposit/submit).
+- **Not completed:** Phase 5 FAT/DHODH audit artifacts, final citation-polished
+  manuscript, and submission/deposit work. FAT/DHODH now have a design gate:
+  FAT has public plant acyl-ACP thioesterase structures and should be audited
+  first; DHODH has target/MoA literature but no public plant DHODH structure was
+  found in the structured RCSB audit.
 
 ---
 
@@ -86,6 +91,7 @@ pushed to https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf
 | File | Purpose |
 |---|---|
 | `README.md` | Setup instructions (Python/R/ChimeraX/MAFFT), repo layout |
+| `REPO_INDEX.md` | First navigation map for agents: branch state, commits, scripts, data, outputs, figures, tests, docs, and rules |
 | `CONTRIBUTING.md` | One working convention so far: if a paper is paywalled/blocks automated fetch, stop after one try and ask for the PDF directly rather than burning effort on workarounds |
 | `requirements.txt` | Python deps: biopython, pandas, numpy, requests, pyKVFinder, pypdf |
 | **`PROJECT_STATUS.md`** | This file |
@@ -96,10 +102,12 @@ pushed to https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf
 | `panel_review_and_plan.md` | The original 5-reviewer panel critique and phase-by-phase plan this whole project is built from |
 | **`DECISION_LOG.md`** | **The most important file if you only read one.** Every directional decision, in order, with reasoning - project selection, methodology fixes, why PPO then ALS were piloted, every data correction, both validation-gate outcomes. Read this to understand *why* the project looks the way it does |
 | `VERIFICATION_LOG.md` | The independent fact-checking record - which citations/accessions/claims were verified against primary sources and how |
+| `HANDOFF_NEXT_STEPS.md` | Live next-step tracker and ready-to-paste prompt for a new Codex/Claude Code session |
 | `EXTERNAL_REVIEW_RESPONSE.md` | Reconciled response to the external/Claude review: ALS interface-core correction, RSA caveat, HPPD reframing |
 | `REVIEW_RESPONSE_STATIC_VS_DYNAMIC.md` | Response to the later static-vs-dynamic critique: accepted limitations, already-handled issues, out-of-scope MD requests, and future-work notes |
 | `MANUSCRIPT_RESULTS_PHASE4.md` | Draft Phase 4 Results language using the current permutation, mechanism-annotation, and limitation outputs |
 | `MANUSCRIPT_DRAFT.md` | First full manuscript scaffold with abstract, methods, results, discussion, limitations, embedded figure links, captions, tables, and submission to-do list |
+| `superpowers/specs/2026-07-05-fat-dhodh-phase5-design.md` | Phase 5 FAT/DHODH design gate: FAT-first recommendation, DHODH audit/modeling constraints, and no-Phase-4-integration rule |
 | `CLAUDE_CODE_NEXT_STEPS.md` | An early working prompt from before Phase 1 execution - now superseded by DECISION_LOG, kept for history |
 | `references/*.pdf` | Primary-source papers living directly in the repo, including PPO, ALS, EPSPS, and ACCase references |
 
@@ -115,7 +123,7 @@ pushed to https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf
 | `ppo_conservation_entropy.csv` | Raw per-residue Shannon-entropy conservation scores (10-species panel) |
 | `ppo_validation_gate_results.md` | **The PPO results writeup** - the table, the ΔG210/V361A interpretation, the R98 SASA sanity check |
 | `als_mutation_candidates.md` | ALS's sign-off/resolution trail (mirrors PPO's candidates doc) |
-| `als_mutations.csv` | **The working ALS dataset** - 2 mutation rows |
+| `als_mutations.csv` | **The working ALS dataset** - 4 mutation rows |
 | `als_1z8n_distance_sasa.csv` | Per-residue distance/SASA/RSA for the ALS structure |
 | `als_conservation_entropy.csv` | Raw per-residue conservation scores (9-species panel) |
 | `als_validation_gate_results.md` | **The ALS results writeup** |
@@ -126,7 +134,8 @@ pushed to https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf
 | `epsps_validation_gate_results.md` | **The EPSPS results writeup** |
 | `accase_mutation_candidates.md` | ACCase setup/resolution trail: AJ310767 numbering, 1UYS structure, Yu 2007 2088 accessions |
 | `accase_mutations.csv` | **The working ACCase mutation seed dataset** - 6 reference-numbered TSR rows |
-| `accase_1uys_distance_sasa.csv` | Per-chain-residue ACCase distance/SASA/RSA output for the 1UYS B+C dimer |
+| `accase_1uys_distance_sasa.csv` | Historical/provenance per-chain-residue ACCase distance/SASA/RSA output for the 1UYS B+C dimer |
+| `accase_swissmodel_1uys_distance_sasa.csv` | **Current active ACCase metric file** from the SWISS-MODEL AJ310767 CT-domain homodimer |
 | `accase_conservation_entropy.csv` | Raw per-residue ACCase conservation scores (14-sequence plastidic grass panel, reference-indexed to AJ310767) |
 | `accase_validation_gate_results.md` | **The ACCase results writeup** |
 | `hppd_tsr_audit.md` | HPPD source audit: no accepted weed-evolved target-site mutation; Gly336 excluded |
@@ -162,8 +171,8 @@ here has been edited - if you need to re-derive anything, start here.
 | `als_conservation_entropy.py` | ALS: same, 9-species alignment |
 
 ### `output/`
-`tables/phase4_master_mutation_table.csv` is the first Phase 4 pooled mutation
-table (15 mutation rows: PPO 6, ALS 2, EPSPS 1, ACCase 6). It joins each accepted
+`tables/phase4_master_mutation_table.csv` is the current Phase 4 pooled mutation
+table (17 mutation rows: PPO 6, ALS 4, EPSPS 1, ACCase 6). It joins each accepted
 mutation row to structure distance/SASA/RSA and conservation metrics. HPPD is kept
 out of that mutation table and is represented in
 `tables/phase4_target_family_contrast.csv` as a no-verified-weed-TSR contrast
@@ -172,9 +181,10 @@ permutation/enrichment results for unique structural mutation positions, and
 `tables/phase4_non_core_position_screen.csv` is the de-duplicated screen for direct
 core, adjacent non-core, and more distal non-core candidate positions.
 `tables/phase4_mechanism_annotations.csv` and `tables/manuscript_table_*` are the
-review-driven manuscript tables. `figures/` contains four SVG figure drafts:
-workflow, permutation enrichment, position screen, and distance/RSA/conservation
-scatter.
+review-driven manuscript tables. The unique-position mechanism table currently
+has 15 unique structural positions. `figures/` contains five SVG figure drafts:
+workflow, permutation enrichment, position screen, distance/RSA/conservation
+scatter, and the resistance-zone map.
 
 ---
 
@@ -189,20 +199,24 @@ RSA normalization is now complete. Raw SASA remains useful for traceability, but
 Phase 4 should use `rsa_tien2013` as the cross-enzyme exposure covariate.
 
 **Phase 4** now has pooled/contrast tables, the recommended permutation/enrichment
-test, review-driven mechanism annotations, four manuscript figure drafts, a concise
+test, review-driven mechanism annotations, five manuscript figure drafts, a concise
 Results draft, and a first full manuscript scaffold in `docs/MANUSCRIPT_DRAFT.md`.
 Current statistical signal: PPO, ALS, and ACCase are strongly enriched for low
 distance-to-core percentile positions; EPSPS has the same directional pattern but
 only one accepted mutation position, so treat its p-value as underpowered/descriptive
-rather than a family-level inference. Next, run a citation/gap audit: add
+rather than a family-level inference. Current all-position p-values are ACCase
+0.000300, ALS 0.000100, EPSPS 0.128787, and PPO 0.000600. Next, run a citation/gap audit: add
 sentence-level citations, check mechanism claims against saved PDFs, decide whether
 ALS/AHAS should be expanded before submission, and review figure aesthetics for the
 target journal.
 
-**Phase 3 (FAT, DHODH)** is the one phase that needs something beyond what's set
-up so far - these two targets don't have existing crystal structures, so they need
-a ColabFold structure prediction run by hand in Google Colab (free tier), per the
-original plan in `docs/panel_review_and_plan.md` Part B/D. Everything else in the
-pipeline resumes normally once you have a predicted PDB file in hand. Do not insert
-ColabFold into the current Phase 4 manuscript unless FAT/DHODH are deliberately
-added as a later expansion.
+**Phase 5 (FAT, DHODH)** is now an emerging-target audit, not immediate pipeline
+integration. FAT should go first because structured checks found public plant
+acyl-ACP thioesterase structures, including Lemna inhibitor-complex structures
+8P8K, 8QRT, and 8QS0 plus Arabidopsis FatA fragment structures 7HQQ-7HQU. DHODH
+still needs verification: a structured RCSB search found 278 DHODH polymer
+entities across 273 entries but zero plant-like organisms, so do not claim a
+public plant DHODH structure unless a specific accession or paper-supplied model
+is identified. Next build `docs/PHASE5_FAT_DHODH_AUDIT.md` and
+`data/processed/phase5_target_status.csv`, then verify FAT mutation-source
+evidence and DHODH mutation/model evidence before any Phase 4 table integration.

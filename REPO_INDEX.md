@@ -39,6 +39,7 @@ Recent commits that define the current project state:
 
 | Commit | Meaning |
 |---|---|
+| `a4100f2` | Added this repository navigation index and linked it from README. |
 | `b92f5b0` | Designed Phase 5 FAT/DHODH validation gate. |
 | `1c6f711` | Switched ACCase to SWISS-MODEL weed CT-domain dimer metrics. |
 | `84e9cb3` | Prepared ACCase CT-domain sequence for homology modeling. |
