@@ -28,7 +28,7 @@ class Phase4AnalysisTest(unittest.TestCase):
             # accepted position also get a "non_core_only" row (ALS has none, since
             # both Trp574 and Ser653 are direct-core).
             all_rows = {row["family"]: row for row in summary_rows if row["position_set"] == "all"}
-            expected_all_counts = {"PPO": "4", "ALS": "3", "EPSPS": "1", "ACCase": "6"}
+            expected_all_counts = {"PPO": "4", "ALS": "4", "EPSPS": "1", "ACCase": "6"}
             for family, count in expected_all_counts.items():
                 self.assertEqual(count, all_rows[family]["n_unique_positions"])
             non_core_families = {
@@ -45,7 +45,7 @@ class Phase4AnalysisTest(unittest.TestCase):
 
             with screen_path.open(newline="") as handle:
                 screen_rows = list(csv.DictReader(handle))
-            self.assertEqual(14, len(screen_rows))
+            self.assertEqual(15, len(screen_rows))
             self.assertNotIn("HPPD", {row["family"] for row in screen_rows})
 
             delta_g210 = next(row for row in screen_rows if row["structure_position"] == "178")

@@ -65,7 +65,7 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
   baseline first," and the typology section is retitled "A Structural Typology of Resistance Positions
   (the main contribution)." EPSPS relabelled binding-site-associated. Remaining polish for a later pass:
   per-family "resistance-zone map" figure (2.3) and citation formatting.
-- [~] **2.2 Expand ALS.** PARTIAL. Added **Ala122Ser** (A. palmeri, Larran 2017 / KY781920, medium
+- [~] **2.2 Expand ALS.** MOSTLY DONE (n=2 -> n=4). Added **Ala122Ser** and **Pro197Ala** (A. palmeri, Larran 2017 / KY781920, medium
   confidence — co-occurs with A282D so individual causality not isolated). ALS is now n=3, all
   direct-core; enrichment strengthened to obs=4.64 vs 50.28, p=0.000200 (was p=0.0027 at n=2). Master
   table, permutation, manuscript tables/figures, manuscript numbers, and tests all regenerated/updated;

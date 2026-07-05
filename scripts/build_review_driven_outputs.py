@@ -67,6 +67,12 @@ MECHANISM_ANNOTATIONS = {
         "Ala122 is an established ALS dimer-interface pocket TSR site (Tranel & Wright 2002); the A. palmeri A122S allele (Larran 2017) co-occurs with A282D so its individual causality is not isolated - included with medium confidence.",
         "Direct-interface ALS position; report with the A282D-confound caveat.",
     ),
+    ("ALS", "197"): (
+        "direct_core",
+        "literature_supported",
+        "Pro197 is one of the most firmly established ALS TSR sites across weeds (Tranel & Wright 2002); Pro197Ala detected in A. palmeri by Singh et al. 2018 (with Trp574Leu). Direct-core dimer-interface pocket position.",
+        "Direct-core ALS benchmark; note Singh's Pro197Ala co-occurs with Trp574Leu.",
+    ),
     ("EPSPS", "106"): (
         "adjacent",
         "literature_supported",

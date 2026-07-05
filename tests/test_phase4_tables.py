@@ -16,7 +16,7 @@ class Phase4TablesTest(unittest.TestCase):
 
             with mutation_path.open(newline="") as handle:
                 rows = list(csv.DictReader(handle))
-            self.assertEqual(16, len(rows))
+            self.assertEqual(17, len(rows))
             self.assertEqual(
                 {"PPO", "ALS", "EPSPS", "ACCase"},
                 {row["family"] for row in rows},
