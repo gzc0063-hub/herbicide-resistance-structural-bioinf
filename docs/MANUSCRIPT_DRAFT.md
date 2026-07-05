@@ -165,6 +165,34 @@ Figure 4. Distance percentile versus RSA and conservation. The scatter view show
 
 - Convert the source-paper names in this draft into journal-formatted citations.
 - Audit claims about dynamic mechanisms against the project PDFs and add citations at sentence level.
-- Decide whether to expand ALS/AHAS beyond Trp574Leu and Ser653Asn before submission.
 - Decide whether FAT and DHODH belong in this manuscript or should remain future work requiring ColabFold/manual structure prediction.
 - Review figure aesthetics and labels for the target journal format.
+- Convert this reference list to the target journal's citation style at submission; every DOI below resolves, and PDFs marked (†) are archived in `docs/references/`.
+
+## References
+
+Primary sources for the mutation dataset, structures, and methods. Author/year, title, journal, volume:pages, DOI. (†) = full-text PDF in `docs/references/`.
+
+1. Baerson SR, Rodriguez DJ, Tran M, Feng Y, Biest NA, Dill GM (2002) Glyphosate-resistant goosegrass. Identification of a mutation in the target enzyme 5-enolpyruvylshikimate-3-phosphate synthase. *Plant Physiology* 129:1265–1275. DOI 10.1104/pp.001560 (†)
+2. Délye C, Zhang X-Q, Michel S, Matéjicek A, Powles SB (2005) Molecular bases for sensitivity to acetyl-coenzyme A carboxylase inhibitors in black-grass. *Plant Physiology* 137:794–806. DOI 10.1104/pp.104.046144 (†)
+3. Dayan FE, Daga PR, Duke SO, Lee RM, Tranel PJ, Doerksen RJ (2010) Biochemical and structural consequences of a glycine deletion in the α-8 helix of protoporphyrinogen oxidase. *Biochimica et Biophysica Acta* 1804:1548–1556. DOI 10.1016/j.bbapap.2010.04.004 (†)
+4. Giacomini DA, Umphres AM, Nie H, Mueller TC, Steckel LE, Young BG, Scott RC, Tranel PJ (2017) Two new PPX2 mutations associated with resistance to PPO-inhibiting herbicides in *Amaranthus palmeri*. *Pest Management Science* 73:1559–1563. DOI 10.1002/ps.4581 (†)
+5. Hao G-F, Zhu X-L, Ji F-Q, Zhang L, Yang G-F, Zhan C-G (2009) Understanding the mechanism of drug resistance due to a codon deletion in protoporphyrinogen oxidase through computational modeling. *Journal of Physical Chemistry B* 113:4865–4875. DOI 10.1021/jp807442n (†)
+6. Hao G-F, Tan Y, Yang S-G, Wang Z-F, Zhan C-G, Xi Z, Yang G-F (2013) Computational and experimental insights into the mechanism of substrate recognition and feedback inhibition of protoporphyrinogen oxidase. *PLoS ONE* 8:e69198. DOI 10.1371/journal.pone.0069198 (†)
+7. Heinemann IU, Diekmann N, Masoumi A, Koch M, Messerschmidt A, Jahn M, Jahn D (2007) Functional definition of the tobacco protoporphyrinogen IX oxidase substrate-binding site. *Biochemical Journal* 402:575–580. DOI 10.1042/BJ20061321 (†)
+8. Ji M, Yu H, Cui H, Chen J, Yu J, Li X (2025) A new Pro-197-Ile mutation in *Amaranthus palmeri* associated with acetolactate synthase-inhibiting herbicide resistance. *Plants* 14:525. DOI 10.3390/plants14040525 (†)
+9. Koch M, Breithaupt C, Kiefersauer R, Freigang J, Huber R, Messerschmidt A (2004) Crystal structure of protoporphyrinogen IX oxidase: a key enzyme in haem and chlorophyll biosynthesis. *EMBO Journal* 23:1720–1728. DOI 10.1038/sj.emboj.7600189 [PDB 1SEZ]
+10. Larran AS, Palmieri VE, Perotti VE, Lieber L, Tuesca D, Permingeat HR (2017) Target-site resistance to acetolactate synthase (ALS)-inhibiting herbicides in *Amaranthus palmeri* from Argentina. *Pest Management Science* 73:2578–2584. DOI 10.1002/ps.4662 (†)
+11. McCourt JA, Pang SS, King-Scott J, Guddat LW, Duggleby RG (2006) Herbicide-binding sites revealed in the structure of plant acetohydroxyacid synthase. *Proceedings of the National Academy of Sciences USA* 103:569–573. DOI 10.1073/pnas.0509229103 (†) [PDB 1Z8N]
+12. Nie H, Harre NT, Young BG (2023) A new V361A mutation in *Amaranthus palmeri* PPX2 associated with PPO-inhibiting herbicide resistance. *Plants* 12:1886. DOI 10.3390/plants12091886
+13. Patzoldt WL, Hager AG, McCormick JS, Tranel PJ (2006) A codon deletion confers resistance to herbicides inhibiting protoporphyrinogen oxidase. *Proceedings of the National Academy of Sciences USA* 103:12329–12334. DOI 10.1073/pnas.0603137103
+14. Rangani G, Salas-Perez RA, Aponte RA, Knapp M, Craig IR, Mietzner T, Langaro AC, Noguera MM, Porri A, Roma-Burgos N (2019) A novel single-site mutation in the catalytic domain of protoporphyrinogen oxidase IX (PPO) confers resistance to PPO-inhibiting herbicides. *Frontiers in Plant Science* 10:568. DOI 10.3389/fpls.2019.00568
+15. Singh S, Singh V, Salas-Perez RA, Bagavathiannan MV, Lawton-Rauh A, Roma-Burgos N (2018) Target-site mutation accumulation among ALS inhibitor-resistant Palmer amaranth. *Pest Management Science* 74:2286–2295. DOI 10.1002/ps.5232 (†)
+16. Tien MZ, Meyer AG, Sydykova DK, Spielman SJ, Wilke CO (2013) Maximum allowed solvent accessibilities of residues in proteins. *PLoS ONE* 8:e80635. DOI 10.1371/journal.pone.0080635
+17. Tranel PJ, Wright TR (2002) Resistance of weeds to ALS-inhibiting herbicides: what have we learned? *Weed Science* 50:700–712. DOI 10.1614/0043-1745(2002)050[0700:RROWTA]2.0.CO;2 (†)
+18. Yu Q, Collavo A, Zheng M-Q, Owen M, Sattin M, Powles SB (2007) Diversity of acetyl-coenzyme A carboxylase mutations in resistant *Lolium* populations: evaluation using clethodim. *Plant Physiology* 145:547–558. DOI 10.1104/pp.107.105262 (†)
+19. Zhang H, Tweel B, Tong L (2004) Molecular basis for the inhibition of the carboxyltransferase domain of acetyl-coenzyme-A carboxylase by haloxyfop and diclofop. *Proceedings of the National Academy of Sciences USA* 101:5910–5915. DOI 10.1073/pnas.0400891101 [PDB 1UYS]
+
+Structures (Protein Data Bank): 1SEZ (PPO, ref. 9); 1Z8N (AHAS, ref. 11); 8UMJ (*Zea mays* EPSPS + glyphosate + shikimate-3-phosphate); 1UYS (ACCase CT domain + haloxyfop, ref. 19). Relative solvent accessibility normalization uses maximum-accessibility values from ref. 16.
+
+*Not-yet-verified citation:* the HPPD non-target-site contrast cites Nakka et al. (2017) on P450-mediated mesotrione metabolism in *Amaranthus palmeri*; the exact bibliographic details should be confirmed against that paper before submission (PDF not yet in `docs/references/`).
