@@ -8,7 +8,11 @@ below as each item is completed, and commit this file with every change.
 committed on `master`. A senior review (`docs/SENIOR_REVIEW_2026-07-05.md`) identified the blocking
 pre-publication issues. This file tracks fixing them.
 
-**Regeneration chain (run in this order after changing any source data/script):**
+**Regeneration chain — one command** (or run the four steps individually if debugging):
+```
+.venv/Scripts/python.exe scripts/rebuild_all.py   # runs the 3 build scripts + pytest, in order
+```
+Individual steps:
 ```
 .venv/Scripts/python.exe scripts/build_phase4_tables.py          # master mutation table + contrast
 .venv/Scripts/python.exe scripts/build_phase4_analysis.py        # permutation summary + non-core screen

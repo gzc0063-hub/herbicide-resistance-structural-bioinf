@@ -8,8 +8,23 @@ relative to the active site.
 **Start with [PROJECT_STATUS.md](PROJECT_STATUS.md)** for what's done, what every
 file is for, and exactly what to do next. See
 [docs/panel_review_and_plan.md](docs/panel_review_and_plan.md) for the original
-panel review and phase-by-phase plan, and [docs/DECISION_LOG.md](docs/DECISION_LOG.md)
-for the full reasoning trail behind every decision made since.
+panel review and phase-by-phase plan, [docs/DECISION_LOG.md](docs/DECISION_LOG.md)
+for the full reasoning trail, [docs/SENIOR_REVIEW_2026-07-05.md](docs/SENIOR_REVIEW_2026-07-05.md)
+for the latest referee-style review, and [docs/HANDOFF_NEXT_STEPS.md](docs/HANDOFF_NEXT_STEPS.md)
+for the live task tracker (what was just done / what to do next).
+
+## Reproduce the analysis outputs
+
+After `pip install -r requirements.txt`, regenerate every pooled table, manuscript
+table, and figure and run the tests with a single command:
+
+```bash
+python scripts/rebuild_all.py
+```
+
+This regenerates everything downstream of the per-family structural metric CSVs
+(which need ChimeraX or the pure-Python fallback and change only when a structure or
+active-site core changes). Regeneration is deterministic.
 
 ## Repo layout
 
