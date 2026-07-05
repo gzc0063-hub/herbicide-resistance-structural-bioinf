@@ -11,19 +11,19 @@
 <line x1="750.0" y1="441" x2="750.0" y2="449" stroke="#333" />
 <text x="750.0" y="466.0" font-size="11" font-family="Arial, sans-serif" text-anchor="middle">30</text>
 <text x="28.0" y="75.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start">ACCase B:1967</text>
-<circle cx="195.4" cy="70.0" r="6" fill="#7b5bc6" />
+<circle cx="195.4" cy="70.0" r="6" fill="#2f6fbb" />
 <text x="205.4" y="74.0" font-size="10" font-family="Arial, sans-serif" text-anchor="start">Ile2041Asn</text>
 <text x="28.0" y="103.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start">ACCase C:1705</text>
 <circle cx="195.4" cy="98.0" r="6" fill="#7b5bc6" />
 <text x="205.4" y="102.0" font-size="10" font-family="Arial, sans-serif" text-anchor="start">Ile1781Leu</text>
 <text x="28.0" y="131.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start">ACCase B:2004</text>
-<circle cx="309.0" cy="126.0" r="6" fill="#7b5bc6" />
+<circle cx="309.0" cy="126.0" r="6" fill="#2f9fa8" />
 <text x="319.0" y="130.0" font-size="10" font-family="Arial, sans-serif" text-anchor="start">Asp2078Gly</text>
 <text x="28.0" y="159.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start">ACCase B:1953</text>
-<circle cx="344.8" cy="154.0" r="6" fill="#7b5bc6" />
+<circle cx="344.8" cy="154.0" r="6" fill="#2f9fa8" />
 <text x="354.8" y="158.0" font-size="10" font-family="Arial, sans-serif" text-anchor="start">Trp2027Cys</text>
 <text x="28.0" y="187.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start">ACCase B:2022</text>
-<circle cx="394.6" cy="182.0" r="6" fill="#7b5bc6" />
+<circle cx="394.6" cy="182.0" r="6" fill="#46945f" />
 <text x="404.6" y="186.0" font-size="10" font-family="Arial, sans-serif" text-anchor="start">Gly2096Ala</text>
 <text x="28.0" y="215.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start">ACCase B:2014</text>
 <circle cx="665.3" cy="210.0" r="6" fill="#7b5bc6" />
@@ -35,7 +35,7 @@
 <circle cx="225.9" cy="266.0" r="6" fill="#2f6fbb" />
 <text x="235.9" y="270.0" font-size="10" font-family="Arial, sans-serif" text-anchor="start">Ser653Asn</text>
 <text x="28.0" y="299.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start">EPSPS 106</text>
-<circle cx="395.9" cy="294.0" r="6" fill="#c77f2f" />
+<circle cx="395.9" cy="294.0" r="6" fill="#46945f" />
 <text x="405.9" y="298.0" font-size="10" font-family="Arial, sans-serif" text-anchor="start">Pro106Ser</text>
 <text x="28.0" y="327.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start">PPO 98</text>
 <circle cx="147.8" cy="322.0" r="6" fill="#2f6fbb" />

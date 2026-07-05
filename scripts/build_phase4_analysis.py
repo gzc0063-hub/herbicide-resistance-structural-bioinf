@@ -14,6 +14,7 @@ from scripts.build_phase4_tables import FAMILY_CONFIGS
 
 SUMMARY_FIELDNAMES = [
     "family",
+    "position_set",
     "n_unique_positions",
     "n_background_residues",
     "iterations",
@@ -125,41 +126,52 @@ def permutation_summary_rows(
     for row in unique_mutation_positions(mutation_rows):
         rows_by_family[row["family"]].append(row)
 
-    summary_rows = []
-    for family in sorted(rows_by_family):
-        observed = [
-            float(row["percentile_rank_distance_to_core"])
-            for row in rows_by_family[family]
-        ]
-        background = backgrounds[family]
+    def summarize(family: str, position_set: str, observed: list[float], background: list[float]) -> dict[str, str]:
         n_positions = len(observed)
         random_means = [
-            mean(rng.sample(background, n_positions))
-            for _ in range(iterations)
+            mean(rng.sample(background, n_positions)) for _ in range(iterations)
         ]
         observed_mean = mean(observed)
         random_mean = mean(random_means)
         lower_or_equal = sum(value <= observed_mean for value in random_means)
         p_value = (lower_or_equal + 1) / (iterations + 1)
-        summary_rows.append(
-            {
-                "family": family,
-                "n_unique_positions": str(n_positions),
-                "n_background_residues": str(len(background)),
-                "iterations": str(iterations),
-                "seed": str(seed),
-                "observed_mean_percentile": format_float(observed_mean),
-                "observed_median_percentile": format_float(median(observed)),
-                "random_mean_percentile_mean": format_float(random_mean),
-                "random_mean_percentile_sd": format_float(
-                    sample_standard_deviation(random_means)
-                ),
-                "empirical_p_value_lower_tail": format_float(p_value),
-                "effect_observed_minus_random_mean": format_float(
-                    observed_mean - random_mean
-                ),
-            }
-        )
+        return {
+            "family": family,
+            "position_set": position_set,
+            "n_unique_positions": str(n_positions),
+            "n_background_residues": str(len(background)),
+            "iterations": str(iterations),
+            "seed": str(seed),
+            "observed_mean_percentile": format_float(observed_mean),
+            "observed_median_percentile": format_float(median(observed)),
+            "random_mean_percentile_mean": format_float(random_mean),
+            "random_mean_percentile_sd": format_float(
+                sample_standard_deviation(random_means)
+            ),
+            "empirical_p_value_lower_tail": format_float(p_value),
+            "effect_observed_minus_random_mean": format_float(
+                observed_mean - random_mean
+            ),
+        }
+
+    summary_rows = []
+    for family in sorted(rows_by_family):
+        family_rows = rows_by_family[family]
+        background = backgrounds[family]
+        # "all" set = every accepted unique position (includes direct-core, distance 0).
+        all_obs = [float(row["percentile_rank_distance_to_core"]) for row in family_rows]
+        summary_rows.append(summarize(family, "all", all_obs, background))
+        # "non_core_only" set = drop in-core (distance-0) positions, so the test is not
+        # semi-tautological: does the non-core resistance signal survive on its own?
+        non_core_obs = [
+            float(row["percentile_rank_distance_to_core"])
+            for row in family_rows
+            if row["in_active_site_core"].lower() != "true"
+        ]
+        if non_core_obs:
+            summary_rows.append(
+                summarize(family, "non_core_only", non_core_obs, background)
+            )
     return summary_rows
 
 

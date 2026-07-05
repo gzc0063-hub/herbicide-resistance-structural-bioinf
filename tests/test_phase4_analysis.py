@@ -24,14 +24,19 @@ class Phase4AnalysisTest(unittest.TestCase):
                 {"PPO", "ALS", "EPSPS", "ACCase"},
                 {row["family"] for row in summary_rows},
             )
-            expected_unique_counts = {
-                "PPO": "4",
-                "ALS": "2",
-                "EPSPS": "1",
-                "ACCase": "6",
+            # Each family has an "all" row; families with at least one non-core
+            # accepted position also get a "non_core_only" row (ALS has none, since
+            # both Trp574 and Ser653 are direct-core).
+            all_rows = {row["family"]: row for row in summary_rows if row["position_set"] == "all"}
+            expected_all_counts = {"PPO": "4", "ALS": "2", "EPSPS": "1", "ACCase": "6"}
+            for family, count in expected_all_counts.items():
+                self.assertEqual(count, all_rows[family]["n_unique_positions"])
+            non_core_families = {
+                row["family"] for row in summary_rows if row["position_set"] == "non_core_only"
             }
+            self.assertEqual({"PPO", "EPSPS", "ACCase"}, non_core_families)
             for row in summary_rows:
-                self.assertEqual(expected_unique_counts[row["family"]], row["n_unique_positions"])
+                self.assertIn(row["position_set"], {"all", "non_core_only"})
                 self.assertEqual("200", row["iterations"])
                 self.assertGreaterEqual(float(row["empirical_p_value_lower_tail"]), 0.0)
                 self.assertLessEqual(float(row["empirical_p_value_lower_tail"]), 1.0)

@@ -59,6 +59,44 @@ FAMILY_CONFIGS = (
 )
 
 
+# Weed wild-type (and, where unambiguous, resistant) residue for each mutation row,
+# used to flag where the mapped STRUCTURE residue is not the same amino acid as the
+# weed residue (a real cross-species-template caveat, worst for the yeast ACCase
+# template). 3-letter codes. Mutant is None for the PPO deletion (deltaG210) and for
+# the two-allele R98G/R98M row where a single mutant residue is not defined.
+WEED_RESIDUES = {
+    "deltaG210_pair1": ("GLY", None),
+    "deltaG210_pair2": ("GLY", None),
+    "V361A": ("VAL", "ALA"),
+    "G399A_R1": ("GLY", "ALA"),
+    "G399A_R2": ("GLY", "ALA"),
+    "R98G_R98M": ("ARG", None),
+    "Trp574Leu": ("TRP", "LEU"),
+    "Ser653Asn": ("SER", "ASN"),
+    "Pro106Ser": ("PRO", "SER"),
+    "Ile1781Leu": ("ILE", "LEU"),
+    "Trp2027Cys": ("TRP", "CYS"),
+    "Ile2041Asn": ("ILE", "ASN"),
+    "Asp2078Gly": ("ASP", "GLY"),
+    "Cys2088Arg": ("CYS", "ARG"),
+    "Gly2096Ala": ("GLY", "ALA"),
+}
+
+
+def normalize_residue(name: str) -> str:
+    """Map modified residues to their standard parent for identity comparison."""
+    return {"MSE": "MET"}.get(name.upper(), name.upper())
+
+
+def clamp_nonneg(value: str) -> str:
+    """Clamp tiny negative floating-point SASA/RSA noise to 0; pass other values through."""
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return value
+    return "0.0" if -1e-6 < number < 0 else value
+
+
 MUTATION_FIELDNAMES = [
     "family",
     "mutation_id",
@@ -70,6 +108,10 @@ MUTATION_FIELDNAMES = [
     "structure_chain_id",
     "structure_pdb_position",
     "structure_residue_name",
+    "weed_wt_residue",
+    "template_residue",
+    "template_matches_weed_residue",
+    "template_is_resistant_state",
     "in_active_site_core",
     "distance_to_active_site_core_A",
     "distance_to_nearest_other_core_residue_A",
@@ -129,6 +171,19 @@ def build_family_rows(repo_root: Path, config: FamilyConfig) -> list[dict[str, s
         chain_id, pdb_position = split_structure_position(structure_position)
         metric = metrics[(chain_id, pdb_position)]
         conservation_row = conservation.get(conservation_key(mutation, config), {})
+        template_residue = metric["residue_name"]
+        weed_wt_residue, weed_mut_residue = WEED_RESIDUES.get(
+            mutation["mutation_id"], ("", None)
+        )
+        normalized_template = normalize_residue(template_residue)
+        template_matches = (
+            "" if not weed_wt_residue else str(normalized_template == weed_wt_residue)
+        )
+        template_is_resistant = (
+            "True"
+            if weed_mut_residue and normalized_template == weed_mut_residue
+            else ("False" if weed_wt_residue else "")
+        )
         output_rows.append(
             {
                 "family": config.family,
@@ -140,7 +195,11 @@ def build_family_rows(repo_root: Path, config: FamilyConfig) -> list[dict[str, s
                 "structure_position": structure_position,
                 "structure_chain_id": chain_id,
                 "structure_pdb_position": pdb_position,
-                "structure_residue_name": metric["residue_name"],
+                "structure_residue_name": template_residue,
+                "weed_wt_residue": weed_wt_residue,
+                "template_residue": template_residue,
+                "template_matches_weed_residue": template_matches,
+                "template_is_resistant_state": template_is_resistant,
                 "in_active_site_core": metric["in_active_site_core"],
                 "distance_to_active_site_core_A": metric["distance_to_active_site_core_A"],
                 "distance_to_nearest_other_core_residue_A": metric[
@@ -149,9 +208,9 @@ def build_family_rows(repo_root: Path, config: FamilyConfig) -> list[dict[str, s
                 "percentile_rank_distance_to_core": metric[
                     "percentile_rank_distance_to_core"
                 ],
-                "sasa_A2": metric["sasa_A2"],
+                "sasa_A2": clamp_nonneg(metric["sasa_A2"]),
                 "max_sasa_tien2013_A2": metric["max_sasa_tien2013_A2"],
-                "rsa_tien2013": metric["rsa_tien2013"],
+                "rsa_tien2013": clamp_nonneg(metric["rsa_tien2013"]),
                 "shannon_entropy": conservation_row.get("shannon_entropy", ""),
                 "normalized_conservation": conservation_row.get(
                     "normalized_conservation", ""
