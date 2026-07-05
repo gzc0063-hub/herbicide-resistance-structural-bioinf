@@ -5,8 +5,10 @@ the current machine. Run this in the ChimeraX GUI (Tools > ... or `runscript`) t
 (committed as output/figures/figure_5_resistance_zone_map.svg).
 
 Render a per-family "resistance-zone map" for each structure: protein cartoon (grey),
-bound herbicide/cofactor (sticks), and the accepted resistance positions as spheres
-colored by proximity class (direct-core = blue, non-core = magenta). Headless save.
+bound herbicide/cofactor where present (sticks), and the accepted resistance
+positions as spheres colored by proximity class (direct-core = blue, non-core =
+magenta). ACCase uses the SWISS-MODEL weed CT-domain homodimer; H1L is absent
+from that model, so no ACCase ligand is rendered. Headless save.
 Run: ChimeraX --nogui --script scripts/chimerax_resistance_zone_figures.py
 Outputs: output/figures/figure_5_<family>_resistance_zone.png
 """
@@ -53,18 +55,17 @@ def render(name, pdb, chain, ligs, positions, chain_for_pos=None):
 for name, pdb, chain, ligs, positions in FAMILIES:
     render(name, pdb, chain, ligs, positions)
 
-# ACCase: chains B+C, positions on both
+# ACCase: SWISS-MODEL weed CT-domain homodimer, positions on chains A+B.
 run(session, "close all")
-run(session, "open data/raw/1UYS.pdb")
+run(session, "open data/raw/ACCase_Alopecurus_AJ310767_CTdomain_SWISSMODEL_1UYS_homomer.pdb")
 run(session, "hide all")
-run(session, "show /B,C cartoon")
-run(session, "color /B,C gray")
-run(session, "show :H1L atoms"); run(session, "style :H1L stick"); run(session, "color :H1L gold")
-# direct-core: C:1705, B:1967 ; non-core: B:1953,2004,2014,2022
-run(session, "show /C:1705 atoms"); run(session, "style /C:1705 sphere"); run(session, "color /C:1705 cornflower blue")
-run(session, "show /B:1967 atoms"); run(session, "style /B:1967 sphere"); run(session, "color /B:1967 cornflower blue")
-run(session, "show /B:1953,2004,2014,2022 atoms"); run(session, "style /B:1953,2004,2014,2022 sphere"); run(session, "color /B:1953,2004,2014,2022 magenta")
-run(session, "lighting soft"); run(session, "set bgColor white"); run(session, "view /B,C")
+run(session, "show /A,B cartoon")
+run(session, "color /A,B gray")
+# direct-core: A:143, B:403 ; non-core: B:389,440,450,458
+run(session, "show /A:143 atoms"); run(session, "style /A:143 sphere"); run(session, "color /A:143 cornflower blue")
+run(session, "show /B:403 atoms"); run(session, "style /B:403 sphere"); run(session, "color /B:403 cornflower blue")
+run(session, "show /B:389,440,450,458 atoms"); run(session, "style /B:389,440,450,458 sphere"); run(session, "color /B:389,440,450,458 magenta")
+run(session, "lighting soft"); run(session, "set bgColor white"); run(session, "view /A,B")
 run(session, "save output/figures/figure_5_accase_resistance_zone.png width 1000 height 800 supersample 3")
 print("saved output/figures/figure_5_accase_resistance_zone.png")
 run(session, "exit")

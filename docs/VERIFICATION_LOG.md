@@ -440,3 +440,39 @@ fold-change (~10–55×) if citing Ki specifically.
   dynamics pipeline and no ColabFold expansion inside the current Phase 4 claim.
   ColabFold remains future work for FAT/DHODH or other targets lacking adequate
   structures.
+
+## ACCase SWISS-MODEL rerun check
+
+- SWISS-MODEL project checked in the browser:
+  - Project URL: `https://swissmodel.expasy.org/interactive/u3jF6Y/`
+  - Selected 1UYS homomer template because the ACCase resistance-zone metric
+    depends on dimer context.
+  - Completed model metadata: GMQE 0.76; QMEANDisCo global 0.72 +/- 0.05;
+    template `1uys.2.A` / `1uys.2.B`; sequence identity 53.27%; coverage 0.998.
+  - SWISS-MODEL excluded H1L with the metadata reason that the binding site was
+    not conserved, so ligand-contact core membership must be transferred from
+    aligned 1UYS H1L contacts.
+- Downloaded files:
+  - `data/raw/ACCase_Alopecurus_AJ310767_CTdomain_SWISSMODEL_1UYS_homomer.pdb`
+  - `data/raw/ACCase_Alopecurus_AJ310767_CTdomain_SWISSMODEL_1UYS_homomer.json`
+- PDB spot checks:
+  - 8,800 ATOM/HETATM records.
+  - Chains A and B.
+  - Each chain spans model residues 1-566.
+  - No ligand records were present.
+- Added and ran `scripts/accase_swissmodel_distance_sasa.py`.
+  - It transfers active-site-core positions from 21 black-grass positions in
+    1UYS H1L contact space to 42 model chain residues in the homodimer.
+  - It generated `data/processed/accase_swissmodel_1uys_distance_sasa.csv`
+    with 1,132 residue rows.
+- Mutation-position checks from the generated metric table:
+  - Ile1781Leu: A:143, ILE, direct core, percentile 3.71, RSA 0.020434.
+  - Trp2027Cys: B:389, TRP, non-core, percentile 12.46, RSA 0.
+  - Ile2041Asn: B:403, ILE, direct core, percentile 3.71, RSA 0.107777.
+  - Asp2078Gly: B:440, ASP, non-core, percentile 12.28, RSA 0.010429.
+  - Cys2088Arg: B:450, CYS, non-core, percentile 31.98, RSA 0.084807.
+  - Gly2096Ala: B:458, GLY, non-core, percentile 15.28, RSA 0.017171.
+- Focused unit checks added:
+  - `tests/test_accase_swissmodel_outputs.py`
+  - Updated Phase 4 table/analysis expectations so Cys2088Arg maps to `B:450`
+    in the active master/non-core outputs.

@@ -79,41 +79,41 @@ MECHANISM_ANNOTATIONS = {
         "Pro106 is a glyphosate-binding-site-associated residue (Baerson 2002; corresponds to the Salmonella glyphosate-insensitive EPSPS substitution), not an allosteric site. Its 3.85 A CA distance sits just outside the 4.5 A atomic-contact core - a cutoff artifact, not evidence of allostery.",
         "Treat as binding-site-adjacent / second-shell, not allosteric. EPSPS remains underpowered with one accepted position and is a mapped case study, not a family-level test.",
     ),
-    ("ACCase", "C:1705"): (
+    ("ACCase", "A:143"): (
         "interface_induced_fit",
         "literature_supported",
-        "Ile1781Leu: direct-core CT dimer-interface position, near the cavity opening (Delye 2005); confers APP + some CHD resistance, catalytic activity unaltered. NOTE: yeast template already carries the resistant residue (Leu) here - side-chain metrics are template-derived, not weed-specific.",
-        "ACCase direct-interface benchmark, with induced-fit and template-residue caveats.",
+        "Ile1781Leu: direct-core CT dimer-interface position, near the cavity opening (Delye 2005); confers APP + some CHD resistance, catalytic activity unaltered. SWISS-MODEL residue is the weed wild-type Ile.",
+        "ACCase direct-interface benchmark, now using weed-model side-chain metrics.",
     ),
-    ("ACCase", "B:1953"): (
+    ("ACCase", "B:389"): (
         "second_shell_channel",
         "literature_supported",
         "Trp2027Cys: bottom-of-cavity CT-domain position (Delye 2005); APP-only resistance and reduced catalytic activity, consistent with a second-shell/catalytic-pocket role rather than direct herbicide contact.",
         "Report as second-shell/catalytic-pocket, APP-selective.",
     ),
-    ("ACCase", "B:1967"): (
+    ("ACCase", "B:403"): (
         "direct_core",
         "literature_supported",
-        "Ile2041Asn: the single ACCase substitution Delye 2005 modelled as directly interfering with herbicide binding (major steric clash with Phe2030); APP-selective. NOTE: yeast template residue is Val, not the weed Ile - side-chain metrics are template-derived.",
-        "ACCase direct-contact benchmark (APP-selective), with template-residue caveat.",
+        "Ile2041Asn: the single ACCase substitution Delye 2005 modelled as directly interfering with herbicide binding (major steric clash with Phe2030); APP-selective. SWISS-MODEL residue is the weed wild-type Ile.",
+        "ACCase direct-contact benchmark (APP-selective), now using weed-model side-chain metrics.",
     ),
-    ("ACCase", "B:2004"): (
+    ("ACCase", "B:440"): (
         "second_shell_channel",
         "literature_supported",
         "Asp2078Gly: bottom-of-cavity CT-domain position (Delye 2005); confers APP + CHD resistance including clethodim and reduces catalytic activity - a polar catalytic-pocket residue, not a direct herbicide contact.",
         "Report as second-shell/catalytic-pocket, broad APP+CHD.",
     ),
-    ("ACCase", "B:2014"): (
+    ("ACCase", "B:450"): (
         "interface_induced_fit",
         "literature_supported",
-        "Cys2088Arg (Yu 2007): most distal accepted ACCase position; APP + CHD incl clethodim. CAVEAT: maps to a yeast MSE (Met), not the weed Cys, and sits in a locally ambiguous alignment gap (Delye's 'more variable region') - distance is zone-level only; SASA/RSA are template-derived.",
-        "Non-core candidate in the interface resistance zone; report with the cross-species template caveat.",
+        "Cys2088Arg (Yu 2007): most distal accepted ACCase position; APP + CHD incl clethodim. The SWISS-MODEL residue is the weed wild-type Cys; active-site-core membership is transferred from 1UYS H1L contacts because SWISS-MODEL excluded H1L.",
+        "Non-core candidate in the interface resistance zone; report with the transferred-core caveat.",
     ),
-    ("ACCase", "B:2022"): (
+    ("ACCase", "B:458"): (
         "adjacent",
         "literature_supported",
-        "Gly2096Ala: near-pocket CT-domain position (Delye 2005); an added methyl protrudes into the cavity, APP-only. NOTE: yeast template already carries the resistant residue (Ala) here - side-chain metrics are template-derived.",
-        "Report as adjacent, APP-selective, with template-residue caveat.",
+        "Gly2096Ala: near-pocket CT-domain position (Delye 2005); an added methyl protrudes into the cavity, APP-only. SWISS-MODEL residue is the weed wild-type Gly.",
+        "Report as adjacent, APP-selective, now using weed-model side-chain metrics.",
     ),
 }
 

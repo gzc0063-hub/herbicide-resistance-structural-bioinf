@@ -56,11 +56,14 @@ into the TSR validation-gate template.
 
 The review's ACCase/EPSPS cautions were adopted in the completed work:
 
-- ACCase uses the 1UYS B+C biological dimer and ligand-contact core from haloxyfop
-  (`H1L`), not a single-chain pocket assumption.
+- ACCase now uses a SWISS-MODEL black-grass AJ310767 CT-domain homodimer for
+  distance/SASA/RSA metrics, preserving the dimer context rather than a
+  single-chain pocket assumption.
+- Because SWISS-MODEL excluded haloxyfop (`H1L`), ACCase active-site-core
+  membership is transferred from aligned 1UYS H1L-contact residues.
 - ACCase numbering is anchored to black-grass AJ310767 and independently checked
-  for the Cys2088Arg case from Yu et al. 2007; the correct 1UYS mapping is
-  2088 -> chain B residue 2014.
+  for the Cys2088Arg case from Yu et al. 2007; the current weed-model mapping is
+  2088 -> chain B residue 450.
 - EPSPS uses the plant 8UMJ maize EPSPS structure with glyphosate/S3P, not the
   bacterial 1G6S structure.
 - EPSPS Pro106Ser maps to 8UMJ PDB residue 106; the apparent one-residue offset is

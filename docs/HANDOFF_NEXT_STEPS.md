@@ -28,37 +28,39 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 
 - [x] **1.1 Template-vs-weed residue transparency.** DONE. Added `weed_wt_residue`, `template_residue`,
   `template_matches_weed_residue`, `template_is_resistant_state` to the master table via
-  `WEED_RESIDUES` + `normalize_residue` in `scripts/build_phase4_tables.py`. Audit result: PPO/ALS/EPSPS
-  all match; ACCase mismatches at 2041(→Val), 2088(→Met/MSE), 1781(→Leu, template=resistant),
-  2096(→Ala, template=resistant). Exactly the review's finding, now machine-visible.
-- [~] **1.2 ACCase SASA/RSA caveat.** PARTIAL. The mismatch is now flagged per-row (1.1) and each
-  affected ACCase mechanism annotation now carries an explicit "side-chain metrics are template-derived,
-  not weed-specific" caveat (`scripts/build_review_driven_outputs.py`). *Still open (better fix):*
-  homology-model the weed CT domain on 1UYS (SWISS-MODEL) and recompute ACCase SASA/RSA on the weed
-  sequence. The AJ310767 CT-domain FASTA has been prepared and validated at
-  `data/raw/ACCase_Alopecurus_AJ310767_CTdomain_1639_2204.fasta` (566 aa, exact AJ310767 residues
-  1639-2204). SWISS-MODEL template search was started without email:
-  `https://swissmodel.expasy.org/interactive/u3jF6Y/`. If/when the model is ready, download the PDB,
-  place it in `data/raw/`, and rerun only the ACCase metric path before regenerating Phase 4 outputs.
+  `WEED_RESIDUES` + `normalize_residue` in `scripts/build_phase4_tables.py`. The original 1UYS audit
+  made the review's ACCase mismatch concern machine-visible; the active Phase 4 ACCase path now uses the
+  SWISS-MODEL weed CT-domain dimer, so all six ACCase accepted positions match the weed wild-type residue
+  in the current master table.
+- [x] **1.2 ACCase SASA/RSA caveat.** DONE. Downloaded the SWISS-MODEL AJ310767 CT-domain homodimer
+  built on 1UYS (`data/raw/ACCase_Alopecurus_AJ310767_CTdomain_SWISSMODEL_1UYS_homomer.pdb` plus JSON
+  metadata), recomputed ACCase distance/SASA/RSA on the weed-sequence model with
+  `scripts/accase_swissmodel_distance_sasa.py`, and switched Phase 4 to
+  `data/processed/accase_swissmodel_1uys_distance_sasa.csv`. Remaining caveat is now narrower and
+  explicit: SWISS-MODEL excluded H1L, so active-site-core membership is transferred from aligned 1UYS
+  H1L-contact residues; side-chain metrics are homology-model-derived, not crystal-observed.
 - [x] **1.3 Relabel EPSPS Pro106Ser** DONE — `allosteric_hinge` → `adjacent`, with corrected
   binding-site-associated text (Baerson 2002 / Salmonella homolog; 3.85 Å is a CA-cutoff artifact).
 - [x] **1.4 De-uniform ACCase mechanism labels** DONE — now `direct_core` (2041, the one Délye modelled
   as direct steric clash), `second_shell_channel` (2027, 2078 — bottom-of-cavity, also reduce catalytic
   activity), `adjacent` (2096), `interface_induced_fit` (1781, 2088), each with APP/CHD selectivity and
-  template-residue caveats in the annotation text. Added `second_shell_channel` to the figure color map.
+  SWISS-MODEL/active-site-core-transfer caveats where needed. Added `second_shell_channel` to the figure
+  color map.
 - [x] **1.5 Enrichment excluding in-core positions** DONE — `build_phase4_analysis.py` now emits an
   `all` and a `non_core_only` row per family (new `position_set` column). **Key result: the signal
-  survives** — PPO non-core p=0.0043 (n=3), ACCase non-core p=0.0043 (n=4). ALS has no non-core row
-  (both positions direct-core). This is the non-tautological version of the enrichment claim.
+  survives** — PPO non-core p=0.0041 (n=3), ACCase non-core p=0.010199 (n=4) after the SWISS-MODEL
+  ACCase rerun. ALS has no non-core row (all four current ALS positions are direct-core). This is the
+  non-tautological version of the enrichment claim.
 - [x] **1.6 Fill EPSPS DOI** DONE — `10.1104/pp.001560` in `data/processed/epsps_mutations.csv`.
 - [x] **1.7 Clamp negative SASA/RSA** DONE — `clamp_nonneg` in `build_phase4_tables.py`; no negative
   values remain in the master table.
 - [x] **1.8 Single-environment ACCase re-run.** DONE — re-ran `scripts/chimerax_accase_distance_sasa.py`
   in this machine's ChimeraX 1.12. All six reported ACCase mutation positions reproduced **exactly**
   (Ile1781Leu 0.00/pct3.2, Trp2027Cys 5.60/10.4, Ile2041Asn 0.00/3.2, Asp2078Gly 5.19/8.7,
-  Cys2088Arg 11.83/25.9, Gly2096Ala 7.28/12.8), matching the committed metric CSV and the manuscript.
-  The committed CSV was left unchanged (regen produced only line-ending churn). ChimeraX is available in
-  the Claude environment, so the PPO/ALS metric CSVs can also be re-verified the same way if desired.
+  Cys2088Arg 11.83/25.9, Gly2096Ala 7.28/12.8), matching the original 1UYS metric CSV. This is now
+  provenance only: active Phase 4 ACCase metrics are superseded by the SWISS-MODEL weed dimer in item
+  1.2. ChimeraX is available in the Claude environment, so the PPO/ALS metric CSVs can also be
+  re-verified the same way if desired.
 
 ## Tier 2 — turns a resource into a finding
 
@@ -137,6 +139,14 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 > without a primary-source-verified substitution.
 
 ## Change log (append newest at top)
+
+- 2026-07-05 (k): Completed the ACCase SWISS-MODEL follow-through. Downloaded the AJ310767 CT-domain
+  1UYS homomer model (GMQE 0.76; QMEANDisCo global 0.72 ± 0.05), added
+  `scripts/accase_swissmodel_distance_sasa.py`, generated
+  `data/processed/accase_swissmodel_1uys_distance_sasa.csv`, switched Phase 4 ACCase joins to the
+  weed-model coordinates (`A:143`, `B:389`, `B:403`, `B:440`, `B:450`, `B:458`), regenerated manuscript
+  tables/figures, and updated the manuscript caveat: H1L was excluded by SWISS-MODEL, so the core is
+  transferred from aligned 1UYS H1L-contact residues.
 
 - 2026-07-05 (j): Prepared and committed the public AJ310767 ACCase CT-domain sequence for SWISS-MODEL
   (`data/raw/ACCase_Alopecurus_AJ310767_CTdomain_1639_2204.fasta`), verified it exactly matches

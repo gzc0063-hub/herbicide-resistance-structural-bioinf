@@ -57,8 +57,11 @@ class Phase4TablesTest(unittest.TestCase):
 
             cys2088 = next(row for row in rows if row["mutation_id"] == "Cys2088Arg")
             self.assertEqual("ACCase", cys2088["family"])
-            self.assertEqual("B:2014", cys2088["structure_position"])
-            self.assertEqual("2014", cys2088["structure_pdb_position"])
+            self.assertEqual("B:450", cys2088["structure_position"])
+            self.assertEqual("450", cys2088["structure_pdb_position"])
+            self.assertEqual("CYS", cys2088["structure_residue_name"])
+            self.assertEqual("True", cys2088["template_matches_weed_residue"])
+            self.assertEqual("False", cys2088["template_is_resistant_state"])
             self.assertNotEqual("", cys2088["rsa_tien2013"])
 
             with contrast_path.open(newline="") as handle:

@@ -55,7 +55,7 @@ class Phase4AnalysisTest(unittest.TestCase):
 
             cys2088 = next(row for row in screen_rows if row["mutation_ids"] == "Cys2088Arg")
             self.assertEqual("ACCase", cys2088["family"])
-            self.assertEqual("B:2014", cys2088["structure_position"])
+            self.assertEqual("B:450", cys2088["structure_position"])
             self.assertEqual("non_core_candidate", cys2088["proximity_class"])
 
     def test_cli_runs_from_repo_root(self):

@@ -20,26 +20,28 @@ The current family-level results are:
 
 | Family | Unique positions | Observed mean percentile | Random mean percentile | Empirical p-value |
 |---|---:|---:|---:|---:|
-| ACCase | 6 | 10.68 | 49.81 | 0.000200 |
-| ALS/AHAS | 2 | 4.64 | 49.94 | 0.002200 |
-| EPSPS | 1 | 12.87 | 50.35 | 0.131887 |
-| PPO | 4 | 8.01 | 50.35 | 0.000400 |
+| ACCase | 6 | 13.24 | 50.20 | 0.000300 |
+| ALS/AHAS | 4 | 4.64 | 50.10 | 0.000100 |
+| EPSPS | 1 | 12.87 | 50.11 | 0.128787 |
+| PPO | 4 | 8.01 | 49.90 | 0.000600 |
 
 ## Direct-Core and Non-Core Resistance Positions
 
 The unique-position mechanism screen separates direct active-site-core positions
 from adjacent and more distal non-core candidates. Direct-core examples include
-ALS Trp574Leu and Ser653Asn, PPO R98G/R98M, and ACCase Ile1781Leu/Ile2041Asn
+ALS Trp574Leu, Ser653Asn, Ala122Ser, and Pro197Ala, PPO R98G/R98M, and ACCase Ile1781Leu/Ile2041Asn
 under the current ligand-contact core definitions.
 
 The non-core positions are central to the manuscript's novelty. PPO deltaG210 is
 near the active-site zone but mechanistically distinctive because the supporting
 literature describes helix/deletion effects that are not captured by distance
 alone. EPSPS Pro106Ser is directionally close to the glyphosate/S3P site but is
-best treated as an allosteric/hinge-position case, not a direct ligand-contact
+best treated as a binding-site-adjacent case, not a direct ligand-contact
 substitution. ACCase Cys2088Arg is the most distal accepted ACCase position in
 the current screen, yet remains within the broader dimer-interface resistance
-zone.
+zone. Current ACCase distance/RSA values come from the SWISS-MODEL weed
+CT-domain homodimer, with active-site-core membership transferred from 1UYS
+H1L-contact residues because SWISS-MODEL excluded the ligand.
 
 ## Review-Driven Limitation Statement
 
@@ -53,4 +55,3 @@ mechanisms where available.
 
 This framing makes the external review's main critique part of the manuscript's
 scope discipline rather than a reason to build a new MD pipeline.
-

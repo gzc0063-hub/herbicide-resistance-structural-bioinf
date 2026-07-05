@@ -15,6 +15,9 @@ class FamilyConfig:
     conservation_position_column: str
     native_position_for_conservation: bool = False
     metric_chain_column: str | None = None
+    mutation_metric_position_column: str | None = None
+    mutation_metric_chain_map: dict[str, str] | None = None
+    metric_output_position_column: str | None = None
 
 
 FAMILY_CONFIGS = (
@@ -48,22 +51,25 @@ FAMILY_CONFIGS = (
     FamilyConfig(
         family="ACCase",
         mutation_file=Path("data/processed/accase_mutations.csv"),
-        metric_file=Path("data/processed/accase_1uys_distance_sasa.csv"),
+        metric_file=Path("data/processed/accase_swissmodel_1uys_distance_sasa.csv"),
         conservation_file=Path("data/processed/accase_conservation_entropy.csv"),
         mutation_structure_column="position_1uys_structure",
-        metric_position_column="pdb_position",
+        metric_position_column="blackgrass_position",
         conservation_position_column="blackgrass_position",
         native_position_for_conservation=True,
         metric_chain_column="chain_id",
+        mutation_metric_position_column="position_native_numbering",
+        mutation_metric_chain_map={"B": "B", "C": "A"},
+        metric_output_position_column="pdb_position",
     ),
 )
 
 
 # Weed wild-type (and, where unambiguous, resistant) residue for each mutation row,
-# used to flag where the mapped STRUCTURE residue is not the same amino acid as the
-# weed residue (a real cross-species-template caveat, worst for the yeast ACCase
-# template). 3-letter codes. Mutant is None for the PPO deletion (deltaG210) and for
-# the two-allele R98G/R98M row where a single mutant residue is not defined.
+# used to flag when the mapped structure/model residue is not the same amino acid
+# as the weed residue. 3-letter codes. Mutant is None for the PPO deletion
+# (deltaG210) and for the two-allele R98G/R98M row where a single mutant residue is
+# not defined.
 WEED_RESIDUES = {
     "deltaG210_pair1": ("GLY", None),
     "deltaG210_pair2": ("GLY", None),
@@ -150,10 +156,28 @@ def metric_key(row: dict[str, str], config: FamilyConfig) -> tuple[str, str]:
     return chain_id, row[config.metric_position_column]
 
 
+def mutation_metric_key(mutation: dict[str, str], config: FamilyConfig) -> tuple[str, str]:
+    structure_position = mutation[config.mutation_structure_column]
+    chain_id, pdb_position = split_structure_position(structure_position)
+    if config.mutation_metric_position_column is None:
+        return chain_id, pdb_position
+
+    metric_chain = (config.mutation_metric_chain_map or {}).get(chain_id, chain_id)
+    return metric_chain, mutation[config.mutation_metric_position_column]
+
+
 def conservation_key(row: dict[str, str], config: FamilyConfig) -> str:
     if config.native_position_for_conservation:
         return row["position_native_numbering"]
     return row[config.mutation_structure_column]
+
+
+def output_structure_position(metric: dict[str, str], config: FamilyConfig) -> tuple[str, str, str]:
+    chain_id = metric.get(config.metric_chain_column or "", "") if config.metric_chain_column else ""
+    position_column = config.metric_output_position_column or config.metric_position_column
+    pdb_position = metric[position_column]
+    structure_position = f"{chain_id}:{pdb_position}" if chain_id else pdb_position
+    return structure_position, chain_id, pdb_position
 
 
 def build_family_rows(repo_root: Path, config: FamilyConfig) -> list[dict[str, str]]:
@@ -169,9 +193,8 @@ def build_family_rows(repo_root: Path, config: FamilyConfig) -> list[dict[str, s
 
     output_rows = []
     for mutation in mutations:
-        structure_position = mutation[config.mutation_structure_column]
-        chain_id, pdb_position = split_structure_position(structure_position)
-        metric = metrics[(chain_id, pdb_position)]
+        metric = metrics[mutation_metric_key(mutation, config)]
+        structure_position, chain_id, pdb_position = output_structure_position(metric, config)
         conservation_row = conservation.get(conservation_key(mutation, config), {})
         template_residue = metric["residue_name"]
         weed_wt_residue, weed_mut_residue = WEED_RESIDUES.get(

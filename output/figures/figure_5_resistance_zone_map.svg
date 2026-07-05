@@ -29,18 +29,18 @@
 <text x="446" y="276" font-size="10" font-family="Arial" text-anchor="middle">Pro106Ser</text>
 <line x1="150" y1="378" x2="840" y2="378" stroke="#ccc"/>
 <text x="138" y="382" font-size="14" font-family="Arial" text-anchor="end">ACCase</text>
-<circle cx="223" cy="378" r="7" fill="#2f6fbb"/>
-<text x="223" y="364" font-size="10" font-family="Arial" text-anchor="middle">Ile2041Asn</text>
-<circle cx="223" cy="378" r="7" fill="#7b5bc6"/>
-<text x="223" y="394" font-size="10" font-family="Arial" text-anchor="middle">Ile1781Leu</text>
-<circle cx="349" cy="378" r="7" fill="#2f9fa8"/>
-<text x="349" y="364" font-size="10" font-family="Arial" text-anchor="middle">Asp2078Gly</text>
-<circle cx="389" cy="378" r="7" fill="#2f9fa8"/>
-<text x="389" y="394" font-size="10" font-family="Arial" text-anchor="middle">Trp2027Cys</text>
-<circle cx="444" cy="378" r="7" fill="#46945f"/>
-<text x="444" y="394" font-size="10" font-family="Arial" text-anchor="middle">Gly2096Ala</text>
-<circle cx="746" cy="378" r="7" fill="#7b5bc6"/>
-<text x="746" y="364" font-size="10" font-family="Arial" text-anchor="middle">Cys2088Arg</text>
+<circle cx="235" cy="378" r="7" fill="#7b5bc6"/>
+<text x="235" y="364" font-size="10" font-family="Arial" text-anchor="middle">Ile1781Leu</text>
+<circle cx="235" cy="378" r="7" fill="#2f6fbb"/>
+<text x="235" y="394" font-size="10" font-family="Arial" text-anchor="middle">Ile2041Asn</text>
+<circle cx="432" cy="378" r="7" fill="#2f9fa8"/>
+<text x="432" y="364" font-size="10" font-family="Arial" text-anchor="middle">Asp2078Gly</text>
+<circle cx="436" cy="378" r="7" fill="#2f9fa8"/>
+<text x="436" y="394" font-size="10" font-family="Arial" text-anchor="middle">Trp2027Cys</text>
+<circle cx="502" cy="378" r="7" fill="#46945f"/>
+<text x="502" y="364" font-size="10" font-family="Arial" text-anchor="middle">Gly2096Ala</text>
+<circle cx="840" cy="378" r="7" fill="#7b5bc6"/>
+<text x="840" y="364" font-size="10" font-family="Arial" text-anchor="middle">Cys2088Arg</text>
 <line x1="150" y1="440" x2="840" y2="440" stroke="#333"/>
 <line x1="150" y1="440" x2="150" y2="445" stroke="#333"/>
 <text x="150" y="458" font-size="10" font-family="Arial" text-anchor="middle">0</text>
