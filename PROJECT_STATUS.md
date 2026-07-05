@@ -69,8 +69,13 @@ pushed to https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf
   `scripts/build_review_driven_outputs.py` writes mechanism annotations,
   manuscript summary tables, and four SVG figures. `docs/MANUSCRIPT_RESULTS_PHASE4.md`
   contains the first concise Results draft and limitations framing.
+- **First manuscript draft: COMPLETE as an internal review draft.**
+  `docs/MANUSCRIPT_DRAFT.md` now assembles the abstract, introduction, methods,
+  results, discussion, limitations, data/code availability, figure captions, and
+  submission to-do list around the Phase 4 tables and figures. It still needs
+  sentence-level citation polishing and a gap audit before submission.
 - **Not completed:** Phase 3 (FAT,
-  DHODH - needs structure decision), Phase 4 final manuscript assembly, Phase 5
+  DHODH - needs structure decision), final citation-polished manuscript, Phase 5
   (deposit/submit).
 
 ---
@@ -94,6 +99,7 @@ pushed to https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf
 | `EXTERNAL_REVIEW_RESPONSE.md` | Reconciled response to the external/Claude review: ALS interface-core correction, RSA caveat, HPPD reframing |
 | `REVIEW_RESPONSE_STATIC_VS_DYNAMIC.md` | Response to the later static-vs-dynamic critique: accepted limitations, already-handled issues, out-of-scope MD requests, and future-work notes |
 | `MANUSCRIPT_RESULTS_PHASE4.md` | Draft Phase 4 Results language using the current permutation, mechanism-annotation, and limitation outputs |
+| `MANUSCRIPT_DRAFT.md` | First full manuscript scaffold with abstract, methods, results, discussion, limitations, embedded figure links, captions, tables, and submission to-do list |
 | `CLAUDE_CODE_NEXT_STEPS.md` | An early working prompt from before Phase 1 execution - now superseded by DECISION_LOG, kept for history |
 | `references/*.pdf` | Primary-source papers living directly in the repo, including PPO, ALS, EPSPS, and ACCase references |
 
@@ -183,15 +189,20 @@ RSA normalization is now complete. Raw SASA remains useful for traceability, but
 Phase 4 should use `rsa_tien2013` as the cross-enzyme exposure covariate.
 
 **Phase 4** now has pooled/contrast tables, the recommended permutation/enrichment
-test, review-driven mechanism annotations, four manuscript figure drafts, and a
-concise Results draft. Current statistical signal: PPO, ALS, and ACCase are
-strongly enriched for low distance-to-core percentile positions; EPSPS has the same
-directional pattern but only one accepted mutation position, so treat its p-value
-as underpowered/descriptive rather than a family-level inference. Next, refine the
-figures and Results text into a full manuscript section.
+test, review-driven mechanism annotations, four manuscript figure drafts, a concise
+Results draft, and a first full manuscript scaffold in `docs/MANUSCRIPT_DRAFT.md`.
+Current statistical signal: PPO, ALS, and ACCase are strongly enriched for low
+distance-to-core percentile positions; EPSPS has the same directional pattern but
+only one accepted mutation position, so treat its p-value as underpowered/descriptive
+rather than a family-level inference. Next, run a citation/gap audit: add
+sentence-level citations, check mechanism claims against saved PDFs, decide whether
+ALS/AHAS should be expanded before submission, and review figure aesthetics for the
+target journal.
 
 **Phase 3 (FAT, DHODH)** is the one phase that needs something beyond what's set
 up so far - these two targets don't have existing crystal structures, so they need
 a ColabFold structure prediction run by hand in Google Colab (free tier), per the
 original plan in `docs/panel_review_and_plan.md` Part B/D. Everything else in the
-pipeline resumes normally once you have a predicted PDB file in hand.
+pipeline resumes normally once you have a predicted PDB file in hand. Do not insert
+ColabFold into the current Phase 4 manuscript unless FAT/DHODH are deliberately
+added as a later expansion.

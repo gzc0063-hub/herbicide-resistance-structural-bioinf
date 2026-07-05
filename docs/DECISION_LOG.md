@@ -850,3 +850,25 @@ are not promoted to literature-supported conclusions; PPO V361A remains
 Results text should emphasize that static metrics identify structural context and
 enrichment, while literature mechanism annotations explain dynamic/biophysical
 interpretation where supported.
+
+---
+
+## 31. First manuscript draft assembled from Phase 4 outputs
+
+The first full manuscript scaffold was assembled in `docs/MANUSCRIPT_DRAFT.md`.
+It is a review-ready internal draft, not a final submission file. The draft uses
+the current Phase 4 outputs as its evidence spine:
+
+- family-level permutation/enrichment results;
+- unique-position mechanism annotations;
+- HPPD as a no-verified-weed-TSR contrast family;
+- four generated SVG figures;
+- the static-vs-dynamic scope boundary recorded in section 30.
+
+**Decision:** make the next review step a citation/gap audit rather than new
+pipeline expansion. The manuscript draft should be polished by adding
+sentence-level citations, checking mechanism claims against the saved PDFs, and
+deciding whether ALS/AHAS should be expanded to additional accepted positions
+before submission. ColabFold remains a future tool for FAT/DHODH or other targets
+without adequate structures; it is not part of the current Phase 4 manuscript
+claim.

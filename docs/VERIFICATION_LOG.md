@@ -424,3 +424,19 @@ fold-change (~10–55×) if citing Ki specifically.
 - Added interpretive docs:
   - `docs/REVIEW_RESPONSE_STATIC_VS_DYNAMIC.md`
   - `docs/MANUSCRIPT_RESULTS_PHASE4.md`
+
+## First manuscript draft check
+
+- Added `docs/MANUSCRIPT_DRAFT.md` as an internal first draft assembled from
+  existing Phase 4 outputs rather than new analysis.
+- Draft inputs checked before writing:
+  - `docs/MANUSCRIPT_RESULTS_PHASE4.md`
+  - `docs/REVIEW_RESPONSE_STATIC_VS_DYNAMIC.md`
+  - `output/tables/manuscript_table_1_family_permutation_summary.csv`
+  - `output/tables/manuscript_table_2_unique_position_mechanisms.csv`
+  - `output/tables/manuscript_table_3_hppd_contrast_status.csv`
+  - `output/tables/phase4_non_core_position_screen.csv`
+- The draft explicitly preserves the current scope boundary: no new molecular
+  dynamics pipeline and no ColabFold expansion inside the current Phase 4 claim.
+  ColabFold remains future work for FAT/DHODH or other targets lacking adequate
+  structures.
