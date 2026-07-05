@@ -197,4 +197,4 @@ Primary sources for the mutation dataset, structures, and methods. Author/year, 
 
 Structures (Protein Data Bank): 1SEZ (PPO, ref. 9); 1Z8N (AHAS, ref. 11); 8UMJ (*Zea mays* EPSPS + glyphosate + shikimate-3-phosphate); 1UYS (ACCase CT domain + haloxyfop, ref. 19). Relative solvent accessibility normalization uses maximum-accessibility values from ref. 16.
 
-*Not-yet-verified citation:* the HPPD non-target-site contrast cites Nakka et al. (2017) on P450-mediated mesotrione metabolism in *Amaranthus palmeri*; the exact bibliographic details should be confirmed against that paper before submission (PDF not yet in `docs/references/`).
+20. Nakka S, Godar AS, Wani PS, Thompson CR, Peterson DE, Roelofs J, Jugulam M (2017) Physiological and molecular characterization of hydroxyphenylpyruvate dioxygenase (HPPD)-inhibitor resistance in Palmer amaranth (*Amaranthus palmeri* S.Wats.). *Frontiers in Plant Science* 8:555. DOI 10.3389/fpls.2017.00555 (†) [HPPD contrast: resistance is non-target-site (P450 mesotrione metabolism) plus 4–12-fold HPPD overexpression, with no target-site amino-acid mutation]

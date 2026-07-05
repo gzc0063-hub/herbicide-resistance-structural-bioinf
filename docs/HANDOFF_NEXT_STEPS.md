@@ -131,6 +131,11 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 
 ## Change log (append newest at top)
 
+- 2026-07-05 (h): Nakka et al. 2017 PDF supplied and verified (A. palmeri HPPD resistance = P450
+  metabolism + 4-12x overexpression, no target-site mutation - confirms the HPPD contrast). Finalized
+  as manuscript ref 20; PDF archived. All manuscript citations now verified except none outstanding.
+  Committed.
+
 - 2026-07-05 (g): Added manuscript References section (19 grounded refs; corrected Ji et al. 2025).
   Added Figure 5 resistance-zone map (schematic SVG; 3D ChimeraX version scripted but needs OSMesa).
   Items 2.2, 2.3, 3.3, 1.8, LICENSE all closed. Remaining: 1.2 (weed homology model, needs SWISS-MODEL),
