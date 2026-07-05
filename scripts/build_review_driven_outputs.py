@@ -61,6 +61,12 @@ MECHANISM_ANNOTATIONS = {
         "Direct ALS pocket position; dynamic cross-resistance details are outside this static resource's prediction scope.",
         "Use as direct-core ALS benchmark.",
     ),
+    ("ALS", "122"): (
+        "direct_core",
+        "literature_supported",
+        "Ala122 is an established ALS dimer-interface pocket TSR site (Tranel & Wright 2002); the A. palmeri A122S allele (Larran 2017) co-occurs with A282D so its individual causality is not isolated - included with medium confidence.",
+        "Direct-interface ALS position; report with the A282D-confound caveat.",
+    ),
     ("EPSPS", "106"): (
         "adjacent",
         "literature_supported",

@@ -73,6 +73,7 @@ WEED_RESIDUES = {
     "R98G_R98M": ("ARG", None),
     "Trp574Leu": ("TRP", "LEU"),
     "Ser653Asn": ("SER", "ASN"),
+    "Ala122Ser": ("ALA", "SER"),
     "Pro106Ser": ("PRO", "SER"),
     "Ile1781Leu": ("ILE", "LEU"),
     "Trp2027Cys": ("TRP", "CYS"),

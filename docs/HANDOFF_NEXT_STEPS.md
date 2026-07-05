@@ -58,8 +58,20 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
   baseline first," and the typology section is retitled "A Structural Typology of Resistance Positions
   (the main contribution)." EPSPS relabelled binding-site-associated. Remaining polish for a later pass:
   per-family "resistance-zone map" figure (2.3) and citation formatting.
-- [ ] **2.2 Expand ALS** to Ala122/Pro197/Asp376 (biggest single power gain; structure + sequences in
-  hand). Needs new `als_mutations.csv` rows + re-run.
+- [~] **2.2 Expand ALS.** PARTIAL. Added **Ala122Ser** (A. palmeri, Larran 2017 / KY781920, medium
+  confidence — co-occurs with A282D so individual causality not isolated). ALS is now n=3, all
+  direct-core; enrichment strengthened to obs=4.64 vs 50.28, p=0.000200 (was p=0.0027 at n=2). Master
+  table, permutation, manuscript tables/figures, manuscript numbers, and tests all regenerated/updated;
+  19 tests pass. **Still to add: Pro197 and Asp376** — both are established ALS TSR sites and are already
+  present + mapped in 1Z8N (residue 197=PRO, 376=ASP, both in-core, fully conserved), so only a verified
+  clean single-allele Palmer amaranth SOURCE is missing. The best source is paywalled:
+  **Küpper et al., "Target-site mutation accumulation among ALS inhibitor-resistant Palmer amaranth,"
+  Pest Manag Sci, DOI 10.1002/ps.5232** — user should supply this PDF (Wiley, blocked automated fetch).
+  The "A New Pro-197-Ile Mutation in Amaranthus palmeri" paper (Plants 2025, DOI 10.3390/plants14040525)
+  is an alternative Pro197 source to verify. Once a PDF is in hand, add rows exactly like Ala122Ser
+  (add to `als_mutations.csv`, add WEED_RESIDUES entry in build_phase4_tables.py, add MECHANISM_ANNOTATIONS
+  ("ALS","197")/("ALS","376") in build_review_driven_outputs.py, bump the row-count asserts in the three
+  affected tests, regenerate the chain, update manuscript ALS numbers).
 - [ ] **2.3 Per-family "resistance-zone map" figure** (one structure cartoon per family, positions
   colored by proximity class).
 
@@ -83,8 +95,29 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 
 ---
 
+## Ready-to-paste Codex prompt (for the paywalled ALS expansion, 2.2 remainder)
+
+> In the repo `herbicide-resistance-structural-bioinf`, expand the ALS family with Pro197 and Asp376.
+> I have supplied the PDF(s): Küpper et al. Pest Manag Sci (DOI 10.1002/ps.5232) and/or the A. palmeri
+> Pro197Ile paper (Plants 2025, DOI 10.3390/plants14040525). For each position, verify from the PDF's
+> own text/tables the exact substitution and any deposited accession (do NOT infer). Then, mirroring the
+> existing `Ala122Ser` row: (1) append a row to `data/processed/als_mutations.csv` with
+> position_1z8n_structure = 197 or 376 (both verified present in 1Z8N chain A as PRO/ASP, in-core, fully
+> conserved); (2) add the weed WT/mut residues to `WEED_RESIDUES` in `scripts/build_phase4_tables.py`
+> (Pro197→("PRO", mut); Asp376→("ASP", mut)); (3) add `("ALS","197")` / `("ALS","376")` entries to
+> `MECHANISM_ANNOTATIONS` in `scripts/build_review_driven_outputs.py` (both direct_core); (4) bump the
+> row-count assertions in `tests/test_phase4_tables.py` (16→N), `tests/test_review_driven_outputs.py`
+> (14→N), and the ALS count + screen count in `tests/test_phase4_analysis.py`; (5) run the regeneration
+> chain (build_phase4_tables → build_phase4_analysis → build_review_driven_outputs) and `pytest -q`;
+> (6) update the ALS numbers in `docs/MANUSCRIPT_DRAFT.md` to the regenerated `manuscript_table_1`
+> values; (7) tick item 2.2 in `docs/HANDOFF_NEXT_STEPS.md` and commit. Keep the project's rule: no row
+> without a primary-source-verified substitution.
+
 ## Change log (append newest at top)
 
+- 2026-07-05 (d): Expanded ALS with Ala122Ser (Larran 2017, in-repo verified); ALS now n=3, p=0.0002.
+  Regenerated everything, updated manuscript, 19 tests pass. Pro197/Asp376 handed off (need paywalled
+  ps.5232 PDF) with a ready-to-paste Codex prompt above. Committed.
 - 2026-07-05 (c): Updated MANUSCRIPT_DRAFT.md to match regenerated tables — corrected all p-values,
   added the non-core-survives result and the template-residue transparency section + ACCase Limitations
   caveat, fixed EPSPS "allosteric"→binding-site-associated. 19 tests pass. Full outlier reframe (2.1)

@@ -17,7 +17,7 @@ class ReviewDrivenOutputsTest(unittest.TestCase):
 
             with outputs["mechanism_table"].open(newline="") as handle:
                 rows = list(csv.DictReader(handle))
-            self.assertEqual(13, len(rows))
+            self.assertEqual(14, len(rows))
             self.assertNotIn("HPPD", {row["family"] for row in rows})
             self.assertEqual(
                 len(rows),
