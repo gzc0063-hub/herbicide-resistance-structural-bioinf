@@ -85,8 +85,11 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 
 ## Tier 3 — depth / higher-tier journals
 
-- [ ] **3.1 Published docking/MD as interpretation benchmark** for 2-3 flagship positions, with
-  sentence-level citations.
+- [x] **3.1 Published docking/MD as interpretation benchmark** DONE. Added sentence-level benchmark
+  citations in the manuscript Discussion/typology sections: PPO DeltaG210 (Dayan 2010 + Hao 2009),
+  PPO R98/substrate-recognition context (Heinemann 2007 + Hao 2013), and ACCase CT-domain cavity
+  interpretation (Delye 2005 + Zhang 2004 + Yu 2007). This remains literature interpretation, not a
+  new docking/MD analysis.
 - [~] **3.2 FAT/DHODH future-work verification.** CHECKED: RCSB full-text search for
   "dihydroorotate dehydrogenase tetflupyrolimet" returned **no hit**, and the broad Viridiplantae-DHODH
   hits were false matches (phototropin LOV domains). So a public plant DHODH inhibitor-bound structure is
@@ -130,6 +133,11 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 > without a primary-source-verified substitution.
 
 ## Change log (append newest at top)
+
+- 2026-07-05 (i): Completed Tier 3 item 3.1 by weaving published dynamic/docking/kinetic benchmarks
+  into `docs/MANUSCRIPT_DRAFT.md` at sentence level. No generated tables changed. Remaining true
+  pre-submission work: optional ACCase weed homology model (requires SWISS-MODEL/downloaded PDB) and
+  Zenodo release at submission time.
 
 - 2026-07-05 (h): Nakka et al. 2017 PDF supplied and verified (A. palmeri HPPD resistance = P450
   metabolism + 4-12x overexpression, no target-site mutation - confirms the HPPD contrast). Finalized
