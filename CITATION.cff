@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this resource, please cite it as below."
+title: "Comparative Static Structural Mapping of Target-Site Herbicide Resistance Across Weed Enzyme Families"
+abstract: >-
+  A reproducible comparative static structural-bioinformatics resource for verified weed
+  target-site resistance positions across PPO, ALS/AHAS, EPSPS, and ACCase, with HPPD
+  retained as a target-site-negative contrast family. For each accepted mutation the
+  resource maps the position onto a herbicide-relevant structure, defines a ligand-contact
+  active-site core, and reports within-family distance-to-core percentile, Tien-normalized
+  relative solvent accessibility, and alignment-based conservation, with a within-family
+  permutation enrichment test (run with and without direct-core positions) and a structural
+  typology of how positions relate to the pocket.
+type: dataset
+authors:
+  - family-names: Chahal
+    given-names: Gourav
+    email: gzc0063@gmail.com
+repository-code: "https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf"
+license: MIT
+keywords:
+  - herbicide resistance
+  - target-site resistance
+  - structural bioinformatics
+  - weed science
+  - PPO
+  - ALS
+  - EPSPS
+  - ACCase
+date-released: "2026-07-05"

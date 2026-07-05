@@ -79,9 +79,17 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 
 - [ ] **3.1 Published docking/MD as interpretation benchmark** for 2-3 flagship positions, with
   sentence-level citations.
-- [ ] **3.2 FAT/DHODH** as declared future work; verify the DHODH plant co-crystal (Kang et al. 2023,
-  PNAS) PDB accession before promising it.
-- [ ] **3.3 Zenodo deposit + CITATION.cff + pinned env** for data-availability.
+- [~] **3.2 FAT/DHODH future-work verification.** CHECKED: RCSB full-text search for
+  "dihydroorotate dehydrogenase tetflupyrolimet" returned **no hit**, and the broad Viridiplantae-DHODH
+  hits were false matches (phototropin LOV domains). So a public plant DHODH inhibitor-bound structure is
+  **not confirmed available** — Phase 3 DHODH must stay "future work, structure availability unconfirmed"
+  (do not promise the Kang et al. 2023 PNAS structure without a specific verified PDB accession from the
+  user or the paper's own Data Availability). FAT (acyl-ACP thioesterase) likewise unverified. Both remain
+  out of the current manuscript's pooled analysis.
+- [~] **3.3 Reproducibility scaffolding.** DONE: pinned `requirements.txt` to exact tested versions
+  (Python 3.14.4) and added `CITATION.cff`. **Still to do:** add a `LICENSE` file (user's call — review
+  recommended MIT for code + CC-BY-4.0 for data; CITATION.cff currently declares MIT), and cut a tagged
+  release + Zenodo deposit at submission time.
 
 ## "Even better" ideas (beyond current scope — see final section of SENIOR_REVIEW)
 
@@ -115,6 +123,9 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 
 ## Change log (append newest at top)
 
+- 2026-07-05 (e): Verified no public plant DHODH inhibitor structure via RCSB (3.2 → stays unconfirmed
+  future work). Added pinned requirements.txt + CITATION.cff (3.3); LICENSE still a user decision.
+  Committed.
 - 2026-07-05 (d): Expanded ALS with Ala122Ser (Larran 2017, in-repo verified); ALS now n=3, p=0.0002.
   Regenerated everything, updated manuscript, 19 tests pass. Pro197/Asp376 handed off (need paywalled
   ps.5232 PDF) with a ready-to-paste Codex prompt above. Committed.

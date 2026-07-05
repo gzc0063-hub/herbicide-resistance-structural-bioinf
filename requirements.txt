@@ -1,7 +1,11 @@
-biopython
-pandas
-numpy
-requests
-pyKVFinder
-pypdf
-pytest
+# Pinned for reproducibility (Python 3.14.4). Loosely: biopython, pandas, numpy,
+# requests, pyKVFinder, pypdf, pytest. ChimeraX and MAFFT are external (see README);
+# the pure-Python fallbacks in scripts/pdb_static_metrics.py and
+# scripts/reference_conservation.py let the EPSPS/Phase-4 pipeline run without them.
+biopython==1.87
+pandas==3.0.3
+numpy==2.4.6
+requests==2.34.2
+pyKVFinder==0.9.3
+pypdf==6.14.2
+pytest==9.1.1
