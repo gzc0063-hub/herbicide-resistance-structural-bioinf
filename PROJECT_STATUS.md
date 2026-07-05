@@ -58,9 +58,15 @@ pushed to https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf
   `output/tables/phase4_master_mutation_table.csv` with joined distance/RSA and
   conservation metrics, and writes HPPD separately to
   `output/tables/phase4_target_family_contrast.csv`.
+- **Phase 4 permutation/enrichment analysis: COMPLETE for current targets.**
+  `scripts/build_phase4_analysis.py` de-duplicates repeated accession rows to
+  unique structural positions and runs the within-family random-residue
+  permutation test recommended by the panel review. Current outputs are
+  `output/tables/phase4_permutation_summary.csv` and
+  `output/tables/phase4_non_core_position_screen.csv`.
 - **Not completed:** Phase 3 (FAT,
-  DHODH - needs structure decision), Phase 4 permutation/enrichment analysis and
-  manuscript figures, Phase 5 (deposit/submit).
+  DHODH - needs structure decision), Phase 4 manuscript figures/writeup, Phase 5
+  (deposit/submit).
 
 ---
 
@@ -133,6 +139,7 @@ here has been edited - if you need to re-derive anything, start here.
 | `hppd_distance_sasa.py` | HPPD: standardized active-site distance/SASA on the 5YWG A+B mesotrione-bound dimer |
 | `rsa.py` | Adds Tien et al. 2013 max-SASA and RSA columns to the current static metric CSV outputs while preserving raw SASA |
 | `build_phase4_tables.py` | Phase 4 table builder: joins mutation rows to family-specific distance/RSA and conservation metrics, while keeping HPPD separate as a contrast family |
+| `build_phase4_analysis.py` | Phase 4 permutation/enrichment analysis: samples same-size random residue sets within each enzyme and screens unique mutation positions by proximity class |
 | `reference_conservation.py` | Shared helper for pairwise reference-indexed conservation when MAFFT is unavailable |
 | `pdb_static_metrics.py` | Lightweight PDB parser/contact/SASA helpers used when ChimeraX is unavailable |
 | `active_site_metrics.py` | Shared helper for standardized distance-to-core and nearest-other-core metrics |
@@ -146,7 +153,11 @@ table (15 mutation rows: PPO 6, ALS 2, EPSPS 1, ACCase 6). It joins each accepte
 mutation row to structure distance/SASA/RSA and conservation metrics. HPPD is kept
 out of that mutation table and is represented in
 `tables/phase4_target_family_contrast.csv` as a no-verified-weed-TSR contrast
-family. `figures/` is still reserved for Phase 4 synthesis figures.
+family. `tables/phase4_permutation_summary.csv` reports the within-family
+permutation/enrichment results for unique structural mutation positions, and
+`tables/phase4_non_core_position_screen.csv` is the de-duplicated screen for direct
+core, adjacent non-core, and more distal non-core candidate positions. `figures/`
+is still reserved for Phase 4 synthesis figures.
 
 ---
 
@@ -160,11 +171,12 @@ substitution with accession-level support.
 RSA normalization is now complete. Raw SASA remains useful for traceability, but
 Phase 4 should use `rsa_tien2013` as the cross-enzyme exposure covariate.
 
-**Phase 4** has its starter pooled/contrast tables. Next, run the
-permutation/enrichment test the panel review recommended (see
-`docs/panel_review_and_plan.md` §Part A, biostatistician reviewer) instead of a
-naive logistic regression, and explicitly look for more outlier mutations like
-ΔG210 across the full set. Use `rsa_tien2013` as the exposure covariate.
+**Phase 4** now has its starter pooled/contrast tables and the recommended
+permutation/enrichment test. Next, turn the table outputs into manuscript-ready
+figures and a concise Results narrative. Current statistical signal: PPO, ALS, and
+ACCase are strongly enriched for low distance-to-core percentile positions; EPSPS
+has the same directional pattern but only one accepted mutation position, so treat
+its p-value as underpowered/descriptive rather than a family-level inference.
 
 **Phase 3 (FAT, DHODH)** is the one phase that needs something beyond what's set
 up so far - these two targets don't have existing crystal structures, so they need

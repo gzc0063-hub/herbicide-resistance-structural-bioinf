@@ -363,3 +363,33 @@ fold-change (~10–55×) if citing Ki specifically.
   - Spot-checked joined rows include PPO `deltaG210_pair1`, ALS `Trp574Leu`,
     EPSPS `Pro106Ser`, and ACCase `Cys2088Arg`; each has joined RSA and
     conservation values.
+
+## Phase 4 permutation/enrichment analysis check
+
+- Added `scripts/build_phase4_analysis.py` and `tests/test_phase4_analysis.py`.
+- Test-driven checks:
+  - First focused run failed because `scripts.build_phase4_analysis` did not
+    exist.
+  - A second focused run caught a direct-script execution bug:
+    `ModuleNotFoundError: No module named 'scripts'` when running
+    `scripts/build_phase4_analysis.py` from the repo root. The script now inserts
+    the repo root into `sys.path` when run as a direct file.
+- Focused verification command:
+  - `.venv\Scripts\python.exe -m unittest tests.test_phase4_analysis -v`
+  - Result: 2 tests run, all passed.
+- Analysis generation command:
+  - `.venv\Scripts\python.exe scripts\build_phase4_analysis.py --iterations 10000 --seed 20260704`
+- Generated outputs:
+  - `output/tables/phase4_permutation_summary.csv`
+  - `output/tables/phase4_non_core_position_screen.csv`
+- Output checks:
+  - Unique structural-position counts: PPO 4, ALS 2, EPSPS 1, ACCase 6.
+  - HPPD is absent from both mutation-position analysis outputs.
+  - Empirical lower-tail p-values from 10,000 permutations:
+    - ACCase: 0.000200.
+    - ALS: 0.002200.
+    - EPSPS: 0.131887.
+    - PPO: 0.000400.
+  - Non-core candidate screen highlights the most distal accepted positions by
+    distance percentile: ACCase Cys2088Arg (25.9), PPO V361A (20.2), EPSPS
+    Pro106Ser (12.9), ACCase Gly2096Ala (12.8), and ACCase Trp2027Cys (10.4).

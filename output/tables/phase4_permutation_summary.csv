@@ -1,0 +1,5 @@
+family,n_unique_positions,n_background_residues,iterations,seed,observed_mean_percentile,observed_median_percentile,random_mean_percentile_mean,random_mean_percentile_sd,empirical_p_value_lower_tail,effect_observed_minus_random_mean
+ACCase,6,1328,10000,20260704,10.680221,9.525602,49.808384,11.793597,0.000200,-39.128163
+ALS,2,582,10000,20260704,4.639175,4.639175,49.940326,20.198242,0.002200,-45.301151
+EPSPS,1,443,10000,20260704,12.866817,12.866817,50.351625,28.635787,0.131887,-37.484808
+PPO,4,465,10000,20260704,8.010753,5.483871,50.347462,14.412285,0.000400,-42.336710

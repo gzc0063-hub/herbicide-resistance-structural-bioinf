@@ -751,3 +751,56 @@ the next cross-enzyme permutation/enrichment analysis, and keep HPPD in a separa
 contrast/status table unless a future primary source verifies a weed-evolved HPPD
 TSR mutation with accession-level support. This step is table integration only;
 the permutation/enrichment statistics and manuscript figures remain next.
+
+---
+
+## 29. Phase 4 permutation/enrichment test and non-core screen
+
+The panel review's biostatistics recommendation was implemented as a within-family
+permutation/enrichment test rather than a pooled logistic regression. For each
+enzyme family, the analysis draws random residue sets from that same enzyme's
+metric table, with set size equal to the number of accepted resistance positions
+for that family, and compares the real mean percentile-rank distance-to-core
+against the random-set distribution. Lower percentile means closer to the
+active-site core.
+
+Repeated accession/replicate rows at the same structural site are de-duplicated to
+unique structural positions before the test. This prevents the two PPO ΔG210 rows
+and the two PPO G399A rows from overweighting their sites merely because they have
+multiple source rows. The pooled mutation table still retains those biological
+replicate rows for traceability; only the permutation statistic uses unique
+positions.
+
+Implemented `scripts/build_phase4_analysis.py`, producing:
+
+- `output/tables/phase4_permutation_summary.csv`
+- `output/tables/phase4_non_core_position_screen.csv`
+
+Current 10,000-iteration results (`seed = 20260704`):
+
+- ACCase: 6 unique positions, observed mean percentile 10.68 vs random mean 49.81,
+  empirical lower-tail p = 0.000200.
+- ALS: 2 unique positions, observed mean percentile 4.64 vs random mean 49.94,
+  empirical lower-tail p = 0.002200.
+- EPSPS: 1 unique position, observed percentile 12.87 vs random mean 50.35,
+  empirical lower-tail p = 0.131887.
+- PPO: 4 unique positions, observed mean percentile 8.01 vs random mean 50.35,
+  empirical lower-tail p = 0.000400.
+
+**Interpretation decision:** PPO, ALS, and ACCase currently support the manuscript's
+central structural-zone claim: accepted TSR positions are substantially closer to
+the active-site core than same-family random residues. EPSPS is directionally
+consistent but has only one accepted mutation position, so its p-value should be
+treated as underpowered/descriptive, not as a family-level negative result.
+
+The non-core screen keeps the novelty/outlier question visible. More distal
+non-core candidate positions under the current percentile threshold include
+ACCase Cys2088Arg (25.9th percentile), PPO V361A (20.2nd percentile), EPSPS
+Pro106Ser (12.9th percentile), ACCase Gly2096Ala (12.8th percentile), and ACCase
+Trp2027Cys (10.4th percentile). PPO ΔG210 remains classified as non-core-adjacent
+(8.2nd percentile), matching its established story as adjacent to the active-site
+zone but mechanistically distinctive by deletion/helix effects.
+
+**Decision:** use the permutation summary and non-core screen as the quantitative
+Phase 4 backbone for manuscript figures and Results text. Do not treat HPPD as a
+mutation-family datapoint; keep it as the contrast case recorded in §25 and §28.
