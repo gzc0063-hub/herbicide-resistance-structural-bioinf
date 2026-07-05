@@ -35,7 +35,11 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
   affected ACCase mechanism annotation now carries an explicit "side-chain metrics are template-derived,
   not weed-specific" caveat (`scripts/build_review_driven_outputs.py`). *Still open (better fix):*
   homology-model the weed CT domain on 1UYS (SWISS-MODEL) and recompute ACCase SASA/RSA on the weed
-  sequence. Needs a web homology-model step; deferred to Tier 2/3.
+  sequence. The AJ310767 CT-domain FASTA has been prepared and validated at
+  `data/raw/ACCase_Alopecurus_AJ310767_CTdomain_1639_2204.fasta` (566 aa, exact AJ310767 residues
+  1639-2204). SWISS-MODEL template search was started without email:
+  `https://swissmodel.expasy.org/interactive/u3jF6Y/`. If/when the model is ready, download the PDB,
+  place it in `data/raw/`, and rerun only the ACCase metric path before regenerating Phase 4 outputs.
 - [x] **1.3 Relabel EPSPS Pro106Ser** DONE — `allosteric_hinge` → `adjacent`, with corrected
   binding-site-associated text (Baerson 2002 / Salmonella homolog; 3.85 Å is a CA-cutoff artifact).
 - [x] **1.4 De-uniform ACCase mechanism labels** DONE — now `direct_core` (2041, the one Délye modelled
@@ -133,6 +137,11 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 > without a primary-source-verified substitution.
 
 ## Change log (append newest at top)
+
+- 2026-07-05 (j): Prepared and committed the public AJ310767 ACCase CT-domain sequence for SWISS-MODEL
+  (`data/raw/ACCase_Alopecurus_AJ310767_CTdomain_1639_2204.fasta`), verified it exactly matches
+  AJ310767 residues 1639-2204, and started the SWISS-MODEL template search at
+  `https://swissmodel.expasy.org/interactive/u3jF6Y/`. Search was still running during browser polling.
 
 - 2026-07-05 (i): Completed Tier 3 item 3.1 by weaving published dynamic/docking/kinetic benchmarks
   into `docs/MANUSCRIPT_DRAFT.md` at sentence level. No generated tables changed. Remaining true
