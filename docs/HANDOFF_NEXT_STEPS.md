@@ -49,9 +49,12 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 - [x] **1.6 Fill EPSPS DOI** DONE — `10.1104/pp.001560` in `data/processed/epsps_mutations.csv`.
 - [x] **1.7 Clamp negative SASA/RSA** DONE — `clamp_nonneg` in `build_phase4_tables.py`; no negative
   values remain in the master table.
-- [ ] **1.8 Single-environment ACCase re-run.** Still open — needs ChimeraX. 5 of 6 ACCase positions
-  came from the Codex ChimeraX run; re-run the ACCase distance/SASA pipeline once in one environment.
-  (Cys2088Arg cross-checked; 2088→2014 confirmed independently.)
+- [x] **1.8 Single-environment ACCase re-run.** DONE — re-ran `scripts/chimerax_accase_distance_sasa.py`
+  in this machine's ChimeraX 1.12. All six reported ACCase mutation positions reproduced **exactly**
+  (Ile1781Leu 0.00/pct3.2, Trp2027Cys 5.60/10.4, Ile2041Asn 0.00/3.2, Asp2078Gly 5.19/8.7,
+  Cys2088Arg 11.83/25.9, Gly2096Ala 7.28/12.8), matching the committed metric CSV and the manuscript.
+  The committed CSV was left unchanged (regen produced only line-ending churn). ChimeraX is available in
+  the Claude environment, so the PPO/ALS metric CSVs can also be re-verified the same way if desired.
 
 ## Tier 2 — turns a resource into a finding
 
