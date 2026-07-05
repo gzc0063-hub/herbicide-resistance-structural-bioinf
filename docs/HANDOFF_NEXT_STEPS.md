@@ -51,13 +51,13 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 
 ## Tier 2 — turns a resource into a finding
 
-- [~] **2.1 Manuscript updated for Tier 1 (numbers + caveats); full reframe still pending.** DONE so far:
-  corrected all enrichment p-values to the regenerated tables; added the non-core-survives result
-  (the non-tautological finding) to Abstract + Results; added a "Template-Residue Transparency" Methods
-  subsection and an ACCase side-chain caveat to Limitations; corrected the EPSPS Pro106Ser text from
-  "allosteric" to binding-site-associated. *Still to do (the actual reframe):* restructure so the outlier
-  typology (ΔG210 deletion, V361A permissive, Cys2088Arg distal, Pro106Ser second-shell) is the lead
-  thesis and raw enrichment is the expected-baseline control — currently enrichment still leads.
+- [x] **2.1 Manuscript reframed around the outlier typology.** DONE. Corrected all p-values; added the
+  non-core-survives result and template-residue transparency; Abstract conclusion now leads with the
+  typology as the contribution and calls proximity enrichment the expected baseline; Introduction adds
+  an explicit expected-vs-novel thesis paragraph; Results enrichment section is framed as "establish the
+  baseline first," and the typology section is retitled "A Structural Typology of Resistance Positions
+  (the main contribution)." EPSPS relabelled binding-site-associated. Remaining polish for a later pass:
+  per-family "resistance-zone map" figure (2.3) and citation formatting.
 - [ ] **2.2 Expand ALS** to Ala122/Pro197/Asp376 (biggest single power gain; structure + sequences in
   hand). Needs new `als_mutations.csv` rows + re-run.
 - [ ] **2.3 Per-family "resistance-zone map" figure** (one structure cartoon per family, positions
