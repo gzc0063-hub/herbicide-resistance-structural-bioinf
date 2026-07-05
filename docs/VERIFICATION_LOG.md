@@ -393,3 +393,34 @@ fold-change (~10–55×) if citing Ki specifically.
   - Non-core candidate screen highlights the most distal accepted positions by
     distance percentile: ACCase Cys2088Arg (25.9), PPO V361A (20.2), EPSPS
     Pro106Ser (12.9), ACCase Gly2096Ala (12.8), and ACCase Trp2027Cys (10.4).
+
+## Review-driven mechanism annotation and manuscript-output check
+
+- Added `scripts/build_review_driven_outputs.py` and
+  `tests/test_review_driven_outputs.py`.
+- Test-driven check:
+  - First focused run failed because `scripts.build_review_driven_outputs` did not
+    exist.
+  - After implementation, `.venv\Scripts\python.exe -m unittest tests.test_review_driven_outputs -v`
+    passed.
+- Generated outputs:
+  - `output/tables/phase4_mechanism_annotations.csv`
+  - `output/tables/manuscript_table_1_family_permutation_summary.csv`
+  - `output/tables/manuscript_table_2_unique_position_mechanisms.csv`
+  - `output/tables/manuscript_table_3_hppd_contrast_status.csv`
+  - `output/figures/figure_1_workflow.svg`
+  - `output/figures/figure_2_permutation_enrichment.svg`
+  - `output/figures/figure_3_position_screen.svg`
+  - `output/figures/figure_4_distance_rsa_conservation.svg`
+- Output checks in `tests/test_review_driven_outputs.py`:
+  - Mechanism table contains 13 unique structural mutation positions.
+  - HPPD is excluded from mutation rows and retained in the manuscript contrast
+    table with `accepted_tsr_rows = 0`.
+  - Mechanism labels are limited to the controlled vocabulary.
+  - Unresolved mechanisms are not labeled `literature_supported`.
+  - PPO deltaG210 is annotated as `allosteric_hinge` with
+    `literature_supported` evidence.
+  - ACCase Cys2088Arg is annotated as `interface_induced_fit`.
+- Added interpretive docs:
+  - `docs/REVIEW_RESPONSE_STATIC_VS_DYNAMIC.md`
+  - `docs/MANUSCRIPT_RESULTS_PHASE4.md`

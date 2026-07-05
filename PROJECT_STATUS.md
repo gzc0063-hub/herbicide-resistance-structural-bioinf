@@ -64,8 +64,13 @@ pushed to https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf
   permutation test recommended by the panel review. Current outputs are
   `output/tables/phase4_permutation_summary.csv` and
   `output/tables/phase4_non_core_position_screen.csv`.
+- **Review-driven Phase 4 manuscript outputs: COMPLETE.** The later static-vs-
+  dynamic critique is reconciled in `docs/REVIEW_RESPONSE_STATIC_VS_DYNAMIC.md`.
+  `scripts/build_review_driven_outputs.py` writes mechanism annotations,
+  manuscript summary tables, and four SVG figures. `docs/MANUSCRIPT_RESULTS_PHASE4.md`
+  contains the first concise Results draft and limitations framing.
 - **Not completed:** Phase 3 (FAT,
-  DHODH - needs structure decision), Phase 4 manuscript figures/writeup, Phase 5
+  DHODH - needs structure decision), Phase 4 final manuscript assembly, Phase 5
   (deposit/submit).
 
 ---
@@ -87,6 +92,8 @@ pushed to https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf
 | **`DECISION_LOG.md`** | **The most important file if you only read one.** Every directional decision, in order, with reasoning - project selection, methodology fixes, why PPO then ALS were piloted, every data correction, both validation-gate outcomes. Read this to understand *why* the project looks the way it does |
 | `VERIFICATION_LOG.md` | The independent fact-checking record - which citations/accessions/claims were verified against primary sources and how |
 | `EXTERNAL_REVIEW_RESPONSE.md` | Reconciled response to the external/Claude review: ALS interface-core correction, RSA caveat, HPPD reframing |
+| `REVIEW_RESPONSE_STATIC_VS_DYNAMIC.md` | Response to the later static-vs-dynamic critique: accepted limitations, already-handled issues, out-of-scope MD requests, and future-work notes |
+| `MANUSCRIPT_RESULTS_PHASE4.md` | Draft Phase 4 Results language using the current permutation, mechanism-annotation, and limitation outputs |
 | `CLAUDE_CODE_NEXT_STEPS.md` | An early working prompt from before Phase 1 execution - now superseded by DECISION_LOG, kept for history |
 | `references/*.pdf` | Primary-source papers living directly in the repo, including PPO, ALS, EPSPS, and ACCase references |
 
@@ -140,6 +147,7 @@ here has been edited - if you need to re-derive anything, start here.
 | `rsa.py` | Adds Tien et al. 2013 max-SASA and RSA columns to the current static metric CSV outputs while preserving raw SASA |
 | `build_phase4_tables.py` | Phase 4 table builder: joins mutation rows to family-specific distance/RSA and conservation metrics, while keeping HPPD separate as a contrast family |
 | `build_phase4_analysis.py` | Phase 4 permutation/enrichment analysis: samples same-size random residue sets within each enzyme and screens unique mutation positions by proximity class |
+| `build_review_driven_outputs.py` | Builds review-driven mechanism annotations, manuscript-ready summary tables, and SVG figures from the Phase 4 outputs |
 | `reference_conservation.py` | Shared helper for pairwise reference-indexed conservation when MAFFT is unavailable |
 | `pdb_static_metrics.py` | Lightweight PDB parser/contact/SASA helpers used when ChimeraX is unavailable |
 | `active_site_metrics.py` | Shared helper for standardized distance-to-core and nearest-other-core metrics |
@@ -156,8 +164,11 @@ out of that mutation table and is represented in
 family. `tables/phase4_permutation_summary.csv` reports the within-family
 permutation/enrichment results for unique structural mutation positions, and
 `tables/phase4_non_core_position_screen.csv` is the de-duplicated screen for direct
-core, adjacent non-core, and more distal non-core candidate positions. `figures/`
-is still reserved for Phase 4 synthesis figures.
+core, adjacent non-core, and more distal non-core candidate positions.
+`tables/phase4_mechanism_annotations.csv` and `tables/manuscript_table_*` are the
+review-driven manuscript tables. `figures/` contains four SVG figure drafts:
+workflow, permutation enrichment, position screen, and distance/RSA/conservation
+scatter.
 
 ---
 
@@ -171,12 +182,13 @@ substitution with accession-level support.
 RSA normalization is now complete. Raw SASA remains useful for traceability, but
 Phase 4 should use `rsa_tien2013` as the cross-enzyme exposure covariate.
 
-**Phase 4** now has its starter pooled/contrast tables and the recommended
-permutation/enrichment test. Next, turn the table outputs into manuscript-ready
-figures and a concise Results narrative. Current statistical signal: PPO, ALS, and
-ACCase are strongly enriched for low distance-to-core percentile positions; EPSPS
-has the same directional pattern but only one accepted mutation position, so treat
-its p-value as underpowered/descriptive rather than a family-level inference.
+**Phase 4** now has pooled/contrast tables, the recommended permutation/enrichment
+test, review-driven mechanism annotations, four manuscript figure drafts, and a
+concise Results draft. Current statistical signal: PPO, ALS, and ACCase are
+strongly enriched for low distance-to-core percentile positions; EPSPS has the same
+directional pattern but only one accepted mutation position, so treat its p-value
+as underpowered/descriptive rather than a family-level inference. Next, refine the
+figures and Results text into a full manuscript section.
 
 **Phase 3 (FAT, DHODH)** is the one phase that needs something beyond what's set
 up so far - these two targets don't have existing crystal structures, so they need

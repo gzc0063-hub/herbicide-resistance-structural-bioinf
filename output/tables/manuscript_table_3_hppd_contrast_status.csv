@@ -1,0 +1,2 @@
+family,status,accepted_tsr_rows,active_site_metric_file,notes
+HPPD,no_verified_weed_tsr_accepted,0,data/processed/hppd_5ywg_active_site_metrics.csv,Retained as a structural negative/contrast case after source audit; do not pool fabricated mutation rows.

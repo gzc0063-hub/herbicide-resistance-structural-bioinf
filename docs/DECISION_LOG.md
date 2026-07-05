@@ -804,3 +804,49 @@ zone but mechanistically distinctive by deletion/helix effects.
 **Decision:** use the permutation summary and non-core screen as the quantitative
 Phase 4 backbone for manuscript figures and Results text. Do not treat HPPD as a
 mutation-family datapoint; keep it as the contrast case recorded in §25 and §28.
+
+---
+
+## 30. Static-vs-dynamic review response and manuscript framing
+
+A later critical review argued that static distance/RSA/conservation metrics cannot
+capture molecular dynamics, induced fit, loop breathing, solvent effects, or binding
+free energy. That critique is scientifically valid as a limitation, but it does not
+change the project scope. The project remains a comparative static structural
+bioinformatics resource, not a mutant-state MD or free-energy prediction pipeline.
+
+The review was reconciled in `docs/REVIEW_RESPONSE_STATIC_VS_DYNAMIC.md` by sorting
+its points into: already addressed, valid limitation, out of scope, and future work.
+Key decisions:
+
+- Do **not** add a new molecular dynamics pipeline.
+- Cite literature MD/docking/kinetic/free-energy studies as mechanism benchmarks
+  where they exist.
+- Present the central claim as structural-zone enrichment plus mechanism
+  annotation, not prediction of binding energetics.
+- Keep HPPD as a no-verified-weed-TSR contrast case.
+- Treat EPSPS Pro106Ser as directionally close but underpowered in the current
+  permutation analysis and mechanistically allosteric/hinge-like rather than a
+  direct ligand-contact residue.
+
+Implemented `scripts/build_review_driven_outputs.py`, producing:
+
+- `output/tables/phase4_mechanism_annotations.csv`
+- `output/tables/manuscript_table_1_family_permutation_summary.csv`
+- `output/tables/manuscript_table_2_unique_position_mechanisms.csv`
+- `output/tables/manuscript_table_3_hppd_contrast_status.csv`
+- `output/figures/figure_1_workflow.svg`
+- `output/figures/figure_2_permutation_enrichment.svg`
+- `output/figures/figure_3_position_screen.svg`
+- `output/figures/figure_4_distance_rsa_conservation.svg`
+
+The mechanism annotation table uses a controlled vocabulary:
+`direct_core`, `adjacent`, `second_shell_channel`, `allosteric_hinge`,
+`interface_induced_fit`, and `unresolved_static_candidate`. Unresolved mechanisms
+are not promoted to literature-supported conclusions; PPO V361A remains
+`unresolved_static_candidate` with `static_supported` evidence only.
+
+**Decision:** manuscript development should now proceed from these outputs. The
+Results text should emphasize that static metrics identify structural context and
+enrichment, while literature mechanism annotations explain dynamic/biophysical
+interpretation where supported.
