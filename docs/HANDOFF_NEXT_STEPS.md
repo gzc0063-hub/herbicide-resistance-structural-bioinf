@@ -239,6 +239,23 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 
 ## Change log (append newest at top)
 
+- 2026-07-05 (u): Handled the three remaining submission-prep items (Claude Code, per user direction).
+  (1) Figure format: confirmed Wiley's general vector-figure requirement applies to PMS (PDF/EPS, not
+  TIFF, since all 5 figures are line-art/schematics). Added `scripts/convert_figures_for_pms.py`
+  (svglib + reportlab) writing to a new `output/figures_pms/` folder; visually spot-checked all 5 PDFs.
+  While checking Figure 5, found and fixed a real pre-existing bug in
+  `scripts/build_resistance_zone_figure.py`: the label-stagger logic only alternated between 2 vertical
+  offsets, so the 4 ALS direct-core positions (identical percentile) rendered as illegible overlapping
+  text regardless of file format. Fixed with a longer offset ladder; confirmed all 4 labels now render
+  distinctly. (2) Zenodo/data DOI: added `.zenodo.json` alongside the existing `CITATION.cff`, and wrote
+  `docs/ZENODO_DEPOSIT_GUIDE.md` explaining what a Zenodo deposit is, why the journal wants it over a bare
+  GitHub link, exactly what's already prepared, and the remaining account-linking + release steps only
+  the user can do — deliberately not triggering a release yet since the manuscript is still being edited.
+  (3) ORCID: added a `[to be added]` placeholder in the manuscript author block and a commented-out
+  `orcid:` field in `CITATION.cff`, left for the user to fill in. Added `svglib`/`reportlab` to
+  `requirements.txt`. All 20 tests pass, citation/reference consistency re-verified (22/22), `git diff
+  --check` clean.
+
 - 2026-07-05 (t): Resolved the two remaining structure-citation gaps flagged in the previous pass
   (Claude Code, per user-supplied RCSB citations, independently re-verified against RCSB's own data API
   before use — matched exactly). EPSPS structure 8UMJ's RCSB primary citation is Reed et al. 2024 (PNAS,

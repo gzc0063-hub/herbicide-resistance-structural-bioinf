@@ -51,8 +51,12 @@ def main(repo=Path(".")):
         for r in sorted(by_fam.get(fam, []), key=lambda r: float(r["percentile_rank_distance_to_core"])):
             x = px(r["percentile_rank_distance_to_core"])
             col = COLORS.get(r["mechanism_label"], "#555")
-            # stagger labels vertically to avoid overlap
-            dy = -14 if len([p for p in placed if abs(p - x) < 70]) % 2 == 0 else 16
+            # stagger labels vertically to avoid overlap; a plain 2-way alternation
+            # collides again every 2 points (e.g. 4 ALS positions sharing one percentile
+            # would put points 1&3 and 2&4 at the same offset), so use a longer ladder
+            dy_ladder = (-14, 16, -30, 32, -46, 48, -62, 64)
+            nearby = len([p for p in placed if abs(p - x) < 70])
+            dy = dy_ladder[nearby % len(dy_ladder)]
             placed.append(x)
             body.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="7" fill="{col}"/>')
             lbl = r["mutation_ids"].replace(";", ", ")

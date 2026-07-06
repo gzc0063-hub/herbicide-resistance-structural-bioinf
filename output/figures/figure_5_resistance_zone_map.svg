@@ -20,9 +20,9 @@
 <circle cx="257" cy="202" r="7" fill="#2f6fbb"/>
 <text x="257" y="218" font-size="10" font-family="Arial" text-anchor="middle">Pro197Ala</text>
 <circle cx="257" cy="202" r="7" fill="#2f6fbb"/>
-<text x="257" y="188" font-size="10" font-family="Arial" text-anchor="middle">Trp574Leu</text>
+<text x="257" y="172" font-size="10" font-family="Arial" text-anchor="middle">Trp574Leu</text>
 <circle cx="257" cy="202" r="7" fill="#2f6fbb"/>
-<text x="257" y="218" font-size="10" font-family="Arial" text-anchor="middle">Ser653Asn</text>
+<text x="257" y="234" font-size="10" font-family="Arial" text-anchor="middle">Ser653Asn</text>
 <line x1="150" y1="290" x2="840" y2="290" stroke="#ccc"/>
 <text x="138" y="294" font-size="14" font-family="Arial" text-anchor="end">EPSPS</text>
 <circle cx="446" cy="290" r="7" fill="#46945f"/>
@@ -38,7 +38,7 @@
 <circle cx="436" cy="378" r="7" fill="#2f9fa8"/>
 <text x="436" y="394" font-size="10" font-family="Arial" text-anchor="middle">Trp2027Cys</text>
 <circle cx="502" cy="378" r="7" fill="#46945f"/>
-<text x="502" y="364" font-size="10" font-family="Arial" text-anchor="middle">Gly2096Ala</text>
+<text x="502" y="348" font-size="10" font-family="Arial" text-anchor="middle">Gly2096Ala</text>
 <circle cx="840" cy="378" r="7" fill="#7b5bc6"/>
 <text x="840" y="364" font-size="10" font-family="Arial" text-anchor="middle">Cys2088Arg</text>
 <line x1="150" y1="440" x2="840" y2="440" stroke="#333"/>

@@ -16,6 +16,7 @@ authors:
     given-names: Gourav
     email: gzc0063@gmail.com
     affiliation: "Department of Crop, Soil and Environmental Sciences, Auburn University, Auburn, AL, USA"
+    # orcid: "https://orcid.org/0000-0000-0000-0000"  # TODO: add ORCID iD, then uncomment
 repository-code: "https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf"
 license: MIT
 keywords:

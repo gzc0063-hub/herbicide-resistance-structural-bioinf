@@ -70,6 +70,7 @@ git log --oneline --decorate --max-count=12
 | `CONTRIBUTING.md` | Working convention for blocked papers/PDFs. | Read before source-audit work. |
 | `requirements.txt` | Python dependencies. | Install before running scripts. |
 | `CITATION.cff` | Citation metadata. | Use when preparing release/Zenodo. |
+| `.zenodo.json` | Zenodo-specific deposit metadata (mirrors CITATION.cff). | Read alongside `docs/ZENODO_DEPOSIT_GUIDE.md` before cutting a release. |
 | `LICENSE` | MIT license. | Code licensing. |
 | `data/raw/` | Raw source files: PDB, FASTA, downloaded model metadata, source tables. | Do not edit by hand; use as provenance. |
 | `data/processed/` | Cleaned mutation tables, metric CSVs, conservation outputs, validation notes. | Main analysis inputs and intermediate outputs. |
@@ -77,6 +78,7 @@ git log --oneline --decorate --max-count=12
 | `tests/` | Unit/integration tests. | Verify mapping, outputs, RSA, scripts. |
 | `output/tables/` | Generated manuscript and Phase 4 tables. | Read for final numeric results. |
 | `output/figures/` | Generated SVG figures. | Manuscript figure drafts. |
+| `output/figures_pms/` | PDF figures converted for Pest Management Science submission (Wiley requires vector figures as PDF/EPS, not TIFF). | Regenerate with `scripts/convert_figures_for_pms.py` whenever the SVGs change. |
 | `output/presentations/` | Canonical project presentation deck. | Use the saved PPTX as the baseline; do not regenerate preview assets into the repo. |
 | `docs/` | Decisions, handoff, reviews, manuscript, references, specs. | Project memory and writing layer. |
 | `docs/references/` | Archived source PDFs. | Primary-source evidence library. |
@@ -336,7 +338,8 @@ Start with:
 
 ### Where are the figures?
 
-Use `output/figures/figure_*.svg`.
+Authored/source: `output/figures/figure_*.svg`. Submission-format PDFs for Pest Management Science:
+`output/figures_pms/figure_*.pdf`, regenerated from the SVGs by `scripts/convert_figures_for_pms.py`.
 
 ### Where is the presentation?
 
