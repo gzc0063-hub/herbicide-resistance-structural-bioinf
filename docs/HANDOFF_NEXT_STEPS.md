@@ -239,6 +239,18 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 
 ## Change log (append newest at top)
 
+- 2026-07-05 (t): Resolved the two remaining structure-citation gaps flagged in the previous pass
+  (Claude Code, per user-supplied RCSB citations, independently re-verified against RCSB's own data API
+  before use — matched exactly). EPSPS structure 8UMJ's RCSB primary citation is Reed et al. 2024 (PNAS,
+  evolving dual-trait EPSPS variants via yeast selection); HPPD structure 5YWG's is Lin et al. 2019
+  (FEBS J, HPPD-inhibition kinetics/crystallography/computational study). Both added to
+  `docs/MANUSCRIPT_DRAFT.md` with deliberately conservative wording ("RCSB-linked primary citation," not
+  resistance evidence, since neither paper is about weed resistance) as refs 3 and 5, requiring a full
+  renumbering of the reference list (prior refs 3-20 -> 4-22); re-verified programmatically that all 22
+  references are cited exactly once in strict first-appearance order. Logged in `docs/VERIFICATION_LOG.md`
+  and `docs/DECISION_LOG.md` (#36). `git diff --check` clean. Remaining real gaps: PMS figure-format
+  confirmation, Zenodo/data DOI at submission, ORCID.
+
 - 2026-07-05 (s): Prepared the manuscript for Pest Management Science submission (Claude Code, per user
   request and journal choice). Converted all in-text citations to PMS's superscript sequential-numbering
   style, added inline citations at every structure/mutation mention that previously lacked one (Koch 2004,

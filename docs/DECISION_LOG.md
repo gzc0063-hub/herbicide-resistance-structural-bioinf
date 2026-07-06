@@ -992,3 +992,33 @@ unless the user explicitly asks for a redesign. Do not edit the presentation
 during Phase 5 audit work. Do not add FAT or DHODH to Phase 4 pooled tables or
 manuscript outputs until target, mutation, and structure/model evidence pass the
 same gate used for the main families.
+
+---
+
+## 36. Manuscript prepared for Pest Management Science; two remaining structure citations resolved
+
+Two things happened in sequence: first, the user chose *Pest Management Science*
+(PMS) as the target journal, which was then citation-formatted (superscript
+sequential numbering, author block, required Acknowledgments/Funding/Competing
+Interests statements, abstract trimmed to PMS's 150-200 word limit). That pass
+left two structures — EPSPS's 8UMJ and HPPD's 5YWG — named by PDB ID only in
+Methods, because no verified origin-paper citation had been located and none
+was fabricated.
+
+The user then supplied RCSB-verified citation details for both, independently
+re-confirmed against RCSB's own data API before use (see
+`docs/VERIFICATION_LOG.md`): 8UMJ's RCSB primary citation is Reed et al. 2024
+(PNAS, evolving dual-trait EPSPS variants via a synthetic yeast selection
+system); 5YWG's is Lin et al. 2019 (FEBS J, HPPD-inhibition kinetics/
+crystallography/computational study).
+
+**Decision:** cite both, but conservatively — as the RCSB-linked primary
+citation for the PDB entry's structure provenance, explicitly not as
+weed-resistance evidence, since neither paper is about herbicide resistance.
+This is a different evidentiary category from every other reference in the
+manuscript (which are mutation-evidence or active-site-definition citations),
+so the wording distinction matters and was kept in both the Methods prose and
+the reference-list bracketed notes. Adding these two required renumbering the
+entire reference list (prior refs 3-20 became 4-22), re-verified
+programmatically afterward for exact 1:1 citation-to-reference correspondence
+in strict first-appearance order.

@@ -195,6 +195,33 @@ fold-change (~10–55×) if citing Ki specifically.
   refutation — but it is strong enough evidence to stop treating the
   correspondence as a live open hypothesis.
 
+## RCSB primary-citation check — EPSPS structure 8UMJ and HPPD structure 5YWG
+
+- Both had previously been named by PDB ID only in `docs/MANUSCRIPT_DRAFT.md`'s Methods section with no
+  origin-paper citation, because none had been located as of the 2026-07-05 PMS citation-formatting pass.
+- Confirmed independently via `data.rcsb.org/rest/v1/core/entry/8UMJ` and `.../5YWG` (the same RCSB data
+  API used elsewhere in this log, not a secondary summary):
+  - **8UMJ** — `struct.title`: "Wild type EPSP synthase complexed with glyphosate and shikimate-3-phosphate".
+    `rcsb_primary_citation`: Reed KB, Kim W, Lu H, Larue CT, Guo S, Brooks SM, Montez MR, Wagner JW,
+    Zhang YJ, Alper HS (2024) Evolving dual-trait EPSP synthase variants using a synthetic yeast selection
+    system. *Proc Natl Acad Sci USA* 121:e2317027121. DOI 10.1073/pnas.2317027121. Matches exactly, field
+    for field, what the user independently reported from RCSB.
+  - **5YWG** — `struct.title`: "Crystal structure of Arabidopsis thaliana HPPD complexed with Mesotrione".
+    `rcsb_primary_citation`: Lin HY, Yang JF, Wang DW, Hao GF, Dong JQ, Wang YX, Yang WC, Wu JW, Zhan CG,
+    Yang GF (2019) Molecular insights into the mechanism of 4-hydroxyphenylpyruvate dioxygenase inhibition:
+    enzyme kinetics, X-ray crystallography and computational simulations. *FEBS J* 286:975-990. DOI
+    10.1111/febs.14747. Matches exactly what the user independently reported.
+- **Important distinction, kept deliberately conservative in the manuscript's wording:** neither paper is
+  about weed herbicide resistance. 8UMJ's paper is about *engineering* dual-trait EPSPS variants via a
+  synthetic yeast selection system (it happens to include the wild-type maize EPSPS-glyphosate-S3P
+  structure used here as the structural anchor); 5YWG's paper is a kinetics/crystallography/computational
+  study of the HPPD inhibition mechanism. Both are cited in the manuscript only as the RCSB-linked
+  structure-provenance record for the PDB entry, not as resistance evidence — worded that way explicitly
+  in both the Methods text and the reference-list bracketed notes.
+- Added as manuscript references 3 (8UMJ/Reed 2024) and 5 (5YWG/Lin 2019), which required renumbering
+  every subsequent reference by +2 (previously-numbered refs 3-20 became 4-22). Re-verified programmatically
+  afterward: all 22 references are cited exactly once, in strict first-appearance order, no gaps or orphans.
+
 ## Not yet independently verified
 
 - ABD52326/ABD52328 as a second legitimate ΔG210 pair, "confirmed via 2 independent
