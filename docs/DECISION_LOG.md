@@ -964,3 +964,31 @@ were scoped as Phase 5 audit work rather than Phase 4 pooling; and
 and any target-specific spec named in the handoff. Keep handoff updates in the
 same commit as substantive docs/code changes so the next agent does not have to
 infer session state from git history alone.
+
+---
+
+## 35. Canonical presentation baseline and Phase 5 starter audit
+
+The user-attached PowerPoint has replaced all prior generated presentation
+outputs as the canonical deck for this project:
+`output/presentations/herbicide_resistance_structural_bioinformatics_talk.pptx`.
+Old generated decks, rendered preview folders, montages, inspect files, and the
+failed asset folder were removed from `output/presentations/` so future agents
+do not accidentally continue from the wrong deck lineage.
+
+The user-attached handoff/onboarding guide was archived as
+`docs/PROJECT_HANDOFF_GUIDE.doc`.
+
+Phase 5 was also advanced from design to starter audit artifacts:
+`docs/PHASE5_FAT_DHODH_AUDIT.md` and
+`data/processed/phase5_target_status.csv`. These remain audit artifacts only.
+FAT is the first actionable audit target because plant FAT/acyl-ACP thioesterase
+structures and inhibitor-complex entries are available. DHODH remains gated
+because mutation evidence and a plant structure/model route still need to be
+verified.
+
+**Decision:** preserve the attached deck's style for future presentation edits
+unless the user explicitly asks for a redesign. Do not edit the presentation
+during Phase 5 audit work. Do not add FAT or DHODH to Phase 4 pooled tables or
+manuscript outputs until target, mutation, and structure/model evidence pass the
+same gate used for the main families.

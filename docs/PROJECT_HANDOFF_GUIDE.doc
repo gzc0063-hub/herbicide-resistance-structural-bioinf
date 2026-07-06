@@ -1,0 +1,292 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>Project Handoff Guide — Herbicide Resistance Structural Bioinformatics</title>
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->
+<style>
+@page{size:8.5in 11in;margin:0.85in;}
+body{font-family:Georgia,'Times New Roman',serif;font-size:11pt;line-height:1.5;color:#24302A;}
+h1,h2,h3{font-family:Arial,sans-serif;}
+table{border-collapse:collapse;}
+th,td{vertical-align:top;}
+a,a.lnk{color:#2F6FBB;text-decoration:underline;}
+code,code.p{font-family:Consolas,'Courier New',monospace;font-size:9.5pt;background:#F0EEE7;}
+</style>
+</head>
+<body>
+<div style="font-family:'Spectral',serif;color:#24302A;font-size:15.5px;line-height:1.66;">
+
+<!-- COVER -->
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#3B6B4A;">Project Handoff &amp; Onboarding Guide</div>
+<h1 style="font-family:'Spectral',serif;font-weight:600;font-size:34px;line-height:1.15;margin:10px 0 6px;color:#14211B;">Cross-Site-of-Action Structural Bioinformatics of Herbicide Resistance</h1>
+<p style="font-size:17px;line-height:1.5;color:#4A554E;margin:0 0 18px;font-style:italic;">A plain-language guide to what this project is, how it works, what we found, and what is left to do — written so a collaborator from any background can follow it.</p>
+<div style="display:flex;gap:24px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:#5A6660;border-top:2px solid #DED9CD;border-bottom:2px solid #DED9CD;padding:12px 0;margin-bottom:22px;">
+  <span><strong style="color:#24302A;">Repository:</strong> <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf" target="_blank">github.com/gzc0063-hub/herbicide-resistance-structural-bioinf</a></span>
+  <span><strong style="color:#24302A;">Status:</strong> Phase 4 complete · manuscript in internal review</span>
+</div>
+
+<!-- HOW TO READ / TL;DR -->
+<div style="background:#F3F1EA;border:1px solid #E3DECF;border-radius:8px;padding:20px 24px;margin-bottom:26px;">
+  <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:14px;letter-spacing:0.02em;color:#2E5540;margin-bottom:8px;">THE PROJECT IN ONE PARAGRAPH</div>
+  <p style="margin:0;font-size:15.5px;line-height:1.6;">Weeds become resistant to herbicides. One important way this happens is a tiny change (a <em>mutation</em>) in the exact protein the herbicide is designed to attack. These proteins are usually studied one at a time. This project put <strong>seven</strong> of those protein targets on a single, consistent measuring stick to ask one question: <strong>when resistance mutations appear across completely unrelated targets, do they tend to land in the same kind of structural neighborhood?</strong> Using only public 3-D protein structures and standard, reproducible calculations, we found that the answer is yes — resistance positions sit much closer to the business end of the protein than chance would predict — and, more importantly, we built a shared framework that sorts those mutations into meaningful categories rather than just saying "near the active site."</p>
+</div>
+
+<!-- CONTENTS -->
+<h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:15px;letter-spacing:0.08em;text-transform:uppercase;color:#3B6B4A;border-top:2px solid #14211B;padding-top:10px;margin:0 0 12px;">Contents</h2>
+<div style="font-size:14px;line-height:1.9;color:#3A443E;margin-bottom:8px;">
+  <div>1 · What this project is about</div>
+  <div>2 · Why it matters (the real-world problem)</div>
+  <div>3 · Glossary — every term in plain English</div>
+  <div>4 · Is it unique? What is new here</div>
+  <div>5 · The seven target families</div>
+  <div>6 · Methodology — the pipeline, step by step</div>
+  <div>7 · The tools we used, and why</div>
+  <div>8 · How the analysis was actually run</div>
+  <div>9 · Findings — results and every figure explained</div>
+  <div>10 · What the results mean</div>
+  <div>11 · Practical implications</div>
+  <div>12 · Limitations (what this does not do)</div>
+  <div>13 · Conclusion</div>
+  <div>14 · Future work (Phase 5)</div>
+  <div>15 · What is still needed for publication</div>
+  <div>16 · Repository map — where everything lives</div>
+  <div>17 · Key references</div>
+</div>
+
+<!-- 1 -->
+<h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;color:#14211B;border-top:2px solid #14211B;padding-top:14px;margin:30px 0 10px;">1 · What this project is about</h2>
+<p>Herbicides kill weeds by jamming a specific protein the plant needs to survive — often an <strong>enzyme</strong> (a protein that carries out a chemical reaction). Each herbicide "family" is built to hit a particular enzyme, called its <strong>site of action</strong> or <strong>target</strong>. Over time, weed populations evolve ways to survive. The most direct route is <strong>target-site resistance (TSR)</strong>: the plant's own target enzyme changes shape slightly — usually a single altered building block — so the herbicide no longer sticks well, while the enzyme still works well enough for the plant to live.</p>
+<p>This project is a <strong>comparative structural-bioinformatics study</strong>. "Structural" means we work with the three-dimensional shapes of these proteins. "Bioinformatics" means we do it with data and computer analysis rather than lab experiments. "Comparative" is the key word: instead of studying one target enzyme in isolation, we compared resistance mutations <em>across seven unrelated targets at once</em>, using the exact same measurements for each, so the families can finally be put side by side.</p>
+<p>Concretely, for every confirmed resistance mutation we asked three simple questions about <em>where</em> that mutation sits in the protein: How close is it to the part that binds the herbicide? How exposed is it to the surrounding water? And how unchanged (conserved) is that position across many related species? Then we tested whether the pattern we saw could just be chance.</p>
+
+<!-- 2 -->
+<h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;color:#14211B;border-top:2px solid #14211B;padding-top:14px;margin:30px 0 10px;">2 · Why it matters</h2>
+<p>Two facts make this urgent. First, almost no genuinely new herbicide mechanisms have reached the market in decades — the chemical toolbox is not being refilled. Second, resistance keeps spreading; every major herbicide class now has resistant weed populations somewhere in the world. When a resistance mutation spreads through a field, an entire chemistry can stop working on that farm.</p>
+<p>Understanding resistance at the structural level helps on both sides of the problem: it helps <strong>diagnose and predict</strong> which mutations are dangerous, and it informs the <strong>design of new herbicides</strong> that are harder to escape. This project contributes a shared, reproducible way to read the structural "signature" of resistance across many targets at once.</p>
+
+<!-- 3 GLOSSARY -->
+<h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;color:#14211B;border-top:2px solid #14211B;padding-top:14px;margin:30px 0 10px;">3 · Glossary — every term in plain English</h2>
+<p style="margin-bottom:14px;color:#4A554E;">Keep this handy; the rest of the document uses these words freely.</p>
+<table style="width:100%;border-collapse:collapse;font-size:11pt;"><tbody>
+  <tr><td style="width:34%;background:#F3F1EA;padding:8px 12px;font-weight:bold;vertical-align:top;border:1px solid #E3DECF;">Enzyme</td><td style="padding:8px 12px;vertical-align:top;border:1px solid #E3DECF;">A protein that speeds up a specific chemical reaction the plant needs. Herbicide targets are usually enzymes.</td></tr>
+  <tr><td style="width:34%;background:#F3F1EA;padding:8px 12px;font-weight:bold;vertical-align:top;border:1px solid #E3DECF;">Site of action / target</td><td style="padding:8px 12px;vertical-align:top;border:1px solid #E3DECF;">The specific enzyme a herbicide is designed to block.</td></tr>
+  <tr><td style="width:34%;background:#F3F1EA;padding:8px 12px;font-weight:bold;vertical-align:top;border:1px solid #E3DECF;">Active site</td><td style="padding:8px 12px;vertical-align:top;border:1px solid #E3DECF;">The pocket on the enzyme where its chemistry happens — and usually where the herbicide binds. We call the innermost binding residues the <em>active-site core</em>.</td></tr>
+  <tr><td style="width:34%;background:#F3F1EA;padding:8px 12px;font-weight:bold;vertical-align:top;border:1px solid #E3DECF;">Residue</td><td style="padding:8px 12px;vertical-align:top;border:1px solid #E3DECF;">One amino-acid building block in a protein chain. Proteins are chains of hundreds of residues, each numbered by position.</td></tr>
+  <tr><td style="width:34%;background:#F3F1EA;padding:8px 12px;font-weight:bold;vertical-align:top;border:1px solid #E3DECF;">Mutation</td><td style="padding:8px 12px;vertical-align:top;border:1px solid #E3DECF;">A change to a residue. E.g. <code class="p">Pro197Ala</code> means "position 197 changed from proline to alanine." A deletion (e.g. <code class="p">ΔG210</code>) removes a residue entirely.</td></tr>
+  <tr><td style="width:34%;background:#F3F1EA;padding:8px 12px;font-weight:bold;vertical-align:top;border:1px solid #E3DECF;">Target-site resistance (TSR)</td><td style="padding:8px 12px;vertical-align:top;border:1px solid #E3DECF;">Resistance caused by a mutation in the target enzyme itself. Our focus.</td></tr>
+  <tr><td style="width:34%;background:#F3F1EA;padding:8px 12px;font-weight:bold;vertical-align:top;border:1px solid #E3DECF;">Non-target-site resistance (NTSR)</td><td style="padding:8px 12px;vertical-align:top;border:1px solid #E3DECF;">Resistance from everything else the plant does — breaking the herbicide down, keeping it out, or making extra enzyme. Not studied here.</td></tr>
+  <tr><td style="width:34%;background:#F3F1EA;padding:8px 12px;font-weight:bold;vertical-align:top;border:1px solid #E3DECF;">PDB structure</td><td style="padding:8px 12px;vertical-align:top;border:1px solid #E3DECF;">A 3-D model of a protein solved by experiment, stored in the public Protein Data Bank with a 4-character ID (e.g. <code class="p">1SEZ</code>).</td></tr>
+  <tr><td style="width:34%;background:#F3F1EA;padding:8px 12px;font-weight:bold;vertical-align:top;border:1px solid #E3DECF;">Homology model</td><td style="padding:8px 12px;vertical-align:top;border:1px solid #E3DECF;">A computed 3-D structure for a protein we lack a solved structure for, built using a related protein as a template. Less certain than a solved structure.</td></tr>
+  <tr><td style="width:34%;background:#F3F1EA;padding:8px 12px;font-weight:bold;vertical-align:top;border:1px solid #E3DECF;">Ligand</td><td style="padding:8px 12px;vertical-align:top;border:1px solid #E3DECF;">A small molecule bound in the pocket — here, the herbicide, the natural substrate, or a metal ion. "Ligand-bound" structures show us exactly where the pocket is.</td></tr>
+  <tr><td style="width:34%;background:#F3F1EA;padding:8px 12px;font-weight:bold;vertical-align:top;border:1px solid #E3DECF;">Distance-to-core percentile</td><td style="padding:8px 12px;vertical-align:top;border:1px solid #E3DECF;">How close a residue is to the active-site core, ranked against every other residue in the same protein. <strong>Low = close.</strong> Using a rank lets big and small proteins be compared fairly.</td></tr>
+  <tr><td style="width:34%;background:#F3F1EA;padding:8px 12px;font-weight:bold;vertical-align:top;border:1px solid #E3DECF;">SASA / RSA</td><td style="padding:8px 12px;vertical-align:top;border:1px solid #E3DECF;">Solvent-accessible surface area = how much of a residue is exposed to surrounding water. RSA is that value normalized by residue type, so residues can be compared on a 0–1 "how exposed" scale.</td></tr>
+  <tr><td style="width:34%;background:#F3F1EA;padding:8px 12px;font-weight:bold;vertical-align:top;border:1px solid #E3DECF;">Conservation</td><td style="padding:8px 12px;vertical-align:top;border:1px solid #E3DECF;">How unchanged a position is across many species. Highly conserved positions are usually structurally or functionally important. Measured here with <em>Shannon entropy</em> (low entropy = highly conserved).</td></tr>
+  <tr><td style="width:34%;background:#F3F1EA;padding:8px 12px;font-weight:bold;vertical-align:top;border:1px solid #E3DECF;">Multiple sequence alignment</td><td style="padding:8px 12px;vertical-align:top;border:1px solid #E3DECF;">Lining up the same protein from many species so each position can be compared. Done here with the tool MAFFT.</td></tr>
+  <tr><td style="width:34%;background:#F3F1EA;padding:8px 12px;font-weight:bold;vertical-align:top;border:1px solid #E3DECF;">Permutation test</td><td style="padding:8px 12px;vertical-align:top;border:1px solid #E3DECF;">A way to ask "could this be chance?" We compare the real mutations against thousands of random sets of residues and count how often chance does as well.</td></tr>
+  <tr><td style="width:34%;background:#F3F1EA;padding:8px 12px;font-weight:bold;vertical-align:top;border:1px solid #E3DECF;">p-value</td><td style="padding:8px 12px;vertical-align:top;border:1px solid #E3DECF;">The fraction of random trials that matched or beat the real result. Small (e.g. p &lt; 0.001) means "very unlikely to be chance."</td></tr>
+</tbody></table>
+
+<!-- 4 -->
+<h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;color:#14211B;border-top:2px solid #14211B;padding-top:14px;margin:30px 0 10px;">4 · Is it unique? What is new here</h2>
+<p>Yes — in a specific, honest way. Plenty of excellent work exists on individual targets. What had <em>not</em> been done is a single, reproducible framework that measures resistance positions the same way across many unrelated targets and then tests the pattern statistically. Our contribution has three parts:</p>
+<ul style="margin:6px 0 10px;padding-left:22px;line-height:1.7;">
+  <li><strong>One shared yardstick.</strong> The same three metrics and the same statistical test are applied identically to PPO, ALS/AHAS, ACCase, and EPSPS, so the families can be compared directly for the first time.</li>
+  <li><strong>A test that survives the obvious objection.</strong> A skeptic can say "of course resistance mutations are near the active site — that's almost the definition." So we re-ran the test with all direct-contact residues removed, and the enrichment held. That is the non-trivial result.</li>
+  <li><strong>A typology, not just a headline.</strong> The real product is a reproducible way to sort each mutation by <em>how</em> it relates to the pocket — direct contact, adjacent, second-shell, allosteric hinge, or dimer-interface — which is far more useful than "it's near the active site."</li>
+</ul>
+<p>We are deliberate about what is <em>expected</em> versus <em>new</em>. That resistance mutations cluster near the active site is expected. The framework, the surviving-after-removal test, and the typology are the new parts.</p>
+
+<!-- 5 TARGET FAMILIES -->
+<h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;color:#14211B;border-top:2px solid #14211B;padding-top:14px;margin:30px 0 10px;">5 · The seven target families</h2>
+<p>Four families form the fully-validated core of the analysis. HPPD is kept as a deliberate contrast (a "negative control"). FAT and DHODH are on the future roadmap. Each links to its live 3-D model in the Protein Data Bank.</p>
+<table style="width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0 6px;">
+  <thead><tr style="background:#14211B;color:#F4F1EA;font-family:'IBM Plex Sans',sans-serif;text-align:left;">
+    <th style="padding:9px 12px;font-weight:600;">Family</th><th style="padding:9px 12px;font-weight:600;">What the enzyme does</th><th style="padding:9px 12px;font-weight:600;">Role here</th><th style="padding:9px 12px;font-weight:600;">3-D model</th></tr></thead>
+  <tbody>
+    <tr style="border-bottom:1px solid #EDE9DE;"><td style="padding:9px 12px;font-weight:600;">PPO</td><td style="padding:9px 12px;">Protoporphyrinogen oxidase — chlorophyll/heme synthesis</td><td style="padding:9px 12px;">Pilot family (validated first)</td><td style="padding:9px 12px;"><a class="lnk" href="https://www.rcsb.org/3d-view/1SEZ" target="_blank">1SEZ</a></td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;background:#FBFAF6;"><td style="padding:9px 12px;font-weight:600;">ALS/AHAS</td><td style="padding:9px 12px;">Acetohydroxyacid synthase — branched-chain amino acids</td><td style="padding:9px 12px;">Pooled core family</td><td style="padding:9px 12px;"><a class="lnk" href="https://www.rcsb.org/3d-view/1Z8N" target="_blank">1Z8N</a></td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;"><td style="padding:9px 12px;font-weight:600;">ACCase</td><td style="padding:9px 12px;">Acetyl-CoA carboxylase — fatty-acid synthesis (CT domain)</td><td style="padding:9px 12px;">Pooled core (homology model)</td><td style="padding:9px 12px;"><a class="lnk" href="https://www.rcsb.org/3d-view/1UYS" target="_blank">1UYS</a></td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;background:#FBFAF6;"><td style="padding:9px 12px;font-weight:600;">EPSPS</td><td style="padding:9px 12px;">Shikimate pathway — the glyphosate target</td><td style="padding:9px 12px;">Pooled, but one position (descriptive)</td><td style="padding:9px 12px;"><a class="lnk" href="https://www.rcsb.org/3d-view/8UMJ" target="_blank">8UMJ</a></td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;"><td style="padding:9px 12px;font-weight:600;">HPPD</td><td style="padding:9px 12px;">Hydroxyphenylpyruvate dioxygenase — pigment protection</td><td style="padding:9px 12px;"><span style="color:#C28B2C;font-weight:600;">Contrast / negative control</span></td><td style="padding:9px 12px;"><a class="lnk" href="https://www.rcsb.org/3d-view/5YWG" target="_blank">5YWG</a></td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;background:#FBFAF6;"><td style="padding:9px 12px;font-weight:600;">FAT</td><td style="padding:9px 12px;">Acyl-ACP thioesterase — new herbicide target</td><td style="padding:9px 12px;"><span style="color:#3B6B4A;font-weight:600;">Phase 5 (structures exist)</span></td><td style="padding:9px 12px;"><a class="lnk" href="https://www.rcsb.org/3d-view/8P8K" target="_blank">8P8K</a></td></tr>
+    <tr><td style="padding:9px 12px;font-weight:600;">DHODH</td><td style="padding:9px 12px;">Dihydroorotate dehydrogenase — new herbicide target</td><td style="padding:9px 12px;"><span style="color:#3B6B4A;font-weight:600;">Phase 5 (no plant structure yet)</span></td><td style="padding:9px 12px;color:#8A9188;">audit pending</td></tr>
+  </tbody>
+</table>
+
+<!-- 6 METHODOLOGY -->
+<h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;color:#14211B;border-top:2px solid #14211B;padding-top:14px;margin:30px 0 10px;">6 · Methodology — the pipeline, step by step</h2>
+<p>The whole analysis is a six-stage pipeline. Every stage is scripted, so the entire thing can be regenerated with one command. The reasoning behind each choice is recorded in the <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/docs/DECISION_LOG.md" target="_blank">Decision Log</a> and cross-checked in the <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/docs/VERIFICATION_LOG.md" target="_blank">Verification Log</a>.</p>
+
+<div style="background:#F3F1EA;border:1px solid #E3DECF;border-radius:8px;padding:14px 18px;margin:6px 0 16px;font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:#3A443E;">Curate → Map onto structure → Define active-site core → Measure (distance · RSA · conservation) → Permutation test → Annotate mechanism</div>
+
+<h3 style="font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:17px;color:#2E5540;margin:18px 0 6px;">Stage 1 — Evidence-gated curation</h3>
+<p><strong>What:</strong> collect confirmed resistance mutations. <strong>Why this way:</strong> the trustworthiness of everything downstream depends on the input being real. We only accepted a mutation if a primary research paper (or accession-level evidence) supported it. We never invented database IDs to fill gaps, and we never pooled lab-engineered mutations as if they were weed-evolved. Repeated reports of the same structural position were collapsed to one, so a single site could not be double-counted. <strong>Result:</strong> 17 accepted mutation rows — PPO 6, ALS/AHAS 4, ACCase 6, EPSPS 1. See <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/output/tables/phase4_master_mutation_table.csv" target="_blank">phase4_master_mutation_table.csv</a>.</p>
+
+<h3 style="font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:17px;color:#2E5540;margin:18px 0 6px;">Stage 2 — Map onto a herbicide-relevant structure</h3>
+<p><strong>What:</strong> place each mutation onto a real 3-D protein structure. <strong>Why this way:</strong> we chose structures that were ligand-bound (so the pocket is visible) and as plant-relevant as possible. PPO uses tobacco <code class="p">1SEZ</code>; ALS/AHAS uses <code class="p">1Z8N</code>; EPSPS uses maize <code class="p">8UMJ</code> with glyphosate bound; ACCase uses a homology model of black-grass built on yeast <code class="p">1UYS</code>. <strong>Honest caveat:</strong> there is no solved weed ACCase structure, so its numbers come from a computed model (quality score GMQE 0.76) — flagged everywhere it appears. Structure files live in <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/tree/master/data/raw" target="_blank">data/raw/</a>.</p>
+
+<h3 style="font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:17px;color:#2E5540;margin:18px 0 6px;">Stage 3 — Define the active-site core</h3>
+<p><strong>What:</strong> decide which residues count as "the pocket" for each family. <strong>Why this way:</strong> rather than pick residues by hand, we defined the core from actual contacts with the bound ligand (herbicide, substrate, or metal). For ALS/AHAS we expanded the core to include dimer-interface residues after review, because that pocket spans two protein chains. The core is the zero-point against which every distance is measured.</p>
+
+<h3 style="font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:17px;color:#2E5540;margin:18px 0 6px;">Stage 4 — Measure three things at every residue</h3>
+<p><strong>Distance-to-core percentile</strong> (how close, ranked within the protein), <strong>RSA</strong> (how exposed to water), and <strong>conservation</strong> (how unchanged across species). Using a within-protein percentile is the key trick that makes a 465-residue enzyme and a 2,000-residue one comparable on one scale. Per-residue outputs live in <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/tree/master/data/processed" target="_blank">data/processed/</a>.</p>
+
+<h3 style="font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:17px;color:#2E5540;margin:18px 0 6px;">Stage 5 — Permutation test (is it chance?)</h3>
+<p><strong>What:</strong> for each family, compare the average closeness of the real mutations against <strong>10,000 random sets</strong> of the same number of residues drawn from the same protein. <strong>Why this way:</strong> it turns "they look close" into a real probability. The random seed is fixed (<code class="p">20260704</code>) so anyone re-running gets identical numbers. Crucially, we ran it twice per family — once with all positions, once with the direct-contact residues removed — to prove the signal is not just an artifact of how the core is defined.</p>
+
+<h3 style="font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:17px;color:#2E5540;margin:18px 0 6px;">Stage 6 — Mechanism annotation</h3>
+<p><strong>What:</strong> label each position by how it likely relates to the pocket — <code class="p">direct_core</code>, <code class="p">adjacent</code>, <code class="p">second_shell_channel</code>, <code class="p">allosteric_hinge</code>, <code class="p">interface_induced_fit</code>, or <code class="p">unresolved</code>. <strong>Why this way:</strong> these labels are careful interpretations backed by prior literature, not new claims — they keep a simple distance number from being over-read as a mechanism. See <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/output/tables/manuscript_table_2_unique_position_mechanisms.csv" target="_blank">manuscript_table_2</a>.</p>
+
+<!-- 7 TOOLS -->
+<h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;color:#14211B;border-top:2px solid #14211B;padding-top:14px;margin:30px 0 10px;">7 · The tools we used, and why</h2>
+<table style="width:100%;border-collapse:collapse;font-size:13.5px;margin:6px 0;">
+  <thead><tr style="background:#14211B;color:#F4F1EA;font-family:'IBM Plex Sans',sans-serif;text-align:left;">
+    <th style="padding:9px 12px;font-weight:600;">Tool</th><th style="padding:9px 12px;font-weight:600;">Used for</th><th style="padding:9px 12px;font-weight:600;">Why</th></tr></thead>
+  <tbody>
+    <tr style="border-bottom:1px solid #EDE9DE;"><td style="padding:9px 12px;"><a class="lnk" href="https://www.python.org/" target="_blank">Python</a></td><td style="padding:9px 12px;">The whole analysis pipeline</td><td style="padding:9px 12px;">Standard, free, scriptable; makes the study reproducible.</td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;background:#FBFAF6;"><td style="padding:9px 12px;"><a class="lnk" href="https://biopython.org/" target="_blank">Biopython</a></td><td style="padding:9px 12px;">Reading sequences &amp; structures</td><td style="padding:9px 12px;">The established library for biological data handling.</td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;"><td style="padding:9px 12px;"><a class="lnk" href="https://pandas.pydata.org/" target="_blank">pandas</a> / <a class="lnk" href="https://numpy.org/" target="_blank">NumPy</a></td><td style="padding:9px 12px;">Tables, math, the permutation test</td><td style="padding:9px 12px;">Fast, reliable data-analysis foundation.</td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;background:#FBFAF6;"><td style="padding:9px 12px;"><a class="lnk" href="https://github.com/LBC-LNBio/pyKVFinder" target="_blank">pyKVFinder</a></td><td style="padding:9px 12px;">Detecting pockets/cavities</td><td style="padding:9px 12px;">Helps characterize the active-site region.</td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;"><td style="padding:9px 12px;"><a class="lnk" href="https://www.cgl.ucsf.edu/chimerax/" target="_blank">UCSF ChimeraX</a></td><td style="padding:9px 12px;">Distances &amp; surface area on structures</td><td style="padding:9px 12px;">Gold-standard molecular tool (with a pure-Python fallback so the pipeline runs without it).</td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;background:#FBFAF6;"><td style="padding:9px 12px;"><a class="lnk" href="https://mafft.cbrc.jp/alignment/software/" target="_blank">MAFFT</a></td><td style="padding:9px 12px;">Aligning sequences across species</td><td style="padding:9px 12px;">Needed to compute conservation fairly.</td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;"><td style="padding:9px 12px;"><a class="lnk" href="https://swissmodel.expasy.org/" target="_blank">SWISS-MODEL</a></td><td style="padding:9px 12px;">The ACCase homology model</td><td style="padding:9px 12px;">No solved weed ACCase existed; this built a credible weed-sequence model.</td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;background:#FBFAF6;"><td style="padding:9px 12px;"><a class="lnk" href="https://www.rcsb.org/" target="_blank">RCSB Protein Data Bank</a></td><td style="padding:9px 12px;">Source of all 3-D structures</td><td style="padding:9px 12px;">The public repository of experimentally solved structures.</td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;"><td style="padding:9px 12px;"><a class="lnk" href="https://www.r-project.org/" target="_blank">R</a> + <a class="lnk" href="https://cran.r-project.org/package=lme4" target="_blank">lme4</a></td><td style="padding:9px 12px;">Mixed-effects statistics</td><td style="padding:9px 12px;">For models that account for family-level grouping.</td></tr>
+    <tr><td style="padding:9px 12px;">AI coding assistants (<a class="lnk" href="https://claude.ai/" target="_blank">Claude</a> &amp; code agents)</td><td style="padding:9px 12px;">Scripting, refactoring, documentation</td><td style="padding:9px 12px;">Sped up the build — but every scientific claim still passed the primary-source evidence gate and is recorded in the verification log.</td></tr>
+  </tbody>
+</table>
+<p style="font-size:13px;color:#5A6660;">Exact pinned versions are in <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/requirements.txt" target="_blank">requirements.txt</a>.</p>
+
+<!-- 8 ANALYSIS PROCESS -->
+<h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;color:#14211B;border-top:2px solid #14211B;padding-top:14px;margin:30px 0 10px;">8 · How the analysis was actually run</h2>
+<p>We worked in phases. Phase 1 piloted the whole method on <strong>PPO</strong> and validated it against a known published result (Dayan et al. 2018) — a "validation gate" the family had to pass before we trusted the pipeline. Phases 2–3 extended the same method to ALS/AHAS, EPSPS, ACCase, and HPPD, each with its own validation gate. Phase 4 pooled everything, ran the permutation test, and produced the manuscript tables and figures.</p>
+<p>Everything downstream of the per-family measurements is regenerated deterministically with a single command:</p>
+<div style="background:#0C130F;color:#CBD8CE;border-radius:8px;padding:14px 18px;margin:6px 0 12px;font-family:'IBM Plex Mono',monospace;font-size:13px;">$ python <a class="lnk" style="color:#8FB7D8;border-bottom-color:rgba(143,183,216,0.4);" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/scripts/rebuild_all.py" target="_blank">scripts/rebuild_all.py</a>&nbsp;&nbsp;<span style="color:#6E7E74;"># rebuilds every table + figure, then runs the tests</span></div>
+<p>That chain runs the table builder, the permutation analysis, the review-driven outputs, the figure builders, and the full test suite in order. Because the seed is fixed and the inputs are versioned, the outputs are identical on every machine.</p>
+
+<!-- 9 FINDINGS + FIGURES -->
+<h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;color:#14211B;border-top:2px solid #14211B;padding-top:14px;margin:30px 0 10px;">9 · Findings — results and every figure explained</h2>
+
+<h3 style="font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:17px;color:#2E5540;margin:16px 0 6px;">Result 1 — Resistance positions cluster near the active site</h3>
+<p>Across PPO, ALS/AHAS, and ACCase, real resistance positions sit far closer to the active-site core than random residues. Here are the family-level numbers (from <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/output/tables/manuscript_table_1_family_permutation_summary.csv" target="_blank">Table 1</a>). Remember: <strong>lower percentile = closer</strong>, and the random average is always ~50.</p>
+<table style="width:100%;border-collapse:collapse;font-size:13.5px;margin:6px 0;">
+  <thead><tr style="background:#14211B;color:#F4F1EA;font-family:'IBM Plex Sans',sans-serif;text-align:left;">
+    <th style="padding:8px 12px;font-weight:600;">Family</th><th style="padding:8px 12px;font-weight:600;">Positions</th><th style="padding:8px 12px;font-weight:600;">Observed mean</th><th style="padding:8px 12px;font-weight:600;">Random mean</th><th style="padding:8px 12px;font-weight:600;">p-value</th></tr></thead>
+  <tbody>
+    <tr style="border-bottom:1px solid #EDE9DE;"><td style="padding:8px 12px;">ALS/AHAS</td><td style="padding:8px 12px;">4</td><td style="padding:8px 12px;">4.64</td><td style="padding:8px 12px;">50.10</td><td style="padding:8px 12px;font-weight:600;color:#2E5540;">0.0001</td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;background:#FBFAF6;"><td style="padding:8px 12px;">PPO</td><td style="padding:8px 12px;">4</td><td style="padding:8px 12px;">8.01</td><td style="padding:8px 12px;">49.90</td><td style="padding:8px 12px;font-weight:600;color:#2E5540;">0.0006</td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;"><td style="padding:8px 12px;">ACCase</td><td style="padding:8px 12px;">6</td><td style="padding:8px 12px;">13.24</td><td style="padding:8px 12px;">50.20</td><td style="padding:8px 12px;font-weight:600;color:#2E5540;">0.0003</td></tr>
+    <tr style="background:#FBFAF6;"><td style="padding:8px 12px;">EPSPS <span style="color:#C28B2C;">(n=1)</span></td><td style="padding:8px 12px;">1</td><td style="padding:8px 12px;">12.87</td><td style="padding:8px 12px;">50.11</td><td style="padding:8px 12px;color:#8A9188;">0.1288 (descriptive)</td></tr>
+  </tbody>
+</table>
+<p style="font-size:13px;color:#5A6660;">EPSPS points the same direction but has only one accepted position, so its p-value is treated as descriptive, not a family-level test.</p>
+
+<h3 style="font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:17px;color:#2E5540;margin:16px 0 6px;">Result 2 — The signal is not just a definition</h3>
+<p>The important stress-test: we removed every direct-contact residue (the ones that score zero distance by definition) and re-ran the test on only the remaining positions. The enrichment held — <strong>PPO non-core p = 0.004</strong> (3 positions) and <strong>ACCase non-core p = 0.010</strong> (4 positions). This is what makes the finding a genuine result rather than a restatement of how we defined the core.</p>
+
+<h3 style="font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:17px;color:#2E5540;margin:16px 0 6px;">Every figure, explained</h3>
+<div style="border:1px solid #E3DECF;border-radius:8px;overflow:hidden;margin:6px 0;">
+  <div style="padding:12px 16px;border-bottom:1px solid #EDE9DE;"><strong>Figure 1 — Workflow.</strong> A schematic of the whole pipeline (the six stages above), showing how curation flows into structure mapping, metrics, testing, and annotation. <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/output/figures/figure_1_workflow.svg" target="_blank">view SVG</a></div>
+  <div style="padding:12px 16px;border-bottom:1px solid #EDE9DE;background:#FBFAF6;"><strong>Figure 2 — Observed vs random.</strong> A bar chart per family: the grey bar is the random-residue average (~50th percentile), the colored bar is what the real resistance positions scored. The colored bars are dramatically shorter for PPO, ALS/AHAS, and ACCase — the visual form of Result 1. <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/output/figures/figure_2_permutation_enrichment.svg" target="_blank">view SVG</a></div>
+  <div style="padding:12px 16px;border-bottom:1px solid #EDE9DE;"><strong>Figure 3 — Position screen.</strong> Separates the direct-contact positions from the adjacent and more distal ones, so the mechanistically interesting non-contact cases stand out from the "obvious" pocket residues. <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/output/figures/figure_3_position_screen.svg" target="_blank">view SVG</a></div>
+  <div style="padding:12px 16px;border-bottom:1px solid #EDE9DE;background:#FBFAF6;"><strong>Figure 4 — Distance vs RSA vs conservation.</strong> A scatter view combining all three metrics, showing that many resistance positions are simultaneously close to the core and highly conserved — but that the metrics are not interchangeable. <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/output/figures/figure_4_distance_rsa_conservation.svg" target="_blank">view SVG</a></div>
+  <div style="padding:12px 16px;"><strong>Figure 5 — Resistance-zone map.</strong> One lane per family; each mutation is a dot placed by its distance-to-core percentile (left = closest) and colored by mechanism type. This one picture summarizes the whole typology. <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/output/figures/figure_5_resistance_zone_map.svg" target="_blank">view SVG</a></div>
+</div>
+
+<h3 style="font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:17px;color:#2E5540;margin:16px 0 6px;">The typology, with two flagship cases</h3>
+<p>The categories — direct core, adjacent, second-shell/channel, allosteric hinge, interface induced-fit — matter because the non-contact ones are where structure teaches us something. Two examples:</p>
+<ul style="margin:6px 0 10px;padding-left:22px;line-height:1.7;">
+  <li><strong>PPO ΔG210</strong> — a deleted residue near the pocket whose real effect is destabilizing a helix and enlarging the cavity, not a simple contact. Distance alone under-rates it; this is why we pair mapping with published mechanism.</li>
+  <li><strong>ACCase Cys2088Arg</strong> — the most distant accepted position, sitting out at the interface between two protein chains, yet still conferring broad resistance. A pocket-only view would miss it.</li>
+</ul>
+
+<h3 style="font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:17px;color:#2E5540;margin:16px 0 6px;">HPPD — the honest negative control</h3>
+<p>HPPD is a real herbicide target, but our literature audit found <strong>no verified weed-evolved target-site mutation</strong> for it (resistance there is mostly metabolic). Rather than force a mutation in to keep the story tidy, we kept HPPD as a contrast case with zero pooled rows (<a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/output/tables/manuscript_table_3_hppd_contrast_status.csv" target="_blank">Table 3</a>). A framework that correctly reports "nothing here" is one you can trust when it reports something.</p>
+
+<!-- 10 MEANING -->
+<h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;color:#14211B;border-top:2px solid #14211B;padding-top:14px;margin:30px 0 10px;">10 · What the results mean</h2>
+<p>Target-site resistance across unrelated herbicide targets is not scattered randomly through the protein — it concentrates in an active-site-associated <em>zone</em> that includes the pocket itself plus adjacent, second-shell, hinge, and interface positions. The clustering is statistically real and survives the removal of the "guaranteed" contact residues. But the value is not the clustering headline; it is the <strong>reproducible way to place and classify any new mutation</strong> within that zone. Distance, exposure, and conservation tell you <em>where</em> a mutation sits; published dynamics and biochemistry are still needed to explain <em>how</em> it works.</p>
+
+<!-- 11 PRACTICAL -->
+<h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;color:#14211B;border-top:2px solid #14211B;padding-top:14px;margin:30px 0 10px;">11 · Practical implications</h2>
+<ul style="margin:6px 0 10px;padding-left:22px;line-height:1.7;">
+  <li><strong>Triage new mutations fast.</strong> When a new resistance mutation is reported, it can be placed in this framework in minutes and given a structurally-informed first read (contact vs second-shell vs interface).</li>
+  <li><strong>Focus lab effort.</strong> The classification suggests which follow-up assays or which alternative chemistries are worth trying.</li>
+  <li><strong>Inform herbicide design.</strong> Knowing the recurring structural zone of resistance helps design compounds that are harder to escape.</li>
+  <li><strong>A reusable, open resource.</strong> Any new target can be run through the same pipeline for a consistent comparison.</li>
+</ul>
+
+<!-- 12 LIMITATIONS -->
+<h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;color:#14211B;border-top:2px solid #14211B;padding-top:14px;margin:30px 0 10px;">12 · Limitations (what this does <em>not</em> do)</h2>
+<ul style="margin:6px 0 10px;padding-left:22px;line-height:1.7;">
+  <li>It is a <strong>static</strong> map. It does not calculate binding energy, molecular motion, or mutant-state thermodynamics.</li>
+  <li>It says nothing about non-target-site resistance (metabolism, expression, uptake).</li>
+  <li><strong>EPSPS is underpowered</strong> — one accepted position, so treated as descriptive.</li>
+  <li><strong>ACCase uses a homology model</strong>, not a solved weed structure, so its numbers are model-derived.</li>
+  <li>Structure choice and core definition influence the output — which is exactly why every choice is scripted, seeded, and logged, and why the test is run both with and without direct-core residues.</li>
+</ul>
+<p style="font-size:13px;color:#5A6660;">Full discussion in <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/docs/REVIEW_RESPONSE_STATIC_VS_DYNAMIC.md" target="_blank">REVIEW_RESPONSE_STATIC_VS_DYNAMIC.md</a>.</p>
+
+<!-- 13 CONCLUSION -->
+<h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;color:#14211B;border-top:2px solid #14211B;padding-top:14px;margin:30px 0 10px;">13 · Conclusion</h2>
+<p>We built the first reproducible, cross-family structural framework for target-site herbicide resistance, showed that resistance positions are enriched near the active-site zone in a way that is not a definitional artifact, and turned that into a usable typology of how mutations relate to the pocket — kept honest by an explicit negative control (HPPD) and clearly stated scope limits. It is a starting map for reading any new resistance mutation, not the final mechanistic word.</p>
+
+<!-- 14 FUTURE -->
+<h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;color:#14211B;border-top:2px solid #14211B;padding-top:14px;margin:30px 0 10px;">14 · Future work (Phase 5)</h2>
+<ul style="margin:6px 0 10px;padding-left:22px;line-height:1.7;">
+  <li><strong>FAT first.</strong> Public plant acyl-ACP thioesterase inhibitor-complex structures already exist (<a class="lnk" href="https://www.rcsb.org/3d-view/8P8K" target="_blank">8P8K</a>, <a class="lnk" href="https://www.rcsb.org/3d-view/8QRT" target="_blank">8QRT</a>, <a class="lnk" href="https://www.rcsb.org/3d-view/8QS0" target="_blank">8QS0</a>), so FAT can enter the pipeline soon once mutation evidence is verified.</li>
+  <li><strong>DHODH later.</strong> Strong target biology, but no verified plant structure was found — it needs a structure/model route before it can join.</li>
+  <li><strong>Strengthen ALS/AHAS</strong> by adding verified positions (e.g. Asp376 from a confirmed weed source) and paired resistant/susceptible accessions.</li>
+</ul>
+<p style="font-size:13px;color:#5A6660;">Design details in the <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/docs/superpowers/specs/2026-07-05-fat-dhodh-phase5-design.md" target="_blank">Phase 5 FAT/DHODH spec</a> and the live tracker <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/docs/HANDOFF_NEXT_STEPS.md" target="_blank">HANDOFF_NEXT_STEPS.md</a>.</p>
+
+<!-- 15 PUBLICATION -->
+<h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;color:#14211B;border-top:2px solid #14211B;padding-top:14px;margin:30px 0 10px;">15 · What is still needed for publication</h2>
+<div style="background:#F3F1EA;border:1px solid #E3DECF;border-radius:8px;padding:16px 20px;margin:6px 0;">
+<ul style="margin:0;padding-left:22px;line-height:1.75;">
+  <li><strong>Sentence-level citations.</strong> Add citations throughout the draft and convert names to the target journal's citation style.</li>
+  <li><strong>Mechanism-claim audit.</strong> Re-check every mechanism statement against the saved source PDFs in <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/tree/master/docs/references" target="_blank">docs/references/</a>.</li>
+  <li><strong>Decide on ALS/AHAS expansion</strong> before submission (see Future work).</li>
+  <li><strong>Figure polish.</strong> Review figure aesthetics and labels for the chosen journal's format; optionally produce structure-rendered versions of the zone map.</li>
+  <li><strong>Decide FAT/DHODH scope</strong> — include now or hold as future work.</li>
+  <li><strong>Deposit.</strong> Prepare the GitHub + Zenodo release and finalize <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/CITATION.cff" target="_blank">CITATION.cff</a>.</li>
+  <li><strong>Gap audit.</strong> A final pass for missing accessions, unstated assumptions, and reproducibility of every number.</li>
+</ul>
+</div>
+<p style="font-size:13px;color:#5A6660;">The current draft is <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/docs/MANUSCRIPT_DRAFT.md" target="_blank">docs/MANUSCRIPT_DRAFT.md</a>; the concise results draft is <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/docs/MANUSCRIPT_RESULTS_PHASE4.md" target="_blank">MANUSCRIPT_RESULTS_PHASE4.md</a>.</p>
+
+<!-- 16 REPO MAP -->
+<h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;color:#14211B;border-top:2px solid #14211B;padding-top:14px;margin:30px 0 10px;">16 · Repository map — where everything lives</h2>
+<p>Best entry points, in reading order: <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/REPO_INDEX.md" target="_blank">REPO_INDEX.md</a> (the full map) → <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/docs/HANDOFF_NEXT_STEPS.md" target="_blank">HANDOFF_NEXT_STEPS.md</a> → <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/docs/DECISION_LOG.md" target="_blank">DECISION_LOG.md</a> → <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/docs/MANUSCRIPT_DRAFT.md" target="_blank">MANUSCRIPT_DRAFT.md</a>.</p>
+<table style="width:100%;border-collapse:collapse;font-size:13px;margin:6px 0;">
+  <thead><tr style="background:#14211B;color:#F4F1EA;font-family:'IBM Plex Sans',sans-serif;text-align:left;"><th style="padding:8px 12px;font-weight:600;">Location</th><th style="padding:8px 12px;font-weight:600;">What is there</th></tr></thead>
+  <tbody>
+    <tr style="border-bottom:1px solid #EDE9DE;"><td style="padding:8px 12px;"><a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/tree/master/data/raw" target="_blank">data/raw/</a></td><td style="padding:8px 12px;">Structures &amp; sequences as pulled from source (unedited provenance).</td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;background:#FBFAF6;"><td style="padding:8px 12px;"><a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/tree/master/data/processed" target="_blank">data/processed/</a></td><td style="padding:8px 12px;">Cleaned mutation tables, per-residue metrics, conservation, validation notes.</td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;"><td style="padding:8px 12px;"><a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/tree/master/scripts" target="_blank">scripts/</a></td><td style="padding:8px 12px;">All pipeline code (metrics, permutation test, table + figure builders).</td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;background:#FBFAF6;"><td style="padding:8px 12px;"><a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/tree/master/output/tables" target="_blank">output/tables/</a></td><td style="padding:8px 12px;">Final numeric results — the pooled table and the three manuscript tables.</td></tr>
+    <tr style="border-bottom:1px solid #EDE9DE;"><td style="padding:8px 12px;"><a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/tree/master/output/figures" target="_blank">output/figures/</a></td><td style="padding:8px 12px;">The five SVG figures.</td></tr>
+    <tr><td style="padding:8px 12px;"><a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/tree/master/docs" target="_blank">docs/</a></td><td style="padding:8px 12px;">Manuscript, decision log, verification log, reviews, references, Phase 5 spec.</td></tr>
+  </tbody>
+</table>
+<p style="font-size:13px;color:#5A6660;">Rebuild everything: <code class="p">python scripts/rebuild_all.py</code>. Run the tests: <code class="p">python -m pytest -q</code>. Setup steps (Python, R, ChimeraX, MAFFT) are in the <a class="lnk" href="https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf/blob/master/README.md" target="_blank">README</a>.</p>
+
+<!-- 17 REFERENCES -->
+<h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:22px;color:#14211B;border-top:2px solid #14211B;padding-top:14px;margin:30px 0 10px;">17 · Key references</h2>
+<p style="font-size:13.5px;line-height:1.75;color:#3A443E;margin:0;">Selected primary sources behind the datasets, structures, and methods (full list in the manuscript draft):</p>
+<ol style="font-size:13px;line-height:1.7;color:#3A443E;padding-left:22px;margin:8px 0 0;">
+  <li>Délye C, et al. (2005) Molecular bases for sensitivity to ACCase inhibitors in black-grass. <em>Plant Physiol</em> 137:794–806. <a class="lnk" href="https://doi.org/10.1104/pp.104.046144" target="_blank">doi</a></li>
+  <li>Dayan FE, et al. (2010) Consequences of a glycine deletion in the α-8 helix of PPO. <em>BBA</em> 1804:1548–1556. <a class="lnk" href="https://doi.org/10.1016/j.bbapap.2010.04.004" target="_blank">doi</a></li>
+  <li>Heinemann IU, et al. (2007) Functional definition of the tobacco PPO substrate-binding site. <em>Biochem J</em> 402:575–580. <a class="lnk" href="https://doi.org/10.1042/BJ20061321" target="_blank">doi</a></li>
+  <li>Baerson SR, et al. (2002) Glyphosate-resistant goosegrass: EPSPS mutation. <em>Plant Physiol</em> 129:1265–1275. <a class="lnk" href="https://doi.org/10.1104/pp.001560" target="_blank">doi</a></li>
+  <li>Larran AS, et al. (2017) Target-site resistance to ALS inhibitors in <em>A. palmeri</em>. <em>Pest Manag Sci</em> 73:2578–2584. <a class="lnk" href="https://doi.org/10.1002/ps.4662" target="_blank">doi</a></li>
+  <li>Yu Q, et al. (2007) Diversity of ACCase mutations in resistant <em>Lolium</em>. <em>Plant Physiol</em> 145:547–558. <a class="lnk" href="https://doi.org/10.1104/pp.107.105262" target="_blank">doi</a></li>
+  <li>Tien MZ, et al. (2013) Maximum allowed solvent accessibilities of residues. <em>PLoS ONE</em> 8:e80635. <a class="lnk" href="https://doi.org/10.1371/journal.pone.0080635" target="_blank">doi</a></li>
+  <li>Zhang H, Tweel B, Tong L (2004) Inhibition of the ACCase CT domain by haloxyfop/diclofop. <em>PNAS</em> 101:5910–5915. <a class="lnk" href="https://doi.org/10.1073/pnas.0400891101" target="_blank">doi</a></li>
+</ol>
+
+<div style="margin-top:26px;padding-top:12px;border-top:2px solid #DED9CD;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8A9188;">Handoff guide · generated for internal collaboration · all links point to the project repository and public databases.</div>
+
+</div>
+</body>
+</html>

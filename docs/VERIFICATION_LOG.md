@@ -527,3 +527,33 @@ fold-change (~10–55×) if citing Ki specifically.
     side-chain caveat.
   - FAT/DHODH moved forward as Phase 5 audit work, not Phase 4 integration.
   - `REPO_INDEX.md` is now the first-file navigation map for new agents.
+
+## Canonical presentation reset and Phase 5 starter audit check
+
+- Removed old generated presentation outputs from `output/presentations/`,
+  including generated decks, preview image folders, montage PNGs, inspect
+  NDJSON files, and the failed asset folder.
+- Saved the user-attached deck as:
+  - `output/presentations/herbicide_resistance_structural_bioinformatics_talk.pptx`
+- Rendered the canonical deck to temporary PNGs outside the repo:
+  - Render output: 21 slides.
+  - Temporary montage visually inspected; all slides rendered in the attached
+    academic green/cream style.
+- Ran `slides_test.py` on the canonical PPTX:
+  - Result: `Test passed. No overflow detected.`
+- Archived the user-attached handoff guide as:
+  - `docs/PROJECT_HANDOFF_GUIDE.doc`
+- Updated project memory:
+  - `REPO_INDEX.md`
+  - `docs/HANDOFF_NEXT_STEPS.md`
+  - `docs/DECISION_LOG.md`
+  - `docs/VERIFICATION_LOG.md`
+- Created Phase 5 starter audit artifacts:
+  - `docs/PHASE5_FAT_DHODH_AUDIT.md`
+  - `data/processed/phase5_target_status.csv`
+- Verification decision:
+  - FAT remains the first Phase 5 audit target.
+  - DHODH remains gated behind mutation evidence plus a verified plant
+    structure/model route.
+  - The canonical presentation is a saved baseline and should not be restyled
+    unless the user asks.

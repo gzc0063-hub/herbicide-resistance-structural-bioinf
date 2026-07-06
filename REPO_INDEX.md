@@ -25,6 +25,12 @@ Read these files in this order when opening the project fresh:
 the latest commits. Prefer `docs/HANDOFF_NEXT_STEPS.md` plus
 `docs/DECISION_LOG.md` for the freshest project state.
 
+The canonical presentation deliverable is
+`output/presentations/herbicide_resistance_structural_bioinformatics_talk.pptx`.
+It was copied from the user-attached PowerPoint and should be treated as the
+saved baseline for future deck work. Preserve its visual style unless the user
+explicitly asks for a redesign.
+
 ## Current Branches
 
 Local and remote branch state at the time this index was written:
@@ -71,6 +77,7 @@ git log --oneline --decorate --max-count=12
 | `tests/` | Unit/integration tests. | Verify mapping, outputs, RSA, scripts. |
 | `output/tables/` | Generated manuscript and Phase 4 tables. | Read for final numeric results. |
 | `output/figures/` | Generated SVG figures. | Manuscript figure drafts. |
+| `output/presentations/` | Canonical project presentation deck. | Use the saved PPTX as the baseline; do not regenerate preview assets into the repo. |
 | `docs/` | Decisions, handoff, reviews, manuscript, references, specs. | Project memory and writing layer. |
 | `docs/references/` | Archived source PDFs. | Primary-source evidence library. |
 | `docs/superpowers/specs/` | Design specs for new work. | Phase 5 FAT/DHODH design lives here. |
@@ -273,6 +280,8 @@ Validation notes:
 | `docs/SENIOR_REVIEW_2026-07-05.md` | Senior review artifact. |
 | `docs/panel_review_and_plan.md` | Original panel review and long-term plan. |
 | `docs/CLAUDE_CODE_NEXT_STEPS.md` | Older handoff prompt, mostly superseded. |
+| `docs/PROJECT_HANDOFF_GUIDE.doc` | Archived user-attached handoff/onboarding guide. |
+| `docs/PHASE5_FAT_DHODH_AUDIT.md` | Phase 5 FAT/DHODH starter audit. |
 | `docs/superpowers/specs/2026-07-05-fat-dhodh-phase5-design.md` | Phase 5 FAT/DHODH validation-gate design. |
 
 ## Tests
@@ -301,8 +310,8 @@ Validation notes:
 | EPSPS | Complete validation gate with one accepted position. | Pooled Phase 4 family, underpowered as standalone family-level test. |
 | ACCase | Complete validation gate; current metrics use SWISS-MODEL weed CT-domain dimer. | Main pooled Phase 4 family. |
 | HPPD | Complete as contrast case; no accepted weed-evolved TSR row. | Separate contrast/status table. |
-| FAT | Phase 5 design exists; structure route looks promising. | Emerging-target validation gate, not yet pooled. |
-| DHODH | Phase 5 design exists; no public plant DHODH RCSB structure confirmed. | Emerging-target validation/modeling gate, not yet pooled. |
+| FAT | Phase 5 starter audit exists; structure route looks promising. | Emerging-target validation gate, not yet pooled. |
+| DHODH | Phase 5 starter audit exists; no public plant DHODH RCSB structure confirmed. | Emerging-target validation/modeling gate, not yet pooled. |
 
 ## Rules For Future Work
 
@@ -328,6 +337,12 @@ Start with:
 ### Where are the figures?
 
 Use `output/figures/figure_*.svg`.
+
+### Where is the presentation?
+
+Use `output/presentations/herbicide_resistance_structural_bioinformatics_talk.pptx`.
+It is the canonical saved deck from the user-attached PowerPoint. Preserve that
+style for future presentation edits unless the user asks for a redesign.
 
 ### Where do I change a result?
 

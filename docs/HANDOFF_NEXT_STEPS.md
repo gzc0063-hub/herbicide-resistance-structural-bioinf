@@ -114,10 +114,11 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 - [x] **4.1 FAT/DHODH design gate.** DONE. Wrote and committed
   `docs/superpowers/specs/2026-07-05-fat-dhodh-phase5-design.md` (`b92f5b0`). Recommendation: FAT-first
   because plant inhibitor-complex structures are available; keep DHODH behind source/model verification.
-- [ ] **4.2 Build Phase 5 audit artifacts.** NEXT. Create `docs/PHASE5_FAT_DHODH_AUDIT.md` and
-  `data/processed/phase5_target_status.csv`. Classify each target by target/MoA evidence, structure/model
-  status, mutation evidence type, and go/no-go state. Do not add FAT/DHODH to `build_phase4_tables.py`
-  during this audit.
+- [x] **4.2 Build Phase 5 audit artifacts.** DONE as starter audit. Created
+  `docs/PHASE5_FAT_DHODH_AUDIT.md` and `data/processed/phase5_target_status.csv`. FAT is marked
+  `audit_first`; DHODH is marked `hold_model_source`. These files classify target/MoA evidence,
+  structure/model status, mutation evidence state, and go/no-go status. Do not add FAT/DHODH to
+  `build_phase4_tables.py` during this audit.
 - [ ] **4.3 FAT mutation-source audit.** NEXT after 4.2. Verify the original plan's "FAT-A R171-region"
   claim from primary sources. Record exact substitution, species, sequence/accession if present, whether
   it is weed-evolved vs lab-selected vs engineered, and whether it can support a Phase 5 risk table.
@@ -126,6 +127,11 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
   AlphaFold/ColabFold model is needed.
 - [x] **4.5 Repo navigation index.** DONE. Added root `REPO_INDEX.md` and linked it from `README.md`
   (`a4100f2`). This is the first file to hand to any new agent before asking it to work in the repo.
+- [x] **4.6 Canonical presentation reset.** DONE. Removed old generated deck/preview outputs from
+  `output/presentations/`, saved the user-attached deck as
+  `output/presentations/herbicide_resistance_structural_bioinformatics_talk.pptx`, and archived the
+  user-attached guide as `docs/PROJECT_HANDOFF_GUIDE.doc`. Future presentation edits should preserve
+  the attached deck's style unless the user explicitly asks for design changes.
 
 ## "Even better" ideas (beyond current scope — see final section of SENIOR_REVIEW)
 
@@ -162,10 +168,16 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 >    target; DHODH needs mutation evidence plus a plant structure/model route.
 > 3. `REPO_INDEX.md` was added as the navigation map for branches, data, scripts, figures, tests,
 >    output tables, docs, and future-work rules.
+> 4. The user-attached PowerPoint is now the canonical presentation deliverable at
+>    `output/presentations/herbicide_resistance_structural_bioinformatics_talk.pptx`. Old generated
+>    deck outputs, preview image folders, montages, inspect files, and failed asset folders were removed
+>    from `output/presentations/`. Preserve this deck's style for future presentation edits unless the
+>    user explicitly asks for changes.
+> 5. The user-attached handoff/onboarding guide is archived at `docs/PROJECT_HANDOFF_GUIDE.doc`.
 >
-> Your next task is Phase 5 audit work, not pipeline integration yet:
-> - Create `docs/PHASE5_FAT_DHODH_AUDIT.md`.
-> - Create `data/processed/phase5_target_status.csv`.
+> Your next task is Phase 5 audit follow-through, not pipeline integration yet:
+> - Read `docs/PHASE5_FAT_DHODH_AUDIT.md`.
+> - Read `data/processed/phase5_target_status.csv`.
 > - For FAT, verify primary-source evidence for the planned "FAT-A R171-region" resistant variant(s):
 >   exact mutation, species, accession/source, evidence type (weed-evolved, lab-selected, engineered, or
 >   hypothetical), and whether it can enter a separate Phase 5 risk table.
@@ -198,6 +210,13 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 > without a primary-source-verified substitution.
 
 ## Change log (append newest at top)
+
+- 2026-07-05 (o): Reset presentation deliverables to the user-attached canonical deck at
+  `output/presentations/herbicide_resistance_structural_bioinformatics_talk.pptx`, removed old generated
+  presentation previews/assets, archived the attached handoff guide as `docs/PROJECT_HANDOFF_GUIDE.doc`,
+  and created starter Phase 5 audit artifacts: `docs/PHASE5_FAT_DHODH_AUDIT.md` plus
+  `data/processed/phase5_target_status.csv`. FAT remains first for mutation-source audit; DHODH remains
+  gated behind mutation/model verification.
 
 - 2026-07-05 (n): Refreshed the handoff/log layer for cross-agent continuation. Added the current
   Claude Code prompt above, updated `PROJECT_STATUS.md`, and recorded that `REPO_INDEX.md` is now the
