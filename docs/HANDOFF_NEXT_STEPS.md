@@ -119,12 +119,22 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
   `audit_first`; DHODH is marked `hold_model_source`. These files classify target/MoA evidence,
   structure/model status, mutation evidence state, and go/no-go status. Do not add FAT/DHODH to
   `build_phase4_tables.py` during this audit.
-- [ ] **4.3 FAT mutation-source audit.** NEXT after 4.2. Verify the original plan's "FAT-A R171-region"
-  claim from primary sources. Record exact substitution, species, sequence/accession if present, whether
-  it is weed-evolved vs lab-selected vs engineered, and whether it can support a Phase 5 risk table.
-- [ ] **4.4 DHODH mutation/model audit.** NEXT after 4.2. Verify tetflupyrolimet/DHODH mutation evidence
-  and determine whether a public plant structure, paper-supplied coordinates, SWISS-MODEL template, or
-  AlphaFold/ColabFold model is needed.
+- [x] **4.3 FAT mutation-source audit.** DONE. Verified directly from the primary PDF (user-supplied):
+  Wagner et al. 2026 bioRxiv (`docs/references/Wagner_et_al_2026_FAT_R171_biorxiv.pdf`). R171K/Q/I/M
+  (FAT A, *Alopecurus myosuroides*) and P192R (FAT B) are **engineered/docking-predicted, not
+  weed-evolved** — site-directed mutants tested in vitro, not observed in weeds. R171K gives RI 516.56
+  but needs 3 simultaneous nucleotide changes; paper itself concludes field risk is low. Full table now
+  in `data/processed/phase5_risk_table.csv`. Separately found real (but non-target-site) cinmethylin
+  resistance in field *Lolium rigidum* via enhanced metabolism (DOI 10.1002/ps.6947) — the audit draft
+  had missed this entirely. See `docs/PHASE5_FAT_DHODH_AUDIT.md` and `docs/VERIFICATION_LOG.md` for
+  full detail.
+- [x] **4.4 DHODH mutation/model audit.** DONE. Verified directly from PMC full text: Kang et al. 2023
+  PNAS (DOI 10.1073/pnas.2313197120) solved a rice DHODH-tetflupyrolimet crystal structure and built an
+  AlphaFold *Arabidopsis* DHODH model, **neither publicly deposited** (no PDB ID given in the paper) —
+  corrected framing from "no plant structure exists" to "no *public* plant structure exists." Mutation
+  evidence: G198E and A141T (corrected from an earlier secondary-source "A141V") in two EMS-mutagenized
+  *Arabidopsis thaliana* lines — **lab-selected, not weed-evolved**. Full detail in
+  `docs/PHASE5_FAT_DHODH_AUDIT.md` and `docs/VERIFICATION_LOG.md`.
 - [x] **4.5 Repo navigation index.** DONE. Added root `REPO_INDEX.md` and linked it from `README.md`
   (`a4100f2`). This is the first file to hand to any new agent before asking it to work in the repo.
 - [x] **4.6 Canonical presentation reset.** DONE. Removed old generated deck/preview outputs from
@@ -132,6 +142,24 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
   `output/presentations/herbicide_resistance_structural_bioinformatics_talk.pptx`, and archived the
   user-attached guide as `docs/PROJECT_HANDOFF_GUIDE.doc`. Future presentation edits should preserve
   the attached deck's style unless the user explicitly asks for design changes.
+- [x] **4.7 FAT residue-numbering alignment.** DONE — result is negative. No public *A. myosuroides*
+  FatA sequence exists (checked NCBI protein/nuccore + UniProt directly, zero hits), so used wheat
+  (*Triticum aestivum*, UniProt Q8L6B1, both Pooideae grasses) as a proxy. Global BLOSUM62 alignment
+  (`scripts/phase5_fat_numbering_check.py`, 77.8% identity) shows Arabidopsis Arg176 (the cinmethylin
+  H-bond donor in PDB 9GRR) aligns to **wheat Arg103**, not wheat position 171 (a threonine) — a ~73
+  residue gap matching the 74-residue Arabidopsis transit peptide almost exactly. **Conclusion: R171
+  (blackgrass) and Arg176 (Arabidopsis) are most likely different residues, not the same catalytic
+  arginine at a small species offset** — refutes the prior audit pass's working hypothesis. Do not
+  structurally contextualize R171 using 9GRR without the actual blackgrass sequence. Full detail in
+  `docs/VERIFICATION_LOG.md` and `docs/PHASE5_FAT_DHODH_AUDIT.md`.
+- [x] **4.8 Lolium rigidum cinmethylin-metabolism full-text read.** DONE. Verified directly from the
+  primary PDF (user-supplied, peer-reviewed): Goggin et al. 2022, Pest Manag Sci, DOI 10.1002/ps.6947.
+  Three WA field populations (R1, R2, R3) show reduced cinmethylin sensitivity via **enhanced P450-mediated
+  metabolism**, statistically significant for R2/R3 on coleoptile elongation (RI 2.7/3.2) and R3 on
+  radicle elongation (RI 4.5); mechanism confirmed via phorate (P450 inhibitor) reversal. Real,
+  weed-evolved/weed-derived NTSR — genuinely distinct from the engineered FAT target-site variants.
+  Full detail now in `data/processed/phase5_risk_table.csv`, `docs/PHASE5_FAT_DHODH_AUDIT.md`, and
+  `docs/VERIFICATION_LOG.md`.
 
 ## "Even better" ideas (beyond current scope — see final section of SENIOR_REVIEW)
 
@@ -210,6 +238,39 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 > without a primary-source-verified substitution.
 
 ## Change log (append newest at top)
+
+- 2026-07-05 (r): Completed Phase 5 item 4.7 (Claude Code) — ran the sequence-alignment check on
+  whether blackgrass R171 (Wagner et al. 2026) and Arabidopsis Arg176 (Kot et al. 2026, PDB 9GRR) are
+  the same residue. No public blackgrass FatA sequence exists, so used wheat (Q8L6B1) as a Pooideae
+  proxy. Result: Arabidopsis Arg176 aligns to wheat Arg103, not wheat position 171 — strong evidence
+  these are different residues, not a small species-numbering offset. New reproducible script:
+  `scripts/phase5_fat_numbering_check.py` (inputs: `data/raw/Q42561_AtFATA1.fasta`,
+  `data/raw/Q8L6B1_TaFatA.fasta`). Updated `docs/PHASE5_FAT_DHODH_AUDIT.md`,
+  `data/processed/phase5_risk_table.csv`, and `docs/VERIFICATION_LOG.md` accordingly. All Tier 4 items
+  (4.1-4.8) are now closed for this audit pass.
+
+- 2026-07-05 (q): Completed Phase 5 item 4.8 with primary-source verification (Claude Code). User
+  supplied the Goggin et al. 2022 PDF (Pest Manag Sci, DOI 10.1002/ps.6947). Confirmed three real WA
+  *Lolium rigidum* field populations (R1/R2/R3) show reduced cinmethylin sensitivity via enhanced
+  P450-mediated metabolism (not a FAT target-site mutation), with resistance indices up to 8.0x
+  (R2/R3 statistically significant on coleoptile elongation) and clear phorate-reversal mechanistic
+  evidence. Replaced the single placeholder NTSR row in `data/processed/phase5_risk_table.csv` with
+  three per-population rows carrying exact ED50/RI/p-value data. All three Phase 5 mutation-audit PDFs
+  (Wagner et al. 2026, Kot et al. 2026, Goggin et al. 2022) are now archived in `docs/references/` and
+  logged in `docs/VERIFICATION_LOG.md`. Remaining open item: 4.7 (R171 vs Arg176 sequence alignment,
+  not yet run).
+
+- 2026-07-05 (p): Completed Phase 5 items 4.3 and 4.4 with primary-source verification (Claude Code).
+  User supplied two PDFs directly: Wagner et al. 2026 bioRxiv (FAT R171/H112Q/W173L engineered mutants,
+  P192R FAT B) and Kot et al. 2026 (Arabidopsis FatA crystal structures incl. cinmethylin-bound 9GRR,
+  verified against RCSB's data API). Also independently verified the DHODH mutation evidence (G198E,
+  A141T — corrected from an earlier "A141V") from Kang et al. 2023 PNAS PMC full text, twice. Created
+  `data/processed/phase5_risk_table.csv` to hold both targets' non-weed-evolved mutation evidence
+  separately from the Phase 4 pooled table. Found and logged a real (non-target-site) cinmethylin
+  resistance signal in field *Lolium rigidum* that the original audit draft had missed. Added items 4.7
+  (FAT residue-numbering alignment, R171 vs Arg176, not yet confirmed) and 4.8 (Lolium metabolism paper
+  full-text read, not yet obtained) as the next open items. Full detail in
+  `docs/PHASE5_FAT_DHODH_AUDIT.md` and `docs/VERIFICATION_LOG.md`.
 
 - 2026-07-05 (o): Reset presentation deliverables to the user-attached canonical deck at
   `output/presentations/herbicide_resistance_structural_bioinformatics_talk.pptx`, removed old generated

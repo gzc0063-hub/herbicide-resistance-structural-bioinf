@@ -66,6 +66,135 @@ fold-change (~10–55×) if citing Ki specifically.
   site) belongs to *Ambrosia artemisiifolia* (common ragweed), not *Amaranthus* —
   matches DECISION_LOG's nomenclature correction exactly.
 
+## Primary-source full-text check — Wagner et al. 2026 FAT R171 preprint (PDF supplied by user, saved to `docs/references/Wagner_et_al_2026_FAT_R171_biorxiv.pdf`)
+
+- bioRxiv DOI as given by both the search index and Europe PMC:
+  `10.64898/2026.06.11.731613` (bioRxiv's newer DOI prefix, not the legacy
+  `10.1101` — confirm it resolves via doi.org before final manuscript citation).
+  Europe PMC record (`PPR1252330`) independently confirms title, authors
+  (Wagner P, Lerchl J, Betzt M, Porri A), and abstract verbatim — cross-checked
+  before the PDF arrived, then confirmed again against the PDF's own text.
+- Full text extracted directly with `pypdf` (not a summarization tool) and read
+  page-by-page. Confirms exactly: FAT A/B sequences from *Alopecurus
+  myosuroides*, cross-checked against *Lolium multiflorum*; 70 FAT A + 34 FAT B
+  variants screened; candidate positions chosen by molecular docking simulation
+  (computational), built as synthetic constructs, expressed in *E. coli*, tested
+  with a fluorescence acyl-CoA/CPM assay.
+- Table 3 read directly: R171K IC50 1.56×10⁻⁵ M (WT 3.02×10⁻⁸ M), resistance
+  index 516.56, 60.87% residual activity, 56.56% inhibition at saturation.
+  R171Q/I/M: no measurable IC50, 24.32%/15.53%/10.96% inhibition respectively.
+  H112Q RI 4.24 (1 nucleotide polymorphism required — the paper's own tension
+  point: easiest-to-evolve mutation is the weakest). FAT B's largest shift is
+  P192R (RI 9.76), a different position from FAT A's R171 — the original audit
+  draft only mentioned FAT A/R171 and missed this.
+- Table 4 (codon-level nucleotide-polymorphism requirements) confirms R171K
+  needs 3 simultaneous nucleotide changes via either codon path (CGT→AAA or
+  CGT→AAG) — matches the paper's own "extremely unlikely under field
+  conditions" conclusion, now traced to the actual codon-substitution table
+  rather than taken on faith from the abstract.
+- **Correction to an earlier (pre-PDF) characterization of this paper:** an
+  initial proxy-summarized read described the screen as happening in
+  "generations" (implying iterative rounds). The actual paper describes a
+  single docking-guided screen of 70+34 variants with no generational
+  structure — that framing was inaccurate and has been dropped from
+  `docs/PHASE5_FAT_DHODH_AUDIT.md`.
+- This is a bachelor-thesis project supervised at BASF (Limburgerhof, Germany),
+  **not yet peer-reviewed** — treat with correspondingly lower evidentiary
+  weight than a published, peer-reviewed paper, independent of how precisely
+  the numbers above were read.
+
+## Primary-source full-text check — Kot et al. 2026 FatA crystal structure (PDF supplied by user, saved to `docs/references/Kot_et_al_2026_FatA_crystal_structure.pdf`)
+
+- Confirmed directly from the PDF text (`pypdf` extraction): solved structure is
+  ***Arabidopsis thaliana* FatA**, 1.5 Å resolution, plus a 129-fragment XChem
+  screening campaign at Diamond Light Source.
+- PDB codes confirmed present in the paper's own text: `9HRR` (apo),
+  `9HRQ` (ligand-bound), `9GRR` (cinmethylin-bound), `9HMT`
+  (methiozolin-fluorine analogue), `9GS1` (oxaziclomefone-bound), `9S4H`
+  (optimized lead x1816-FU1), plus group deposition `G_1002328` for the
+  129 fragment hits, and reference structures `4KEH` (*E. coli* FabA-ACP) and
+  `5X04` (*Umbellularia californica* FatB).
+- Independently cross-checked `9GRR` and `9HRR` against RCSB's own data API
+  (`data.rcsb.org/rest/v1/core/entry/...`), not just the paper's claim —
+  both real, titles match exactly ("...Acyl-ACP Thioesterase (At-FatA)
+  complexed with Cinmethylin" / "...FatA in an apo state").
+- The paper calls the key inhibitor-contact residue **Arg176** throughout
+  (never mentions R171). The crystallized construct has the 74-residue
+  chloroplast transit peptide removed before expression but is still numbered
+  from the full-length precursor. This supports — but does not confirm — the
+  hypothesis that Arg176 (Arabidopsis) and R171 (blackgrass, per the Wagner
+  et al. paper above) are the same catalytic residue at a ~5-residue
+  species-numbering offset. **No sequence alignment has been run to confirm
+  this** — treat as an open item, not a fact, until one is.
+
+## Primary-source full-text check — Goggin et al. 2022 Lolium rigidum cinmethylin metabolism (PDF supplied by user, saved to `docs/references/Goggin_et_al_2022_Lolium_cinmethylin_metabolism.pdf`)
+
+- Confirmed: Goggin, Cawthray, Busi, Porri & Beckie (2022), *Pest Manag Sci*
+  78:3173-3182, DOI `10.1002/ps.6947`, peer-reviewed and open access.
+- Populations: R1 (Wickepin, WA — field-collected then given 2 rounds of
+  sublethal-dose lab selection), R2 and R3 (Tammin, WA — used directly from
+  field screening, no further selection), vs susceptible control S, plus
+  cinmethylin-tolerant wheat as a positive control. Table 1 read directly:
+  survival-basis resistance indices R1 3.4 (p=0.393, n.s.), R2 7.2 (p=0.335,
+  n.s.), R3 8.0 (p=0.324, n.s.); coleoptile-basis R1 1.4 (n.s.), R2 2.7
+  (p=0.003, significant), R3 3.2 (p=0.001, significant); radicle-basis R3 4.5
+  (p=0.043, significant). The authors themselves caveat these populations as
+  "putatively" resistant, not officially confirmed as cinmethylin-resistant.
+- Mechanism confirmed from Results 3.2: a specific water-soluble oxidative
+  metabolite ("metabolite 4") correlates positively with resistance level
+  (regression against ED50, Table 2); the cytochrome P450 inhibitor phorate
+  decreased metabolite 4 production and synergized cinmethylin toxicity back
+  toward susceptible-like levels (Colby analysis, Fig. 2) — this is
+  mechanistic evidence of P450-mediated detoxification, not just a
+  correlation.
+- Confirms this is genuinely a **non-target-site (metabolic) resistance**
+  finding, unrelated to the FAT active-site/R171 question — correctly kept as
+  a separate row category in `data/processed/phase5_risk_table.csv`.
+- Note the shared author (Aimone Porri, BASF) with the Wagner et al. 2026 FAT
+  R171 preprint verified above — same institutional research thread on both
+  the target-site and non-target-site sides of the cinmethylin-resistance
+  question.
+
+## R171 (blackgrass FatA) vs Arg176 (Arabidopsis FatA) numbering check — sequence alignment
+
+- No public *Alopecurus myosuroides* FatA sequence exists to test this
+  directly — checked NCBI protein (`esearch db=protein`), NCBI nuccore
+  (`esearch db=nuccore`), and UniProt (`organism_name:"Alopecurus myosuroides"`)
+  independently; all returned zero relevant hits. Confirms the earlier
+  reading of the Wagner et al. 2026 PDF (no GenBank accession given anywhere
+  in the text) — this sequence is genuinely not deposited publicly.
+- Used wheat (*Triticum aestivum*, UniProt `Q8L6B1`, confirmed via
+  `rest.uniprot.org` direct download, not a summarized fetch) as a proxy:
+  wheat and blackgrass are both Pooideae grasses, much closer to each other
+  than either is to Arabidopsis.
+- Downloaded both sequences directly with `curl` (not WebFetch, to rule out
+  summarization error) — `data/raw/Q42561_AtFATA1.fasta` (Arabidopsis FATA1,
+  362 aa canonical UniProt sequence — note an earlier WebFetch-summarized read
+  of this same page had misreported the length as 407 aa; the raw downloaded
+  file is authoritative and was independently confirmed by direct
+  byte-counting the sequence lines, not just Biopython's parser) and
+  `data/raw/Q8L6B1_TaFatA.fasta` (wheat FatA, 289 aa).
+- Confirmed directly: Arabidopsis position 176 (1-indexed) is Arg, matching
+  Kot et al. 2026's "Arg176" exactly — validates that this is native/UniProt
+  numbering, not an arbitrary construct-specific renumbering.
+- Ran a global BLOSUM62 alignment (`scripts/phase5_fat_numbering_check.py`,
+  reproducible, `.venv/Scripts/python.exe scripts/phase5_fat_numbering_check.py`).
+  77.8% identity over the aligned region — high-confidence orthologous
+  alignment, not a weak/spurious one. **Result: Arabidopsis Arg176 aligns to
+  wheat Arg103, not to wheat position 171 (a threonine).** Wheat's own UniProt
+  numbering is already mature-protein (transit-peptide-excluded): 176 − 103 =
+  73, matching the 74-residue Arabidopsis transit peptide almost exactly.
+- **Conclusion: if blackgrass's numbering in Wagner et al. 2026 follows the
+  same mature-protein convention as wheat's UniProt entry (a reasonable
+  assumption for a synthetic E. coli expression construct), R171 and Arg176
+  are most likely different residues, roughly 70 positions apart — not the
+  same catalytic arginine at a small species-numbering offset.** This refutes
+  the working hypothesis recorded in the previous audit pass. Residual
+  uncertainty: this was tested via a wheat proxy, not the actual blackgrass
+  sequence (which is not publicly available), so it is not a 100% conclusive
+  refutation — but it is strong enough evidence to stop treating the
+  correspondence as a live open hypothesis.
+
 ## Not yet independently verified
 
 - ABD52326/ABD52328 as a second legitimate ΔG210 pair, "confirmed via 2 independent
