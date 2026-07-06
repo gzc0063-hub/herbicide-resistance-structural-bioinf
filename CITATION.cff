@@ -15,6 +15,7 @@ authors:
   - family-names: Chahal
     given-names: Gourav
     email: gzc0063@gmail.com
+    affiliation: "Department of Crop, Soil and Environmental Sciences, Auburn University, Auburn, AL, USA"
 repository-code: "https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf"
 license: MIT
 keywords:

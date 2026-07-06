@@ -7,6 +7,8 @@ from pathlib import Path
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from scripts.build_phase4_tables import clamp_nonneg
+
 
 MECHANISM_FIELDNAMES = [
     "family",
@@ -191,7 +193,7 @@ def mechanism_rows(screen_rows: list[dict[str, str]]) -> list[dict[str, str]]:
                 "dynamic_review_relevance": relevance,
                 "manuscript_interpretation": interpretation,
                 "percentile_rank_distance_to_core": row["percentile_rank_distance_to_core"],
-                "rsa_tien2013": row["rsa_tien2013"],
+                "rsa_tien2013": clamp_nonneg(row["rsa_tien2013"]),
                 "normalized_conservation": row["normalized_conservation"],
             }
         )

@@ -102,7 +102,7 @@ def clamp_nonneg(value: str) -> str:
         number = float(value)
     except (TypeError, ValueError):
         return value
-    return "0.0" if -1e-6 < number < 0 else value
+    return "0.0" if -1e-6 < number <= 0 else value
 
 
 MUTATION_FIELDNAMES = [
@@ -236,7 +236,7 @@ def build_family_rows(repo_root: Path, config: FamilyConfig) -> list[dict[str, s
                 "sasa_A2": clamp_nonneg(metric["sasa_A2"]),
                 "max_sasa_tien2013_A2": metric["max_sasa_tien2013_A2"],
                 "rsa_tien2013": clamp_nonneg(metric["rsa_tien2013"]),
-                "shannon_entropy": conservation_row.get("shannon_entropy", ""),
+                "shannon_entropy": clamp_nonneg(conservation_row.get("shannon_entropy", "")),
                 "normalized_conservation": conservation_row.get(
                     "normalized_conservation", ""
                 ),

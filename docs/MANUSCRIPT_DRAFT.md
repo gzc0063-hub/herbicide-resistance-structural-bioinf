@@ -1,16 +1,18 @@
 # Comparative Static Structural Mapping of Target-Site Herbicide Resistance Across Weed Enzyme Families
 
-Status: first manuscript draft for internal review. This draft is built from the current Phase 4 outputs and should be citation-polished before submission.
+**Gourav Chahal**
+
+Department of Crop, Soil and Environmental Sciences, Auburn University, Auburn, AL, USA
+
+Corresponding author: Gourav Chahal, gzc0063@gmail.com
+
+Status: citation-formatted draft prepared for submission to *Pest Management Science*. In-text citations
+use PMS's superscript sequential-numbering style; the reference list is ordered by first appearance in
+the text. See the Citation and Submission To-Do section for remaining pre-submission items.
 
 ## Abstract
 
-Target-site herbicide resistance is usually studied one enzyme family at a time, which makes it difficult to compare whether resistance substitutions occupy similar structural zones across unrelated herbicide targets. Here, we built a comparative static structural-bioinformatics resource for verified weed target-site resistance positions in protoporphyrinogen oxidase (PPO), acetolactate synthase/acetohydroxyacid synthase (ALS/AHAS), 5-enolpyruvylshikimate-3-phosphate synthase (EPSPS), and acetyl-CoA carboxylase (ACCase), with 4-hydroxyphenylpyruvate dioxygenase (HPPD) retained as a contrast family after source audit found no accepted weed-evolved target-site amino-acid substitution for inclusion.
-
-For each accepted mutation position, we mapped the site onto a ligand-bound or otherwise herbicide-relevant protein structure, defined an active-site core from ligand or validated pocket contacts, and calculated within-family distance-to-core percentile, raw solvent-accessible surface area, Tien-normalized relative solvent accessibility (RSA), and alignment-based conservation. We then de-duplicated repeated accession rows to unique structural positions and tested whether accepted resistance positions are enriched near active-site cores relative to random same-family residue sets.
-
-Accepted resistance positions were strongly enriched in low distance-to-core percentiles for PPO, ALS/AHAS, and ACCase. ACCase showed an observed mean percentile of 13.24 versus a random mean of 50.20 (empirical p = 0.000300), ALS/AHAS 4.64 versus 50.10 (p = 0.000100), and PPO 8.01 versus 49.90 (p = 0.000600). Critically, the enrichment is not an artifact of direct-contact residues scoring zero by construction: when the direct-core positions are removed and only non-core accepted positions are tested, the signal survives for both PPO (n = 3, observed 10.39, p = 0.004100) and ACCase (n = 4, observed 18.00, p = 0.010199). EPSPS showed the same directional pattern for Pro106Ser (12.87 versus 50.11) but is underpowered as a family-level test because the current accepted set contains one mutation position. Mechanism annotation separated direct-core substitutions from adjacent, second-shell/channel, and interface-associated positions, preventing static proximity from being overinterpreted as a binding free-energy model. ACCase was evaluated on a SWISS-MODEL black-grass CT-domain homodimer built from AJ310767 residues 1639-2204 on the inhibitor-bound 1UYS template; because SWISS-MODEL excluded haloxyfop, active-site-core membership was transferred from aligned 1UYS H1L-contact residues.
-
-That accepted TSR positions sit near the active site is expected — it is close to the definition of target-site resistance — so proximity enrichment is treated here as a baseline to be established and then moved past, not as the finding. The contribution of the resource is a reproducible cross-family *typology* of how resistance positions relate to the pocket: direct-contact substitutions, binding-site-adjacent and second-shell/channel positions, a deletion-linked helix case (PPO ΔG210), a poorly conserved permissive site (PPO V361A), and distal dimer-interface positions (ACCase Cys2088Arg). The non-core positions — those not explained by direct contact — are the mechanistically informative core of the paper and are where static mapping adds value beyond restating that pocket mutations are in the pocket. Static distance, RSA, and conservation identify where resistance positions sit; literature kinetic, docking, molecular-dynamics, and free-energy studies remain necessary to explain how specific substitutions alter binding, catalysis, conformational sampling, or herbicide selectivity.
+Target-site herbicide resistance (TSR) is usually studied one enzyme family at a time, obscuring whether resistance substitutions occupy similar structural zones across unrelated targets. We built a comparative static structural-bioinformatics resource for verified weed TSR positions in protoporphyrinogen oxidase (PPO), acetolactate synthase (ALS/AHAS), 5-enolpyruvylshikimate-3-phosphate synthase (EPSPS), and acetyl-CoA carboxylase (ACCase), with 4-hydroxyphenylpyruvate dioxygenase (HPPD) retained as a target-site-negative contrast after a source audit found no accepted weed-evolved HPPD substitution. For each position we mapped a herbicide-relevant structure, defined an active-site core, and calculated within-family distance-to-core percentile, relative solvent accessibility, and conservation, then tested enrichment against random same-family residue sets. Accepted positions were strongly enriched near active-site cores in PPO, ALS/AHAS, and ACCase (p ≤ 0.0006); the enrichment persisted after removing guaranteed-zero direct-core residues (PPO p = 0.0041; ACCase p = 0.0102), showing the signal is not tautological. ACCase was evaluated on a homology-modeled black-grass carboxyltransferase-domain dimer to keep side-chain metrics on the weed sequence rather than a distantly related template. The resource's main contribution is a reproducible structural typology of direct-contact, adjacent, second-shell, deletion-linked, and dimer-interface positions, resolving how, not only whether, resistance positions relate to the active site.
 
 ## Introduction
 
@@ -36,11 +38,11 @@ The curation workflow intentionally avoided accession inference by sequence-leng
 
 Each target family was mapped to a real protein structure selected for herbicide relevance, ligand state, plant/source relevance where possible, and interpretability of the active-site zone.
 
-PPO used the tobacco mitochondrial PPO2 structure 1SEZ. ALS/AHAS used 1Z8N with an interface-aware active-site core. EPSPS used maize EPSPS structure 8UMJ complexed with glyphosate and shikimate-3-phosphate. ACCase used a SWISS-MODEL black-grass carboxyltransferase-domain homodimer built from AJ310767 residues 1639-2204 on the yeast 1UYS template, preserving the dimer context needed for ACCase resistance-site interpretation. HPPD used Arabidopsis plant HPPD structures, especially 5YWG with mesotrione and metal, as a contrast structural module.
+PPO used the tobacco (*Nicotiana tabacum*) mitochondrial PPO2 structure 1SEZ.<sup>1</sup> ALS/AHAS used 1Z8N with an interface-aware active-site core.<sup>2</sup> EPSPS used maize (*Zea mays*) EPSPS structure 8UMJ complexed with glyphosate and shikimate-3-phosphate. ACCase used a SWISS-MODEL black-grass (*Alopecurus myosuroides*) carboxyltransferase-domain homodimer built from AJ310767 residues 1639-2204 on the yeast 1UYS template,<sup>3</sup> preserving the dimer context needed for ACCase resistance-site interpretation. HPPD used Arabidopsis plant HPPD structures, especially 5YWG with mesotrione and metal, as a contrast structural module.
 
 ### Active-Site Core Definitions
 
-Active-site cores were defined by family-specific structural evidence rather than a single arbitrary residue list. Ligand-contact cores were generated from residues within the adopted contact threshold around bound herbicides, substrates, cofactors, or metals when those ligands were present and relevant. For PPO, the validated Heinemann active-site reference was retained as the primary core. For ALS/AHAS, the core was expanded after review to include dimer-interface pocket residues, including the Ala122/Pro197 zone, because ALS inhibitor binding is not confined to a single-chain pocket.
+Active-site cores were defined by family-specific structural evidence rather than a single arbitrary residue list. Ligand-contact cores were generated from residues within the adopted contact threshold around bound herbicides, substrates, cofactors, or metals when those ligands were present and relevant. For PPO, the validated active-site reference from Heinemann et al.<sup>4</sup> was retained as the primary core. For ALS/AHAS, the core was expanded after review to include dimer-interface pocket residues, including the Ala122/Pro197 zone, because ALS inhibitor binding is not confined to a single-chain pocket.
 
 The primary cross-family distance field is `distance_to_active_site_core_A`, where direct core residues have distance 0 A. A secondary nearest-other-core spacing field is retained where useful but is not the pooled distance metric.
 
@@ -48,7 +50,7 @@ The primary cross-family distance field is `distance_to_active_site_core_A`, whe
 
 For every residue in each structure, the pipeline calculated distance to the active-site core and converted that value to a within-family percentile rank. This makes enzymes of different sizes and architectures comparable: a low percentile means a residue lies unusually close to the active-site core within its own protein.
 
-Solvent exposure is recorded as both raw solvent-accessible surface area (`sasa_A2`) and Tien-normalized relative solvent accessibility (`rsa_tien2013`). Raw SASA is retained for traceability, while RSA is preferred for cross-enzyme comparisons because residue type affects maximum accessible area.
+Solvent exposure is recorded as both raw solvent-accessible surface area (`sasa_A2`) and Tien-normalized relative solvent accessibility (`rsa_tien2013`).<sup>5</sup> Raw SASA is retained for traceability, while RSA is preferred for cross-enzyme comparisons because residue type affects maximum accessible area.
 
 Conservation was estimated from curated multi-species sequence panels using alignment-based Shannon entropy and normalized conservation scores. Conservation values are interpreted as supporting structural constraint, not as direct evidence of herbicide resistance by themselves.
 
@@ -86,11 +88,11 @@ EPSPS followed the same directional pattern: Pro106Ser lies at the 12.87th perce
 
 ### A Structural Typology of Resistance Positions (the main contribution)
 
-The core contribution of this resource is not the enrichment above but the reproducible typology it enables: resolving accepted positions by *how* they relate to the pocket rather than only *whether* they are near it. The unique-position screen separates direct-core substitutions from adjacent, second-shell/channel, and more distal non-core candidates (Figure 3; Table 2). Direct-core examples include PPO R98G/R98M, ALS/AHAS Trp574Leu, Ser653Asn, Ala122Ser, and Pro197Ala, and ACCase Ile2041Asn under the current active-site-core definitions. These positions are useful positive controls: static proximity is expected to be informative because the residues lie in or at the validated binding pocket. They anchor one end of the typology but are not, on their own, a finding.
+The core contribution of this resource is not the enrichment above but the reproducible typology it enables: resolving accepted positions by *how* they relate to the pocket rather than only *whether* they are near it. The unique-position screen separates direct-core substitutions from adjacent, second-shell/channel, and more distal non-core candidates (Figure 3; Table 2). Direct-core examples include PPO R98G/R98M,<sup>6</sup> ALS/AHAS Trp574Leu, Ser653Asn, and Ala122Ser,<sup>7</sup> and Pro197Ala,<sup>8,9</sup> the latter two among the most firmly established ALS TSR sites,<sup>10</sup> and ACCase Ile2041Asn<sup>11,12</sup> under the current active-site-core definitions. These positions are useful positive controls: static proximity is expected to be informative because the residues lie in or at the validated binding pocket. They anchor one end of the typology but are not, on their own, a finding.
 
-The non-core positions are the more mechanistically informative part of the resource. PPO DeltaG210 is adjacent to the active-site zone but is better interpreted through deletion-linked helix or loop effects than through distance alone. EPSPS Pro106Ser is close to the glyphosate/S3P site but sits just outside the 4.5 Å atomic-contact core; it is a binding-site-associated (second-shell) residue — the substitution corresponds to the *Salmonella typhimurium* glyphosate-insensitive EPSPS change (Baerson et al. 2002) and reduces glyphosate affinity — and its non-core classification reflects the contact-distance cutoff, not evidence of allostery. ACCase Cys2088Arg is the most distal accepted ACCase position in the current screen; it remains within the broader dimer-interface resistance zone, and the SWISS-MODEL residue is the expected weed wild-type cysteine. Its remaining caveat is that ACCase active-site-core membership is transferred from the ligand-bound 1UYS template because the homology model itself lacks H1L.
+The non-core positions are the more mechanistically informative part of the resource. PPO ΔG210<sup>13,14</sup> is adjacent to the active-site zone but is better interpreted through deletion-linked helix or loop effects than through distance alone; G399A<sup>15</sup> is a second PPO adjacent (non-core) position supported by the same active-site-region literature. EPSPS Pro106Ser is close to the glyphosate/S3P site but sits just outside the 4.5 Å atomic-contact core; it is a binding-site-associated (second-shell) residue — the substitution corresponds to the *Salmonella typhimurium* glyphosate-insensitive EPSPS change<sup>16</sup> and reduces glyphosate affinity — and its non-core classification reflects the contact-distance cutoff, not evidence of allostery. ACCase Cys2088Arg<sup>12</sup> is the most distal accepted ACCase position in the current screen; it remains within the broader dimer-interface resistance zone, and the SWISS-MODEL residue is the expected weed wild-type cysteine. Its remaining caveat is that ACCase active-site-core membership is transferred from the ligand-bound 1UYS template because the homology model itself lacks H1L.
 
-For interpretation benchmarks, the flagship non-core cases now map cleanly to source-supported mechanisms: Dayan et al. 2010 provides the kinetic/MD benchmark for PPO DeltaG210, Hao et al. 2009 is retained as the secondary computational account, and the ACCase CT-domain interpretation is grounded in Delye et al. 2005, Yu et al. 2007, and the inhibitor-bound 1UYS structure from Zhang et al. 2004.
+For interpretation benchmarks, the flagship non-core cases now map cleanly to source-supported mechanisms: Dayan et al.<sup>14</sup> provide the kinetic/MD benchmark for PPO ΔG210, Hao et al.<sup>17</sup> are retained as the secondary computational account, and the ACCase CT-domain interpretation is grounded in Délye et al.,<sup>11</sup> Yu et al.,<sup>12</sup> and the inhibitor-bound 1UYS structure from Zhang et al.<sup>3</sup>
 
 ![Figure 3. Unique mutation-position screen.](../output/figures/figure_3_position_screen.svg)
 
@@ -98,13 +100,13 @@ For interpretation benchmarks, the flagship non-core cases now map cleanly to so
 
 Distance percentile, RSA, and conservation jointly describe the structural context of each accepted position (Figure 4). Many accepted positions are both close to the active-site core and highly conserved, consistent with the expectation that TSR often arises at constrained functional sites where limited changes can alter herbicide response. However, these metrics are not interchangeable. A conserved adjacent residue may mark a mechanically important pocket feature, while a less-conserved non-core position may be a permissive site whose resistance mechanism remains unresolved.
 
-PPO V361A illustrates this caution. The static screen places it outside the immediate core, but its conservation score is modest relative to stronger mechanistic examples. It remains a valid resistance mutation row, but the current resource labels it as an unresolved static candidate rather than assigning a literature-supported dynamic mechanism.
+PPO V361A<sup>18</sup> illustrates this caution. The static screen places it outside the immediate core, but its conservation score is modest relative to stronger mechanistic examples. It remains a valid resistance mutation row, but the current resource labels it as an unresolved static candidate rather than assigning a literature-supported dynamic mechanism.
 
 ![Figure 4. Distance percentile versus RSA and conservation.](../output/figures/figure_4_distance_rsa_conservation.svg)
 
 ### HPPD Is a Contrast Family, Not a Forced TSR-Positive Dataset
 
-HPPD was not pooled into the mutation enrichment analysis because the project source audit found no accepted weed-evolved HPPD target-site amino-acid substitution suitable for inclusion. Instead, HPPD is represented by plant HPPD active-site metrics and a status table documenting `no_verified_weed_tsr_accepted` with zero accepted TSR rows (Table 3).
+HPPD was not pooled into the mutation enrichment analysis because the project source audit found no accepted weed-evolved HPPD target-site amino-acid substitution suitable for inclusion. Nakka et al.<sup>19</sup> instead documented non-target-site cytochrome P450-mediated mesotrione metabolism plus 4-12-fold HPPD overexpression as the resistance mechanism in the audited Palmer amaranth (*Amaranthus palmeri*) case, with no target-site amino-acid mutation. Accordingly, HPPD is represented here by plant HPPD active-site metrics and a status table documenting `no_verified_weed_tsr_accepted` with zero accepted TSR rows (Table 3).
 
 This contrast is important for the manuscript's credibility. It shows that the resource does not force every herbicide target into a TSR-positive framework when the literature points instead toward non-target-site mechanisms such as metabolism, expression changes, or polygenic detoxification.
 
@@ -116,7 +118,7 @@ The main contribution is not that every resistance mutation directly contacts he
 
 The review-driven static-versus-dynamic critique is therefore incorporated as a scope boundary. Static metrics can identify where a residue sits, whether that position is unusually close within its family, how exposed it is, and how conserved it appears across a curated sequence panel. Static metrics cannot estimate mutant binding free energy, induced-fit cost, loop breathing, solvent rearrangement, altered catalytic turnover, or cross-herbicide selectivity. Those questions require biochemical assays, docking, molecular dynamics, free-energy calculations, or other mechanism-specific studies.
 
-PPO DeltaG210 is the clearest example of why the manuscript should pair static mapping with literature mechanism annotation. The position is close enough to the active-site zone to be captured by the enrichment framework, but the deletion's biological meaning depends on helix-capping destabilization, active-site cavity expansion, and altered inhibition behavior reported by Dayan et al. 2010; Hao et al. 2009 is retained as a secondary computational benchmark because it proposed a different hydrogen-bond mechanism that Dayan et al. later critiqued. PPO R98G/R98M anchors the opposite end of the typology: a direct pocket residue whose interpretation is supported by substrate-recognition and docking work on the PPO active-site region (Heinemann et al. 2007; Hao et al. 2013). ACCase provides a third benchmark class. Delye et al. 2005 modeled black-grass CT-domain substitutions around the inhibitor-binding cavity and distinguished direct APP-interference, bottom-of-cavity second-shell positions, and broader APP/CHD effects, while Zhang et al. 2004 supplies the inhibitor-bound CT-domain template used here and Yu et al. 2007 verifies Cys2088Arg as an accepted ACCase resistance substitution. EPSPS Pro106Ser similarly illustrates a close but non-direct position whose interpretation depends on EPSPS conformational and glyphosate-site literature.
+PPO ΔG210 is the clearest example of why the manuscript should pair static mapping with literature mechanism annotation. The position is close enough to the active-site zone to be captured by the enrichment framework, but the deletion's biological meaning depends on helix-capping destabilization, active-site cavity expansion, and altered inhibition behavior reported by Dayan et al.;<sup>14</sup> Hao et al.<sup>17</sup> is retained as a secondary computational benchmark because it proposed a different hydrogen-bond mechanism that Dayan et al. later critiqued. PPO R98G/R98M anchors the opposite end of the typology: a direct pocket residue whose interpretation is supported by substrate-recognition and docking work on the PPO active-site region (Heinemann et al.;<sup>4</sup> Hao et al.<sup>20</sup>). ACCase provides a third benchmark class. Délye et al.<sup>11</sup> modeled black-grass CT-domain substitutions around the inhibitor-binding cavity and distinguished direct APP-interference, bottom-of-cavity second-shell positions, and broader APP/CHD effects, while Zhang et al.<sup>3</sup> supplies the inhibitor-bound CT-domain template used here and Yu et al.<sup>12</sup> verifies Cys2088Arg as an accepted ACCase resistance substitution. EPSPS Pro106Ser similarly illustrates a close but non-direct position whose interpretation depends on EPSPS conformational and glyphosate-site literature.
 
 By keeping HPPD as a contrast family, the analysis also avoids overextending the TSR framework. HPPD-inhibitor resistance in weeds is often explained by non-target-site processes, and no accepted weed-evolved HPPD amino-acid TSR row was identified for this resource. The contrast table makes that absence visible rather than hiding it as missing data.
 
@@ -124,7 +126,7 @@ By keeping HPPD as a contrast family, the analysis also avoids overextending the
 
 This study is a static structural resource. It does not model mutant-state ensembles, free-energy changes, herbicide-specific resistance factors, metabolism, expression, copy-number variation, or field-level resistance evolution. Distance-to-core percentile is a structural-context metric, not a causal mechanism by itself.
 
-The current EPSPS dataset is underpowered for family-level inference because it contains one accepted mutation position. The current ALS/AHAS set contains four accepted positions (Trp574Leu, Ser653Asn, Ala122Ser, Pro197Ala). Ala122Ser is included at medium confidence because in its source deposit it co-occurs with a second substitution (A282D); Pro197Ala was detected in Palmer amaranth together with Trp574Leu (Singh et al. 2018) but Pro197 is independently one of the most firmly established ALS TSR sites. Asp376, although an accepted ALS TSR locus in other species, was not added because no Palmer amaranth primary source detecting it is in hand (Singh et al. 2018 lists it only as a known locus). Adding Asp376 from a verified weed source, and paired resistant/susceptible accessions for the reference-numbered positions, would further strengthen the family-level section.
+The current EPSPS dataset is underpowered for family-level inference because it contains one accepted mutation position. The current ALS/AHAS set contains four accepted positions (Trp574Leu, Ser653Asn, Ala122Ser, Pro197Ala). Ala122Ser is included at medium confidence because in its source deposit it co-occurs with a second substitution (A282D); Pro197Ala was detected in Palmer amaranth (*Amaranthus palmeri*) together with Trp574Leu<sup>8</sup> but Pro197 is independently one of the most firmly established ALS TSR sites.<sup>10</sup> Asp376, although an accepted ALS TSR locus in other species, was not added because no Palmer amaranth primary source detecting it is in hand (Singh et al.<sup>8</sup> lists it only as a known locus). Adding Asp376 from a verified weed source, and paired resistant/susceptible accessions for the reference-numbered positions, would further strengthen the family-level section.
 
 Mechanism annotations are only as strong as their evidence level. Rows marked `literature_supported` can be discussed as literature-supported mechanism classes; rows marked `static_supported` or unresolved should not be treated as proven dynamic mechanisms.
 
@@ -132,9 +134,21 @@ A specific structural caveat still applies to ACCase, but it is now a homology-m
 
 Finally, structure choice and active-site-core definition affect the output. The project reduces this risk by documenting each family-specific decision, preserving source files and scripts, using within-family percentiles rather than raw distance across enzymes, running the enrichment both with and without direct-core positions, and recording HPPD as a contrast case rather than fabricating mutation rows.
 
+## Acknowledgments
+
+No acknowledgments to declare.
+
+## Funding
+
+This research received no specific grant from any funding agency, commercial sector, or not-for-profit sector.
+
+## Competing Interests
+
+The author declares no competing interests.
+
 ## Data and Code Availability
 
-All curated datasets, scripts, generated tables, generated SVG figures, decision records, and verification logs are maintained in the project repository. The key outputs for this draft are:
+All curated datasets, scripts, generated tables, generated SVG figures, decision records, and verification logs are maintained in a public GitHub repository: https://github.com/gzc0063-hub/herbicide-resistance-structural-bioinf (MIT license for code; data/tables are CC-BY-4.0). A versioned Zenodo deposit with a data DOI will be created at submission time. The key outputs for this draft are:
 
 - `output/tables/phase4_master_mutation_table.csv`
 - `output/tables/manuscript_table_1_family_permutation_summary.csv`
@@ -169,35 +183,48 @@ Figure 5. Resistance-zone map. One lane per enzyme family; each accepted positio
 
 ## Citation and Submission To-Do
 
-- Convert the source-paper names in this draft into journal-formatted citations.
-- Decide whether FAT and DHODH belong in this manuscript or should remain future work requiring ColabFold/manual structure prediction.
-- Review figure aesthetics and labels for the target journal format.
-- Convert this reference list to the target journal's citation style at submission; every DOI below resolves, and PDFs marked (†) are archived in `docs/references/`.
+- Identify and cite the origin papers for the EPSPS structure 8UMJ and the HPPD structure 5YWG. Both are
+  currently named by PDB ID only in Methods because no verified citation for either structure's origin
+  paper has been located — do not fabricate one; find and add the real citation before submission.
+- Confirm PMS's current figure-file format requirement (this draft's figures are SVG; PMS may require
+  TIFF/EPS/PDF at submission — convert if so).
+- Cut a tagged GitHub release and create the Zenodo deposit for a data DOI at submission time; add the
+  DOI to Data and Code Availability and to `CITATION.cff`.
+- Add an ORCID for the corresponding author if available.
+- Reference DOIs are retained in the list below for verifiability; confirm whether PMS's final production
+  style wants them displayed or suppressed at proof stage.
+- ~~Decide whether FAT and DHODH belong in this manuscript or should remain future work.~~ **Resolved
+  2026-07-05:** a dedicated Phase 5 primary-source audit (`docs/PHASE5_FAT_DHODH_AUDIT.md`,
+  `data/processed/phase5_risk_table.csv`) found neither target has a weed-evolved target-site mutation on
+  record — the FAT R171/H112Q/W173L/P192R variants (Wagner et al. 2026) are docking-guided engineered
+  mutants, and the DHODH G198E/A141T variants (Kang et al. 2023) are EMS lab-selected Arabidopsis lines.
+  Both remain future work; neither is pooled into this manuscript's Phase 4 tables or enrichment analysis.
 
 ## References
 
-Primary sources for the mutation dataset, structures, and methods. Author/year, title, journal, volume:pages, DOI. (†) = full-text PDF in `docs/references/`.
+Ordered by first appearance in the text, per PMS style (superscript sequential citation numbers).
+(†) = full-text PDF archived in `docs/references/`. DOIs are retained here for verification; see the
+Citation and Submission To-Do for whether PMS's final style displays them.
 
-1. Baerson SR, Rodriguez DJ, Tran M, Feng Y, Biest NA, Dill GM (2002) Glyphosate-resistant goosegrass. Identification of a mutation in the target enzyme 5-enolpyruvylshikimate-3-phosphate synthase. *Plant Physiology* 129:1265–1275. DOI 10.1104/pp.001560 (†)
-2. Délye C, Zhang X-Q, Michel S, Matéjicek A, Powles SB (2005) Molecular bases for sensitivity to acetyl-coenzyme A carboxylase inhibitors in black-grass. *Plant Physiology* 137:794–806. DOI 10.1104/pp.104.046144 (†)
-3. Dayan FE, Daga PR, Duke SO, Lee RM, Tranel PJ, Doerksen RJ (2010) Biochemical and structural consequences of a glycine deletion in the α-8 helix of protoporphyrinogen oxidase. *Biochimica et Biophysica Acta* 1804:1548–1556. DOI 10.1016/j.bbapap.2010.04.004 (†)
-4. Giacomini DA, Umphres AM, Nie H, Mueller TC, Steckel LE, Young BG, Scott RC, Tranel PJ (2017) Two new PPX2 mutations associated with resistance to PPO-inhibiting herbicides in *Amaranthus palmeri*. *Pest Management Science* 73:1559–1563. DOI 10.1002/ps.4581 (†)
-5. Hao G-F, Zhu X-L, Ji F-Q, Zhang L, Yang G-F, Zhan C-G (2009) Understanding the mechanism of drug resistance due to a codon deletion in protoporphyrinogen oxidase through computational modeling. *Journal of Physical Chemistry B* 113:4865–4875. DOI 10.1021/jp807442n (†)
-6. Hao G-F, Tan Y, Yang S-G, Wang Z-F, Zhan C-G, Xi Z, Yang G-F (2013) Computational and experimental insights into the mechanism of substrate recognition and feedback inhibition of protoporphyrinogen oxidase. *PLoS ONE* 8:e69198. DOI 10.1371/journal.pone.0069198 (†)
-7. Heinemann IU, Diekmann N, Masoumi A, Koch M, Messerschmidt A, Jahn M, Jahn D (2007) Functional definition of the tobacco protoporphyrinogen IX oxidase substrate-binding site. *Biochemical Journal* 402:575–580. DOI 10.1042/BJ20061321 (†)
-8. Ji M, Yu H, Cui H, Chen J, Yu J, Li X (2025) A new Pro-197-Ile mutation in *Amaranthus palmeri* associated with acetolactate synthase-inhibiting herbicide resistance. *Plants* 14:525. DOI 10.3390/plants14040525 (†)
-9. Koch M, Breithaupt C, Kiefersauer R, Freigang J, Huber R, Messerschmidt A (2004) Crystal structure of protoporphyrinogen IX oxidase: a key enzyme in haem and chlorophyll biosynthesis. *EMBO Journal* 23:1720–1728. DOI 10.1038/sj.emboj.7600189 [PDB 1SEZ]
-10. Larran AS, Palmieri VE, Perotti VE, Lieber L, Tuesca D, Permingeat HR (2017) Target-site resistance to acetolactate synthase (ALS)-inhibiting herbicides in *Amaranthus palmeri* from Argentina. *Pest Management Science* 73:2578–2584. DOI 10.1002/ps.4662 (†)
-11. McCourt JA, Pang SS, King-Scott J, Guddat LW, Duggleby RG (2006) Herbicide-binding sites revealed in the structure of plant acetohydroxyacid synthase. *Proceedings of the National Academy of Sciences USA* 103:569–573. DOI 10.1073/pnas.0509229103 (†) [PDB 1Z8N]
-12. Nie H, Harre NT, Young BG (2023) A new V361A mutation in *Amaranthus palmeri* PPX2 associated with PPO-inhibiting herbicide resistance. *Plants* 12:1886. DOI 10.3390/plants12091886
-13. Patzoldt WL, Hager AG, McCormick JS, Tranel PJ (2006) A codon deletion confers resistance to herbicides inhibiting protoporphyrinogen oxidase. *Proceedings of the National Academy of Sciences USA* 103:12329–12334. DOI 10.1073/pnas.0603137103
-14. Rangani G, Salas-Perez RA, Aponte RA, Knapp M, Craig IR, Mietzner T, Langaro AC, Noguera MM, Porri A, Roma-Burgos N (2019) A novel single-site mutation in the catalytic domain of protoporphyrinogen oxidase IX (PPO) confers resistance to PPO-inhibiting herbicides. *Frontiers in Plant Science* 10:568. DOI 10.3389/fpls.2019.00568
-15. Singh S, Singh V, Salas-Perez RA, Bagavathiannan MV, Lawton-Rauh A, Roma-Burgos N (2018) Target-site mutation accumulation among ALS inhibitor-resistant Palmer amaranth. *Pest Management Science* 74:2286–2295. DOI 10.1002/ps.5232 (†)
-16. Tien MZ, Meyer AG, Sydykova DK, Spielman SJ, Wilke CO (2013) Maximum allowed solvent accessibilities of residues in proteins. *PLoS ONE* 8:e80635. DOI 10.1371/journal.pone.0080635
-17. Tranel PJ, Wright TR (2002) Resistance of weeds to ALS-inhibiting herbicides: what have we learned? *Weed Science* 50:700–712. DOI 10.1614/0043-1745(2002)050[0700:RROWTA]2.0.CO;2 (†)
-18. Yu Q, Collavo A, Zheng M-Q, Owen M, Sattin M, Powles SB (2007) Diversity of acetyl-coenzyme A carboxylase mutations in resistant *Lolium* populations: evaluation using clethodim. *Plant Physiology* 145:547–558. DOI 10.1104/pp.107.105262 (†)
-19. Zhang H, Tweel B, Tong L (2004) Molecular basis for the inhibition of the carboxyltransferase domain of acetyl-coenzyme-A carboxylase by haloxyfop and diclofop. *Proceedings of the National Academy of Sciences USA* 101:5910–5915. DOI 10.1073/pnas.0400891101 [PDB 1UYS]
+1. Koch M, Breithaupt C, Kiefersauer R, Freigang J, Huber R and Messerschmidt A, Crystal structure of protoporphyrinogen IX oxidase: a key enzyme in haem and chlorophyll biosynthesis. *EMBO J* **23**:1720–1728 (2004). DOI 10.1038/sj.emboj.7600189 [PDB 1SEZ]
+2. McCourt JA, Pang SS, King-Scott J, Guddat LW and Duggleby RG, Herbicide-binding sites revealed in the structure of plant acetohydroxyacid synthase. *Proc Natl Acad Sci USA* **103**:569–573 (2006). DOI 10.1073/pnas.0509229103 (†) [PDB 1Z8N]
+3. Zhang H, Tweel B and Tong L, Molecular basis for the inhibition of the carboxyltransferase domain of acetyl-coenzyme-A carboxylase by haloxyfop and diclofop. *Proc Natl Acad Sci USA* **101**:5910–5915 (2004). DOI 10.1073/pnas.0400891101 [PDB 1UYS]
+4. Heinemann IU, Diekmann N, Masoumi A, Koch M, Messerschmidt A, Jahn M and Jahn D, Functional definition of the tobacco protoporphyrinogen IX oxidase substrate-binding site. *Biochem J* **402**:575–580 (2007). DOI 10.1042/BJ20061321 (†)
+5. Tien MZ, Meyer AG, Sydykova DK, Spielman SJ and Wilke CO, Maximum allowed solvent accessibilities of residues in proteins. *PLoS ONE* **8**:e80635 (2013). DOI 10.1371/journal.pone.0080635
+6. Giacomini DA, Umphres AM, Nie H, Mueller TC, Steckel LE, Young BG, Scott RC and Tranel PJ, Two new PPX2 mutations associated with resistance to PPO-inhibiting herbicides in *Amaranthus palmeri*. *Pest Manag Sci* **73**:1559–1563 (2017). DOI 10.1002/ps.4581 (†)
+7. Larran AS, Palmieri VE, Perotti VE, Lieber L, Tuesca D and Permingeat HR, Target-site resistance to acetolactate synthase (ALS)-inhibiting herbicides in *Amaranthus palmeri* from Argentina. *Pest Manag Sci* **73**:2578–2584 (2017). DOI 10.1002/ps.4662 (†)
+8. Singh S, Singh V, Salas-Perez RA, Bagavathiannan MV, Lawton-Rauh A and Roma-Burgos N, Target-site mutation accumulation among ALS inhibitor-resistant Palmer amaranth. *Pest Manag Sci* **74**:2286–2295 (2018). DOI 10.1002/ps.5232 (†)
+9. Ji M, Yu H, Cui H, Chen J, Yu J and Li X, A new Pro-197-Ile mutation in *Amaranthus palmeri* associated with acetolactate synthase-inhibiting herbicide resistance. *Plants* **14**:525 (2025). DOI 10.3390/plants14040525 (†)
+10. Tranel PJ and Wright TR, Resistance of weeds to ALS-inhibiting herbicides: what have we learned?. *Weed Sci* **50**:700–712 (2002). DOI 10.1614/0043-1745(2002)050[0700:RROWTA]2.0.CO;2 (†)
+11. Délye C, Zhang X-Q, Michel S, Matéjicek A and Powles SB, Molecular bases for sensitivity to acetyl-coenzyme A carboxylase inhibitors in black-grass. *Plant Physiol* **137**:794–806 (2005). DOI 10.1104/pp.104.046144 (†)
+12. Yu Q, Collavo A, Zheng M-Q, Owen M, Sattin M and Powles SB, Diversity of acetyl-coenzyme A carboxylase mutations in resistant *Lolium* populations: evaluation using clethodim. *Plant Physiol* **145**:547–558 (2007). DOI 10.1104/pp.107.105262 (†)
+13. Patzoldt WL, Hager AG, McCormick JS and Tranel PJ, A codon deletion confers resistance to herbicides inhibiting protoporphyrinogen oxidase. *Proc Natl Acad Sci USA* **103**:12329–12334 (2006). DOI 10.1073/pnas.0603137103
+14. Dayan FE, Daga PR, Duke SO, Lee RM, Tranel PJ and Doerksen RJ, Biochemical and structural consequences of a glycine deletion in the alpha-8 helix of protoporphyrinogen oxidase. *Biochim Biophys Acta* **1804**:1548–1556 (2010). DOI 10.1016/j.bbapap.2010.04.004 (†)
+15. Rangani G, Salas-Perez RA, Aponte RA, Knapp M, Craig IR, Mietzner T, Langaro AC, Noguera MM, Porri A and Roma-Burgos N, A novel single-site mutation in the catalytic domain of protoporphyrinogen oxidase IX (PPO) confers resistance to PPO-inhibiting herbicides. *Front Plant Sci* **10**:568 (2019). DOI 10.3389/fpls.2019.00568
+16. Baerson SR, Rodriguez DJ, Tran M, Feng Y, Biest NA and Dill GM, Glyphosate-resistant goosegrass. Identification of a mutation in the target enzyme 5-enolpyruvylshikimate-3-phosphate synthase. *Plant Physiol* **129**:1265–1275 (2002). DOI 10.1104/pp.001560 (†)
+17. Hao G-F, Zhu X-L, Ji F-Q, Zhang L, Yang G-F and Zhan C-G, Understanding the mechanism of drug resistance due to a codon deletion in protoporphyrinogen oxidase through computational modeling. *J Phys Chem B* **113**:4865–4875 (2009). DOI 10.1021/jp807442n (†)
+18. Nie H, Harre NT and Young BG, A new V361A mutation in *Amaranthus palmeri* PPX2 associated with PPO-inhibiting herbicide resistance. *Plants* **12**:1886 (2023). DOI 10.3390/plants12091886
+19. Nakka S, Godar AS, Wani PS, Thompson CR, Peterson DE, Roelofs J and Jugulam M, Physiological and molecular characterization of hydroxyphenylpyruvate dioxygenase (HPPD)-inhibitor resistance in Palmer amaranth (*Amaranthus palmeri* S. Wats.). *Front Plant Sci* **8**:555 (2017). DOI 10.3389/fpls.2017.00555 (†)
+20. Hao G-F, Tan Y, Yang S-G, Wang Z-F, Zhan C-G, Xi Z and Yang G-F, Computational and experimental insights into the mechanism of substrate recognition and feedback inhibition of protoporphyrinogen oxidase. *PLoS ONE* **8**:e69198 (2013). DOI 10.1371/journal.pone.0069198 (†)
 
-Structures and models: 1SEZ (PPO, ref. 9); 1Z8N (AHAS, ref. 11); 8UMJ (*Zea mays* EPSPS + glyphosate + shikimate-3-phosphate); 1UYS (ACCase CT domain + haloxyfop, ref. 19); SWISS-MODEL black-grass ACCase CT-domain homodimer built from AJ310767 residues 1639-2204 using 1UYS as template. Relative solvent accessibility normalization uses maximum-accessibility values from ref. 16.
-
-20. Nakka S, Godar AS, Wani PS, Thompson CR, Peterson DE, Roelofs J, Jugulam M (2017) Physiological and molecular characterization of hydroxyphenylpyruvate dioxygenase (HPPD)-inhibitor resistance in Palmer amaranth (*Amaranthus palmeri* S.Wats.). *Frontiers in Plant Science* 8:555. DOI 10.3389/fpls.2017.00555 (†) [HPPD contrast: resistance is non-target-site (P450 mesotrione metabolism) plus 4–12-fold HPPD overexpression, with no target-site amino-acid mutation]
+Structures and models not otherwise cited above: 8UMJ (*Zea mays* EPSPS + glyphosate + shikimate-3-phosphate; origin-paper citation pending, see Citation and Submission To-Do); 5YWG (plant HPPD + mesotrione + metal; origin-paper citation pending, see Citation and Submission To-Do); SWISS-MODEL black-grass ACCase CT-domain homodimer built from AJ310767 residues 1639-2204 using 1UYS (ref. 3) as template.

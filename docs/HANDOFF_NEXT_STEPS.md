@@ -239,6 +239,27 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 
 ## Change log (append newest at top)
 
+- 2026-07-05 (s): Prepared the manuscript for Pest Management Science submission (Claude Code, per user
+  request and journal choice). Converted all in-text citations to PMS's superscript sequential-numbering
+  style, added inline citations at every structure/mutation mention that previously lacked one (Koch 2004,
+  McCourt 2006, Zhang 2004, Heinemann 2007, Tien 2013, Giacomini 2017, Larran 2017, Singh 2018, Ji 2025,
+  Tranel & Wright 2002, Délye 2005, Patzoldt 2006, Rangani 2019, Nie 2023, Nakka 2017, Hao 2013 were all
+  previously present only in the reference list with no inline citation point), reordered and reformatted
+  the reference list to PMS style, and verified programmatically that all 20 references are cited exactly
+  once each in strict first-appearance order with no gaps or orphans. Trimmed the abstract from 482 to 189
+  words (PMS limit 150-200); body text is 2974 words (PMS limit 6000, no cut needed). Added the author
+  block (Gourav Chahal, Dept. of Crop, Soil and Environmental Sciences, Auburn University), Acknowledgments,
+  Funding (none), and Competing Interests (none) sections, none of which existed before. Added scientific
+  names at first prose use of tobacco, maize, black-grass, and Palmer amaranth per PMS convention. Also
+  found and fixed a real correctness bug while re-verifying the manuscript's own numbers: `clamp_nonneg` in
+  `scripts/build_phase4_tables.py` failed on exact negative zero (`-0.0 < 0` is `False` in IEEE 754), so
+  `-0.0`/`-0.000000` noise was slipping through uncaught in `shannon_entropy` and (via
+  `build_review_driven_outputs.py`, now also patched) `manuscript_table_2`'s RSA column. Fixed the boundary
+  condition, verified zero negative/negative-zero values remain in any `output/tables/*.csv`. All 20 tests
+  still pass. Remaining real gaps before submission: citations for the EPSPS (8UMJ) and HPPD (5YWG)
+  structure-origin papers are not yet identified (flagged in the manuscript's own to-do, not fabricated),
+  confirm PMS's figure-file-format requirement, and the Zenodo/data-DOI step at submission time.
+
 - 2026-07-05 (r): Completed Phase 5 item 4.7 (Claude Code) — ran the sequence-alignment check on
   whether blackgrass R171 (Wagner et al. 2026) and Arabidopsis Arg176 (Kot et al. 2026, PDB 9GRR) are
   the same residue. No public blackgrass FatA sequence exists, so used wheat (Q8L6B1) as a Pooideae
