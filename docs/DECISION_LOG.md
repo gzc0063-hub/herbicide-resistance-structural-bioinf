@@ -1022,3 +1022,28 @@ the reference-list bracketed notes. Adding these two required renumbering the
 entire reference list (prior refs 3-20 became 4-22), re-verified
 programmatically afterward for exact 1:1 citation-to-reference correspondence
 in strict first-appearance order.
+
+---
+
+## 37. Handoff guide and presentation deck updated to version 2
+
+The user supplied updated versions of both externally-facing artifacts: the
+handoff/onboarding guide and the project presentation deck. Both were reviewed
+against the actual current repository state before being adopted — the guide's
+specific factual claims (17 accepted mutation rows: PPO 6, ALS/AHAS 4, ACCase 6,
+EPSPS 1; the FAT/DHODH Phase 5 audit findings including the R171-vs-Arg176
+numbering refutation; the PMS submission-prep status) were checked line by line
+against `output/tables/phase4_master_mutation_table.csv`,
+`docs/PHASE5_FAT_DHODH_AUDIT.md`, and the manuscript itself, and all matched
+exactly. No factual corrections were needed before replacing the canonical files.
+
+**Decision:** replace `docs/PROJECT_HANDOFF_GUIDE.doc` and
+`output/presentations/herbicide_resistance_structural_bioinformatics_talk.pptx`
+in place with the new versions (version 2), consistent with decision #35's
+precedent of keeping exactly one canonical file per artifact rather than
+accumulating dated copies — git history is the version record. See
+`docs/HANDOFF_NEXT_STEPS.md` for the expert-panel review of the guide's
+Limitations section that the user requested alongside this update, and for the
+future-work items pulled from the guide's own "workable within scope" list
+(EPSPS position expansion, core-cutoff sensitivity, a ΔΔG proxy) that were
+judged worth tracking rather than just praising in passing.

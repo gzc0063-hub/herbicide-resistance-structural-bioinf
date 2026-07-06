@@ -171,6 +171,30 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 - Add a matched-null test (resistance positions vs. same-count non-resistance residues drawn from the
   same structural shell) to control for pocket geometry more tightly than a whole-protein random draw.
 
+### Added from the 2026-07-06 handoff-guide (v2) expert-panel review
+
+The v2 handoff guide's own Limitations section proposed several "workable within scope" fixes. Reviewed
+against the actual repo state (no factual errors found in the guide) and worth tracking as concrete future
+items rather than just praised in passing:
+
+- **Expand EPSPS beyond n=1 (highest value of these four).** The guide names the Pro106 series
+  (Pro106Ser/Thr/Ala/Leu), Thr102Ile, and the T102I+P106S "TIPS" double as candidates. **Caveat from this
+  review: none of these have been verified against a primary source through this project's own evidence
+  gate yet** — TIPS in particular is a real, widely-cited glyphosate-resistance double mutation in the
+  literature, but it must go through the same primary-source-read process as every other row in
+  `phase4_master_mutation_table.csv` before being added, not be curated from general domain knowledge.
+- **Core-cutoff sensitivity analysis.** Re-run each family's enrichment test across a range of
+  active-site-core distance thresholds (not just the one adopted cutoff) and report that the enrichment
+  and typology are stable. This directly answers the "structure choice and core definition affect the
+  output" limitation with an actual robustness check instead of just stating the caveat.
+- **ACCase: check for new plant ACCase depositions + an AlphaFold cross-check.** Re-check RCSB for any
+  grass/plastidic ACCase structure deposited since the last check, and add an AlphaFold model of the same
+  black-grass CT domain as an independent cross-check alongside the current SWISS-MODEL homology model.
+- **A single-structure ΔΔG proxy (FoldX or DDGun) per mutation.** Still static and reproducible (no MD/FEP
+  pipeline), but it would partially answer the "static metrics cannot estimate mutant binding free energy"
+  scope boundary with an actual number rather than only a citation to published dynamics work. Of the four
+  items here, this is the one most likely to move the manuscript toward a higher-tier journal if pursued.
+
 ---
 
 ## Ready-to-paste Claude Code prompt (current handoff)
@@ -238,6 +262,18 @@ fallback (`scripts/pdb_static_metrics.py`) for EPSPS; only re-run those if a str
 > without a primary-source-verified substitution.
 
 ## Change log (append newest at top)
+
+- 2026-07-06 (v): Replaced `docs/PROJECT_HANDOFF_GUIDE.doc` and
+  `output/presentations/herbicide_resistance_structural_bioinformatics_talk.pptx` with user-supplied
+  version-2 updates (Claude Code). Fact-checked the guide's specific claims against the actual repo
+  before adopting it (17 mutation rows by family, FAT/DHODH audit findings incl. the R171/Arg176
+  refutation, PMS submission status) — all matched exactly, no corrections needed. Reviewed the guide's
+  Limitations section as an expert panel per the user's request: no factual errors, and its own
+  "workable within scope" fixes were judged good enough to track rather than just praise — added four
+  items to the "Even better ideas" section (EPSPS expansion beyond n=1, core-cutoff sensitivity check,
+  ACCase AlphaFold cross-check, single-structure ΔΔG proxy via FoldX/DDGun), flagging that the EPSPS
+  candidate positions (Pro106 series, Thr102Ile, TIPS double) still need primary-source verification
+  before curation, same as every other row in the dataset. Logged in `docs/DECISION_LOG.md` (#37).
 
 - 2026-07-05 (u): Handled the three remaining submission-prep items (Claude Code, per user direction).
   (1) Figure format: confirmed Wiley's general vector-figure requirement applies to PMS (PDF/EPS, not
