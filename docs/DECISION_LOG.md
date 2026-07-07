@@ -1121,3 +1121,65 @@ what it actually is.
 the label-stagger fix from the 2026-07-06 pass (decision log context, `build_resistance_zone_figure.py`)
 correctly handles 5 direct-core ALS positions at an identical percentile, not just the
 original 4 - no new bug, existing fix generalized correctly.
+
+---
+
+## 39. Repository-wide consistency sweep for a clean handoff
+
+The user asked for `DECISION_LOG.md` and any other file that needed it to be
+updated so that someone taking over the project cold would understand its
+"nuts and bolts" without hitting stale or contradictory claims. Rather than
+guess which files mattered, every `.md`/`.doc` file in the repo was grepped for
+known pre-Phase-6 numbers and phrases: the old EPSPS single-point result
+(p = 0.1288, "one accepted position"), the old PPO/ALS permutation means
+(p = 0.0006, random means 50.10/49.90), the old "17 accepted mutation rows"
+row-count language, and "six-stage pipeline."
+
+Each hit was read in context and classified into one of two buckets before
+touching anything, since rewriting a dated historical record would itself be
+a rigor violation:
+
+- **Correctly historical, left unchanged:** `docs/DECISION_LOG.md` §37 and
+  `docs/HANDOFF_NEXT_STEPS.md`'s changelog entries describe what was true
+  *at the time those entries were written* (before the Phase 6 EPSPS/ALS
+  expansion) and say so explicitly (e.g., "Done 2026-07-07" markers, strikethrough
+  on the old target). `docs/SENIOR_REVIEW_2026-07-05.md` is a dated,
+  referee-style snapshot - its filename itself is the date, and editing a past
+  review to match later changes would misrepresent what was actually reviewed.
+  `docs/MANUSCRIPT_RESULTS_PHASE4.md` and `docs/MANUSCRIPT_DRAFT.md`'s hits were
+  both false positives on inspection: the first is an explicit before/after
+  sentence ("from one accepted position... to two"), the second's "17 accepted
+  positions" is the *current*, correct pooled count (matches
+  `phase4_permutation_summary.csv`'s `ALL_FAMILIES_COMBINED` row), not a stale
+  number.
+- **Genuinely stale current-fact assertions, fixed:**
+  - `PROJECT_STATUS.md` had never been touched in this entire Phase 5/6 pass
+    despite being the file `README.md` points people to first for "what's
+    done... and exactly what to do next." It still described a pre-Phase-5,
+    pre-Phase-6 project state throughout (no mention of the FAT/DHODH audit,
+    the biophysical perturbation score, the global combined permutation test,
+    the PMS submission prep, or the companion site) and asserted the old
+    permutation p-values (ACCase 0.0003, ALS 0.0001, EPSPS 0.128787, PPO
+    0.0006) as current. Rewrote all three sections (what's done, file index,
+    what to do next) to reflect the current state, and fixed an internal
+    contradiction the rewrite would otherwise have introduced: its Phase 2 ALS
+    bullet still said "Asp376 was deliberately left out," which directly
+    contradicted the new Phase 6 bullet stating it was added - reworded to
+    make clear the exclusion was the *original* Phase 2 decision, later
+    revisited and reversed in Phase 6 for a different source species.
+  - `REPO_INDEX.md`'s Target-Family Status table still said ALS/AHAS was
+    "expanded to four accepted positions" and EPSPS had "one accepted
+    position... underpowered as standalone family-level test" - both fixed to
+    five and two respectively, with the EPSPS row's characterization changed
+    to reflect that it's now significant (p = 0.0147), just still the
+    smallest family.
+  - `docs/REVIEW_RESPONSE_STATIC_VS_DYNAMIC.md`'s review-point table still
+    described EPSPS as "underpowered with one accepted position" as a current
+    fact (this file has no date in its own text and is written as a living
+    reconciliation memo, unlike the dated senior review) - updated to reflect
+    the two-position, p = 0.0147 state.
+
+**Decision:** fix only the files making stale present-tense factual claims;
+leave every dated changelog/review entry exactly as originally written. Ran
+`pytest -q` after all edits (20 passed) to confirm no doc-only change had
+drifted from what the code actually produces.

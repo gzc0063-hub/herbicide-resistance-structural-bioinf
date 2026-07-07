@@ -309,8 +309,8 @@ Validation notes:
 | Family | Status | Current Role |
 |---|---|---|
 | PPO | Complete validation gate. | Main pooled Phase 4 family. |
-| ALS/AHAS | Complete validation gate, expanded to four accepted positions. | Main pooled Phase 4 family. |
-| EPSPS | Complete validation gate with one accepted position. | Pooled Phase 4 family, underpowered as standalone family-level test. |
+| ALS/AHAS | Complete validation gate, expanded to five accepted positions (added Asp376Glu, *Sinapis alba*, Phase 6). | Main pooled Phase 4 family. |
+| EPSPS | Complete validation gate, expanded to two accepted positions (added Thr102Ile, *Eleusine indica*, Phase 6). | Pooled Phase 4 family; still the smallest family (p = 0.0147) but no longer a single-point descriptive case. |
 | ACCase | Complete validation gate; current metrics use SWISS-MODEL weed CT-domain dimer. | Main pooled Phase 4 family. |
 | HPPD | Complete as contrast case; no accepted weed-evolved TSR row. | Separate contrast/status table. |
 | FAT | Phase 5 starter audit exists; structure route looks promising. | Emerging-target validation gate, not yet pooled. |
