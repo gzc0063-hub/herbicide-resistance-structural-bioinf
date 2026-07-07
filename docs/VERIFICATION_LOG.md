@@ -222,6 +222,99 @@ fold-change (~10–55×) if citing Ki specifically.
   every subsequent reference by +2 (previously-numbered refs 3-20 became 4-22). Re-verified programmatically
   afterward: all 22 references are cited exactly once, in strict first-appearance order, no gaps or orphans.
 
+## EPSPS Thr102Ile / Gly101Ala — "Phase 6" expansion request
+
+- **Environment check before anything else**, since the request also asked for R/`rpy2`/
+  `lme4`, FoldX, DDGun, and an AlphaFold3/ESMFold API: confirmed directly, not assumed —
+  `which R Rscript` found nothing on PATH; `python -c "import rpy2"` raised
+  `ModuleNotFoundError`; `which foldx FoldX ddgun` found nothing; a live `curl` probe to
+  `https://api.esmatlas.com/foldSequence/v1/pdb/` returned HTTP 403. None of these five
+  tools/services are usable in this environment.
+- **Thr102Ile / TIPS double mutation.** Found via WebSearch, then confirmed via
+  `search_literature` (scite) and direct `WebFetch` of the primary paper: Yu Q, Jalaludin A,
+  Han H, Chen M, Sammons RD, Powles SB (2015) *Plant Physiology* 167:1440-1447, DOI
+  10.1104/pp.15.00146. Confirmed: real *Eleusine indica* field population (Malaysia),
+  GenBank KM078728 (full-length resistant EPSPS cDNA). The paper's own conserved-motif
+  text ("95-LFLGNAGTAMRPL-107") independently confirms its "plant EPSPS numbering"
+  convention places Thr at 102 and Pro at 106 — the same convention already used for the
+  existing Pro106Ser row (Baerson 2002). Cross-checked against this project's own
+  `data/processed/epsps_8umj_distance_sasa.csv`: PDB residue 102 is THR, confirming no
+  extra Met-0 offset is needed at this position (unlike the historical Pro106 offset
+  correction already on record above). Confirmed directly from the paper's own kinetics
+  text that T102I has never been tested or observed as a standalone single mutation — the
+  authors state it "would be unfit and even lethal when obtained alone," which is why "this
+  single mutation has not been observed in nature." Added at medium confidence with this
+  caveat stated explicitly, analogous to the existing Ala122Ser/A282D treatment.
+- **Gly101Ala — checked and excluded, not added.** Multiple independent WebSearch passes
+  and a full-text `WebFetch` of the Eleusine indica EPSPS-mutation review
+  (PMC10179075, DOI 10.3390/ijms24098250) converged on the same finding: Gly101Ala is
+  documented almost exclusively in engineered/transgenic contexts (patent literature for
+  petunia/canola/maize herbicide tolerance: "G101A/G137D and G101A/P158S" multi-site
+  engineered variants; explicit note that G101A gives "commercially unacceptable levels of
+  glyphosate resistance" as an engineered trait). The Eleusine indica review's own text
+  states directly: "the ability of glyphosate and PEP to bind the enzyme is not
+  significantly reduced because Gly101 is not mutated" in their resistant field
+  populations. No weed-population source for Gly101Ala was found anywhere. Excluded per
+  this project's standing rule against pooling engineered/lab variants as weed-evolved TSR
+  — same standard as the Phase 5 FAT/DHODH audit.
+
+## ALS Asp376Glu — "Phase 6" expansion request
+
+- Found via WebSearch, confirmed via `search_literature` (scite) and direct `WebFetch`:
+  Palma-Bautista C, Vazquez-Garcia JG, Osuna MD, Garcia-Garcia B, Torra J, Portugal J, De
+  Prado R (2022) *Frontiers in Plant Science* 13:1011596, DOI 10.3389/fpls.2022.1011596.
+  Author list and exact journal/volume/page confirmed via a second, independent `WebFetch`
+  of the Frontiers article page itself (not just the scite metadata).
+- Confirmed directly from the paper's own text: three independent tribenuron-methyl-
+  resistant *Sinapis alba* field populations, GenBank OP681621 (resistant) / OP681622
+  (susceptible). "Positions refer to the known ALS gene sequence of *Arabidopsis thaliana*
+  (X51514)" — the identical numbering convention already used for every other row in
+  `als_mutations.csv`, so no offset/re-alignment work was needed. Cross-checked against
+  this project's own `data/processed/als_1z8n_distance_sasa.csv`: 1Z8N chain A residue 376
+  is ASP, matching expected wild-type.
+- Confirmed directly from the paper's own text that this is a clean, isolated single-SNP
+  substitution — "Several single-nucleotide polymorphisms were identified, but they did
+  not result in any amino acid substitutions" aside from the causal Asp376Glu change —
+  making it a cleaner case than the existing Ala122Ser row (which co-occurs with A282D).
+  Confirmed the paper's own title/abstract attribute resistance to this TSR mutation
+  together with a separate enhanced-metabolism (NTSR) contribution; recorded that caveat
+  explicitly rather than implying Asp376Glu alone fully explains the resistant phenotype.
+
+## ACCase homology-model identity number — corrected, not assumed
+
+- The "Phase 6" request itself claimed 55.3% sequence identity between the black-grass CT
+  domain and the yeast 1UYS template. Rather than write that number into the manuscript,
+  checked it directly against this project's own SWISS-MODEL JSON metadata
+  (`data/raw/ACCase_Alopecurus_AJ310767_CTdomain_SWISSMODEL_1UYS_homomer.json`):
+  `"sequence_identity": 53.27433776855469`. The supplied 55.3% figure was wrong; used the
+  actual recorded 53.3% (matches the manuscript's pre-existing, independently-written
+  "~53%" figure almost exactly). `"gmqe": 0.7611219545137617` also cross-checked and
+  matches the manuscript's existing "GMQE 0.76" claim.
+- Added Rost B (1999) *Protein Engineering* 12:85-94, DOI 10.1093/protein/12.2.85 ("Twilight
+  zone of protein sequence alignments") as the citation for the ~30% sequence-identity
+  homology-reliability threshold, to turn "53.3% is high" into a properly sourced claim.
+  Author, journal, volume, and pages independently confirmed via WebSearch (title-exact
+  match across multiple independent listings, including the publisher's own DOI page).
+
+## Biophysical perturbation score — property-table sourcing
+
+- Kyte-Doolittle (1982) hydropathy values confirmed via two independent WebSearch results
+  before use; all 20 values match exactly between both sources and this project's own
+  code.
+- Attempted to verify the classic Chothia amino-acid volume table via live fetch
+  (multiple sources: prowl.rockefeller.edu, IMGT, ExPASy) but every attempt either
+  timed out, connection-reset, or 404'd. Rather than use unverified numbers from
+  memory for a quantitative table going into a manuscript, substituted a different,
+  fully-verified published scale for the same physical property: Zimmerman JM, Eliezer
+  N, Simha R (1968) *J Theor Biol* 21:170-201, "bulkiness" (side-chain volume/length
+  ratio) — successfully fetched and confirmed in full from
+  `web.expasy.org/protscale/pscale/Bulkiness.html`, all 20 values with citation. This
+  substitution is disclosed explicitly in the manuscript's Methods and reference-list
+  text, not silently swapped in.
+- Formal side-chain charge at physiological pH (Asp/Glu = -1, Lys/Arg = +1, His = 0,
+  all others = 0) is standard biochemistry, not a literature-table lookup, so no
+  citation-verification risk applies to that component.
+
 ## Not yet independently verified
 
 - ABD52326/ABD52328 as a second legitimate ΔG210 pair, "confirmed via 2 independent

@@ -16,7 +16,7 @@ class Phase4TablesTest(unittest.TestCase):
 
             with mutation_path.open(newline="") as handle:
                 rows = list(csv.DictReader(handle))
-            self.assertEqual(17, len(rows))
+            self.assertEqual(19, len(rows))
             self.assertEqual(
                 {"PPO", "ALS", "EPSPS", "ACCase"},
                 {row["family"] for row in rows},
@@ -37,6 +37,9 @@ class Phase4TablesTest(unittest.TestCase):
                 "rsa_tien2013",
                 "shannon_entropy",
                 "normalized_conservation",
+                "bulkiness_delta",
+                "hydropathy_delta",
+                "charge_delta",
                 "confidence",
                 "source_doi",
             }
@@ -63,6 +66,21 @@ class Phase4TablesTest(unittest.TestCase):
             self.assertEqual("True", cys2088["template_matches_weed_residue"])
             self.assertEqual("False", cys2088["template_is_resistant_state"])
             self.assertNotEqual("", cys2088["rsa_tien2013"])
+
+            thr102 = next(row for row in rows if row["mutation_id"] == "Thr102Ile")
+            self.assertEqual("EPSPS", thr102["family"])
+            self.assertEqual("102", thr102["structure_position"])
+            self.assertEqual("THR", thr102["structure_residue_name"])
+            self.assertEqual("True", thr102["template_matches_weed_residue"])
+            self.assertNotEqual("", thr102["bulkiness_delta"])
+            self.assertNotEqual("", thr102["hydropathy_delta"])
+
+            asp376 = next(row for row in rows if row["mutation_id"] == "Asp376Glu")
+            self.assertEqual("ALS", asp376["family"])
+            self.assertEqual("376", asp376["structure_position"])
+            self.assertEqual("ASP", asp376["structure_residue_name"])
+            self.assertEqual("True", asp376["template_matches_weed_residue"])
+            self.assertEqual("TRUE", asp376["in_active_site_core"])
 
             with contrast_path.open(newline="") as handle:
                 contrast_rows = list(csv.DictReader(handle))

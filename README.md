@@ -32,7 +32,7 @@ active-site core changes). Regeneration is deterministic.
 
 - `data/raw/` — sequences, structures, and mutation lists as pulled from source (NCBI, UniProt, PDB, literature)
 - `data/processed/` — cleaned/aligned/numbered data ready for analysis
-- `scripts/` — Python (ChimeraX scripting, conservation, permutation test) and R (mixed models) scripts
+- `scripts/` — Python (ChimeraX scripting, conservation, per-family and global-combined permutation tests, biophysical perturbation score). A cross-family generalized linear mixed-effects model (R/`lme4`) was considered but not implemented — no R installation was available in this project's environment; the global combined permutation test in `scripts/build_phase4_analysis.py` is the pure-Python cross-family statistic used instead (see `docs/DECISION_LOG.md`).
 - `output/figures/`, `output/tables/` — generated results
 - `docs/` — planning and methods notes
 
@@ -44,7 +44,10 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-R packages (run once from an R console): `install.packages(c("lme4", "ggplot2"))`
+R with `lme4`/`ggplot2` is not required to reproduce any output in this repo. An R-based
+mixed-effects model was an early design idea (see `docs/panel_review_and_plan.md`) but was
+not implemented — no R installation was available, so the cross-family statistic actually
+used is the pure-Python global combined permutation test in `scripts/build_phase4_analysis.py`.
 
 ChimeraX must be installed separately: https://www.cgl.ucsf.edu/chimerax/download.html
 

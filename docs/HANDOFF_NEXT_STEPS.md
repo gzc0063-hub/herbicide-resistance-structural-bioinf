@@ -177,22 +177,29 @@ The v2 handoff guide's own Limitations section proposed several "workable within
 against the actual repo state (no factual errors found in the guide) and worth tracking as concrete future
 items rather than just praised in passing:
 
-- **Expand EPSPS beyond n=1 (highest value of these four).** The guide names the Pro106 series
-  (Pro106Ser/Thr/Ala/Leu), Thr102Ile, and the T102I+P106S "TIPS" double as candidates. **Caveat from this
-  review: none of these have been verified against a primary source through this project's own evidence
-  gate yet** — TIPS in particular is a real, widely-cited glyphosate-resistance double mutation in the
-  literature, but it must go through the same primary-source-read process as every other row in
-  `phase4_master_mutation_table.csv` before being added, not be curated from general domain knowledge.
-- **Core-cutoff sensitivity analysis.** Re-run each family's enrichment test across a range of
+- ~~Expand EPSPS beyond n=1.~~ **Done 2026-07-07:** the Pro106 series (Ser/Thr/Ala/Leu) was correctly
+  identified as *not* increasing power - de-duplication collapses them to the same structural position -
+  so Thr102Ile (a genuinely distinct position, verified via Yu et al. 2015) was added instead, taking
+  EPSPS to n=2, p=0.0147. Gly101Ala was investigated and excluded (engineered/transgenic only, not
+  weed-evolved - see `docs/DECISION_LOG.md` #38 and `docs/VERIFICATION_LOG.md`). Further expansion beyond
+  n=2 remains open if a third genuinely distinct, weed-evolved, primary-source-verified position is found.
+- **Core-cutoff sensitivity analysis.** Still open. Re-run each family's enrichment test across a range of
   active-site-core distance thresholds (not just the one adopted cutoff) and report that the enrichment
   and typology are stable. This directly answers the "structure choice and core definition affect the
   output" limitation with an actual robustness check instead of just stating the caveat.
-- **ACCase: check for new plant ACCase depositions + an AlphaFold cross-check.** Re-check RCSB for any
-  grass/plastidic ACCase structure deposited since the last check, and add an AlphaFold model of the same
-  black-grass CT domain as an independent cross-check alongside the current SWISS-MODEL homology model.
-- **A single-structure ΔΔG proxy (FoldX or DDGun) per mutation.** Still static and reproducible (no MD/FEP
-  pipeline), but it would partially answer the "static metrics cannot estimate mutant binding free energy"
-  scope boundary with an actual number rather than only a citation to published dynamics work. Of the four
+- **ACCase: check for new plant ACCase depositions + an AlphaFold cross-check.** Still open. Re-check RCSB
+  for any grass/plastidic ACCase structure deposited since the last check, and add an AlphaFold model of
+  the same black-grass CT domain as an independent cross-check alongside the current SWISS-MODEL homology
+  model - blocked on GPU/API access in the current environment (confirmed 2026-07-07: no AlphaFold3/ESMFold
+  API reachable). The SWISS-MODEL homology model's 53.3% identity to 1UYS (corrected from an initially
+  proposed but wrong 55.3%) is now explicitly defended in the manuscript with the Rost 1999 twilight-zone
+  citation in the meantime.
+- **A single-structure ΔΔG proxy (FoldX or DDGun) per mutation.** Still open - no licensed FoldX/DDGun
+  available in this environment (confirmed 2026-07-07). A pure-Python biophysical perturbation score
+  (bulkiness/hydropathy/charge deltas) was added instead as an orthogonal, transparent property-difference
+  axis - explicitly not a ΔΔG substitute. An actual physics-based ΔΔG would still more directly answer the
+  "static metrics cannot estimate mutant binding free energy" scope boundary if a licensed tool becomes
+  available in a future environment. Of the four
   items here, this is the one most likely to move the manuscript toward a higher-tier journal if pursued.
 
 ---
@@ -262,6 +269,30 @@ items rather than just praised in passing:
 > without a primary-source-verified substitution.
 
 ## Change log (append newest at top)
+
+- 2026-07-07 (w): "Phase 6" pipeline expansion, executed after rejecting a first version that
+  asserted unverified mutations as fact and asked to fabricate documentation of unavailable
+  tool integrations (see `docs/DECISION_LOG.md` #38 for the full back-and-forth). Confirmed
+  R/rpy2/lme4/FoldX/DDGun/ESMFold are all unavailable in this environment before doing anything.
+  **EPSPS expanded to n=2**: added Thr102Ile (Yu et al. 2015, real *Eleusine indica* TIPS allele,
+  GenBank KM078728, medium confidence - never observed viable alone) alongside the existing
+  Pro106Ser; EPSPS moves from a single descriptive point (p=0.129) to a significant 2-position
+  test (p=0.0147). Investigated and **excluded Gly101Ala** - documented almost exclusively in
+  engineered/transgenic contexts, not weed populations. **ALS expanded to n=5**: added Asp376Glu
+  (Palma-Bautista et al. 2022, real *Sinapis alba* population, GenBank OP681621/OP681622, clean
+  single-SNP, high confidence). Added a **biophysical perturbation score** (Zimmerman 1968
+  bulkiness + Kyte-Doolittle 1982 hydropathy + formal charge deltas, `scripts/biophysical_perturbation.py`)
+  as a pure-Python alternative to FoldX/DDGun. Added a **global combined permutation test**
+  (`scripts/build_phase4_analysis.py`) pooling all 17 positions (p=0.0001) and all 8 non-core
+  positions (p=0.0001) across every family, as a pure-Python alternative to an R/lme4 GLMM -
+  documented everywhere as a pooled-cohort statistic, not a mixed-effects-model substitute.
+  Corrected the ACCase SWISS-MODEL identity number to the actual recorded 53.27% (not the
+  proposed 55.3%) and strengthened its defense with the Rost 1999 "twilight zone" citation.
+  Updated `MANUSCRIPT_DRAFT.md` (renumbered to 27 references, re-verified programmatically),
+  `MANUSCRIPT_RESULTS_PHASE4.md`, `README.md` (corrected the stale R/lme4 mention), and both
+  `tests/test_phase4_tables.py` and `tests/test_phase4_analysis.py` for the new row/position
+  counts. All 20 tests pass; `rebuild_all.py` and PMS figure conversion both ran clean. Full
+  verification trail in `docs/VERIFICATION_LOG.md`.
 
 - 2026-07-06 (v): Replaced `docs/PROJECT_HANDOFF_GUIDE.doc` and
   `output/presentations/herbicide_resistance_structural_bioinformatics_talk.pptx` with user-supplied

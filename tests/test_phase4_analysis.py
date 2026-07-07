@@ -21,31 +21,52 @@ class Phase4AnalysisTest(unittest.TestCase):
             with summary_path.open(newline="") as handle:
                 summary_rows = list(csv.DictReader(handle))
             self.assertEqual(
-                {"PPO", "ALS", "EPSPS", "ACCase"},
+                {"PPO", "ALS", "EPSPS", "ACCase", "ALL_FAMILIES_COMBINED"},
                 {row["family"] for row in summary_rows},
             )
             # Each family has an "all" row; families with at least one non-core
             # accepted position also get a "non_core_only" row (ALS has none, since
-            # both Trp574 and Ser653 are direct-core).
+            # all 5 accepted positions, including Asp376Glu, are direct-core).
             all_rows = {row["family"]: row for row in summary_rows if row["position_set"] == "all"}
-            expected_all_counts = {"PPO": "4", "ALS": "4", "EPSPS": "1", "ACCase": "6"}
+            expected_all_counts = {"PPO": "4", "ALS": "5", "EPSPS": "2", "ACCase": "6"}
             for family, count in expected_all_counts.items():
                 self.assertEqual(count, all_rows[family]["n_unique_positions"])
             non_core_families = {
-                row["family"] for row in summary_rows if row["position_set"] == "non_core_only"
+                row["family"]
+                for row in summary_rows
+                if row["position_set"] == "non_core_only"
             }
             self.assertEqual({"PPO", "EPSPS", "ACCase"}, non_core_families)
             for row in summary_rows:
-                self.assertIn(row["position_set"], {"all", "non_core_only"})
+                self.assertIn(
+                    row["position_set"],
+                    {"all", "non_core_only", "combined_all", "combined_non_core_only"},
+                )
                 self.assertEqual("200", row["iterations"])
                 self.assertGreaterEqual(float(row["empirical_p_value_lower_tail"]), 0.0)
                 self.assertLessEqual(float(row["empirical_p_value_lower_tail"]), 1.0)
                 self.assertNotEqual("", row["observed_mean_percentile"])
                 self.assertNotEqual("", row["random_mean_percentile_mean"])
 
+            # Global combined permutation test: pools every unique accepted position
+            # across all 4 families (this is a pooled-cohort test, not a GLMM/mixed
+            # model - no R/rpy2/lme4 available in this environment).
+            combined_rows = {
+                row["position_set"]: row
+                for row in summary_rows
+                if row["family"] == "ALL_FAMILIES_COMBINED"
+            }
+            self.assertEqual({"combined_all", "combined_non_core_only"}, set(combined_rows))
+            self.assertEqual("17", combined_rows["combined_all"]["n_unique_positions"])
+            self.assertEqual("8", combined_rows["combined_non_core_only"]["n_unique_positions"])
+            self.assertEqual(
+                str(4 + 5 + 2 + 6),
+                combined_rows["combined_all"]["n_unique_positions"],
+            )
+
             with screen_path.open(newline="") as handle:
                 screen_rows = list(csv.DictReader(handle))
-            self.assertEqual(15, len(screen_rows))
+            self.assertEqual(17, len(screen_rows))
             self.assertNotIn("HPPD", {row["family"] for row in screen_rows})
 
             delta_g210 = next(row for row in screen_rows if row["structure_position"] == "178")

@@ -38,6 +38,9 @@ SCREEN_FIELDNAMES = [
     "percentile_rank_distance_to_core",
     "rsa_tien2013",
     "normalized_conservation",
+    "bulkiness_delta",
+    "hydropathy_delta",
+    "charge_delta",
     "proximity_class",
 ]
 
@@ -172,6 +175,39 @@ def permutation_summary_rows(
             summary_rows.append(
                 summarize(family, "non_core_only", non_core_obs, background)
             )
+
+    # Global combined permutation test: pool every unique accepted position across
+    # all families into one cohort and draw random sets from the combined background
+    # (every family's per-residue percentile pool concatenated). This is a genuinely
+    # different, simpler statistic from a family-random-effects GLMM: each background
+    # RESIDUE (not each family) is equally likely to be drawn, so larger proteins
+    # contribute proportionally more to the random distribution. It is not weighted
+    # per family and does not model family as a random effect - report it as a pooled
+    # permutation test, not as a mixed-effects-model substitute.
+    combined_background: list[float] = []
+    for family_bg in backgrounds.values():
+        combined_background.extend(family_bg)
+    all_positions = [row for family_rows in rows_by_family.values() for row in family_rows]
+    combined_all_obs = [
+        float(row["percentile_rank_distance_to_core"]) for row in all_positions
+    ]
+    combined_non_core_obs = [
+        float(row["percentile_rank_distance_to_core"])
+        for row in all_positions
+        if row["in_active_site_core"].lower() != "true"
+    ]
+    summary_rows.append(
+        summarize("ALL_FAMILIES_COMBINED", "combined_all", combined_all_obs, combined_background)
+    )
+    if combined_non_core_obs:
+        summary_rows.append(
+            summarize(
+                "ALL_FAMILIES_COMBINED",
+                "combined_non_core_only",
+                combined_non_core_obs,
+                combined_background,
+            )
+        )
     return summary_rows
 
 
@@ -191,6 +227,9 @@ def screen_rows(mutation_rows: list[dict[str, str]]) -> list[dict[str, str]]:
                 ],
                 "rsa_tien2013": row["rsa_tien2013"],
                 "normalized_conservation": row["normalized_conservation"],
+                "bulkiness_delta": row.get("bulkiness_delta", ""),
+                "hydropathy_delta": row.get("hydropathy_delta", ""),
+                "charge_delta": row.get("charge_delta", ""),
                 "proximity_class": proximity_class(row),
             }
         )

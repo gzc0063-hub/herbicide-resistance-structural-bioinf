@@ -23,6 +23,9 @@ MECHANISM_FIELDNAMES = [
     "percentile_rank_distance_to_core",
     "rsa_tien2013",
     "normalized_conservation",
+    "bulkiness_delta",
+    "hydropathy_delta",
+    "charge_delta",
 ]
 
 
@@ -75,11 +78,23 @@ MECHANISM_ANNOTATIONS = {
         "Pro197 is one of the most firmly established ALS TSR sites across weeds (Tranel & Wright 2002); Pro197Ala detected in A. palmeri by Singh et al. 2018 (with Trp574Leu). Direct-core dimer-interface pocket position.",
         "Direct-core ALS benchmark; note Singh's Pro197Ala co-occurs with Trp574Leu.",
     ),
+    ("ALS", "376"): (
+        "direct_core",
+        "literature_supported",
+        "Asp376Glu (Palma-Bautista et al. 2022) in Sinapis alba, GenBank OP681621/OP681622 - a clean single-SNP substitution with no co-occurring amino-acid change elsewhere in the gene, unlike Ala122Ser. Same Arabidopsis-convention numbering as every other ALS row; 1Z8N residue 376 verified ASP. Resistance in these populations is TSR (this mutation) plus a separate, unquantified NTSR metabolic contribution.",
+        "Direct-core ALS benchmark; cleanest single-substitution case in the ALS set.",
+    ),
     ("EPSPS", "106"): (
         "adjacent",
         "literature_supported",
         "Pro106 is a glyphosate-binding-site-associated residue (Baerson 2002; corresponds to the Salmonella glyphosate-insensitive EPSPS substitution), not an allosteric site. Its 3.85 A CA distance sits just outside the 4.5 A atomic-contact core - a cutoff artifact, not evidence of allostery.",
-        "Treat as binding-site-adjacent / second-shell, not allosteric. EPSPS remains underpowered with one accepted position and is a mapped case study, not a family-level test.",
+        "Treat as binding-site-adjacent / second-shell; EPSPS now has 2 unique accepted positions (Pro106, Thr102) after the Thr102Ile addition, still a small-n family relative to PPO/ALS/ACCase.",
+    ),
+    ("EPSPS", "102"): (
+        "direct_core",
+        "literature_supported",
+        "Thr102Ile (Yu et al. 2015) is part of the TIPS double mutation (with Pro106Ser) in a real weed-evolved Eleusine indica allele (GenBank KM078728, Malaysia field population). CAVEAT (medium confidence): T102I has never been observed or shown viable as a standalone mutation - the paper's own authors state it would likely be unfit/non-viable alone, which is why it has only ever been reported coupled with Pro106Ser.",
+        "Second EPSPS position; report with the TIPS-coupling caveat, analogous to the ALS Ala122Ser/A282D confound.",
     ),
     ("ACCase", "A:143"): (
         "interface_induced_fit",
@@ -195,6 +210,9 @@ def mechanism_rows(screen_rows: list[dict[str, str]]) -> list[dict[str, str]]:
                 "percentile_rank_distance_to_core": row["percentile_rank_distance_to_core"],
                 "rsa_tien2013": clamp_nonneg(row["rsa_tien2013"]),
                 "normalized_conservation": row["normalized_conservation"],
+                "bulkiness_delta": row.get("bulkiness_delta", ""),
+                "hydropathy_delta": row.get("hydropathy_delta", ""),
+                "charge_delta": row.get("charge_delta", ""),
             }
         )
     return rows
@@ -335,7 +353,10 @@ def build_review_driven_outputs(
 
     figures = [
         figure_1_workflow(figure_dir / "figure_1_workflow.svg"),
-        figure_2_permutation(figure_dir / "figure_2_permutation_enrichment.svg", summary),
+        figure_2_permutation(
+            figure_dir / "figure_2_permutation_enrichment.svg",
+            [row for row in summary if row["family"] != "ALL_FAMILIES_COMBINED"],
+        ),
         figure_3_position_screen(figure_dir / "figure_3_position_screen.svg", mechanisms),
         figure_4_scatter(figure_dir / "figure_4_distance_rsa_conservation.svg", mechanisms),
     ]

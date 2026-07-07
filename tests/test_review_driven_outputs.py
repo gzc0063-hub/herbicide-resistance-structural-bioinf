@@ -17,7 +17,7 @@ class ReviewDrivenOutputsTest(unittest.TestCase):
 
             with outputs["mechanism_table"].open(newline="") as handle:
                 rows = list(csv.DictReader(handle))
-            self.assertEqual(15, len(rows))
+            self.assertEqual(17, len(rows))
             self.assertNotIn("HPPD", {row["family"] for row in rows})
             self.assertEqual(
                 len(rows),
@@ -51,6 +51,15 @@ class ReviewDrivenOutputsTest(unittest.TestCase):
 
             cys2088 = next(row for row in rows if row["mutation_ids"] == "Cys2088Arg")
             self.assertEqual("interface_induced_fit", cys2088["mechanism_label"])
+
+            thr102 = next(row for row in rows if row["mutation_ids"] == "Thr102Ile")
+            self.assertEqual("EPSPS", thr102["family"])
+            self.assertEqual("direct_core", thr102["mechanism_label"])
+            self.assertNotEqual("", thr102["bulkiness_delta"])
+
+            asp376 = next(row for row in rows if row["mutation_ids"] == "Asp376Glu")
+            self.assertEqual("ALS", asp376["family"])
+            self.assertEqual("direct_core", asp376["mechanism_label"])
 
             with outputs["table_3"].open(newline="") as handle:
                 hppd_rows = list(csv.DictReader(handle))

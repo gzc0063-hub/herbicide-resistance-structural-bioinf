@@ -1,7 +1,13 @@
 import argparse
 import csv
+import sys
 from dataclasses import dataclass
 from pathlib import Path
+
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from scripts.biophysical_perturbation import residue_deltas
 
 
 @dataclass(frozen=True)
@@ -88,6 +94,8 @@ WEED_RESIDUES = {
     "Asp2078Gly": ("ASP", "GLY"),
     "Cys2088Arg": ("CYS", "ARG"),
     "Gly2096Ala": ("GLY", "ALA"),
+    "Thr102Ile": ("THR", "ILE"),
+    "Asp376Glu": ("ASP", "GLU"),
 }
 
 
@@ -131,6 +139,9 @@ MUTATION_FIELDNAMES = [
     "normalized_conservation",
     "n_species_present",
     "n_species_total",
+    "bulkiness_delta",
+    "hydropathy_delta",
+    "charge_delta",
     "mechanism_class",
     "confidence",
     "source_citation",
@@ -209,6 +220,9 @@ def build_family_rows(repo_root: Path, config: FamilyConfig) -> list[dict[str, s
             if weed_mut_residue and normalized_template == weed_mut_residue
             else ("False" if weed_wt_residue else "")
         )
+        bulkiness_delta, hydropathy_delta, charge_delta = residue_deltas(
+            weed_wt_residue, weed_mut_residue
+        )
         output_rows.append(
             {
                 "family": config.family,
@@ -242,6 +256,9 @@ def build_family_rows(repo_root: Path, config: FamilyConfig) -> list[dict[str, s
                 ),
                 "n_species_present": conservation_row.get("n_species_present", ""),
                 "n_species_total": conservation_row.get("n_species_total", ""),
+                "bulkiness_delta": bulkiness_delta,
+                "hydropathy_delta": hydropathy_delta,
+                "charge_delta": charge_delta,
                 "mechanism_class": mutation["mechanism_class"],
                 "confidence": mutation["confidence"],
                 "source_citation": mutation["source_citation"],

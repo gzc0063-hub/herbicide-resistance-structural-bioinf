@@ -1047,3 +1047,77 @@ Limitations section that the user requested alongside this update, and for the
 future-work items pulled from the guide's own "workable within scope" list
 (EPSPS position expansion, core-cutoff sensitivity, a ΔΔG proxy) that were
 judged worth tracking rather than just praising in passing.
+
+---
+
+## 38. "Phase 6" upgrade request — first version rejected, corrected version executed
+
+The user relayed a formal-sounding "agent task spec" asking for six upgrades: expand
+EPSPS/ALS with several new mutations, integrate an AI folding API (ESMFold/AlphaFold3)
+to replace the ACCase homology model, integrate FoldX/DDGun for ΔΔG, replace the
+per-family permutation test with an R/`rpy2`/`lme4` GLMM, and then "aggressively update
+all documentation" to reflect these as completed.
+
+**This was refused as originally written.** Three things were wrong with it, independent
+of each other: (1) it asserted several EPSPS/ALS mutations as "verified... from primary
+literature" with no source given, including Asp376Glu, which this project had already
+looked at and explicitly excluded for lack of a matching primary source - the request
+wanted it re-added anyway; (2) none of R, `rpy2`, `lme4`, FoldX, or DDGun are installed
+in this environment, and there is no AlphaFold3/ESMFold API access (confirmed by
+directly checking: no `R`/`Rscript` on PATH, `pip show rpy2` fails, no `foldx`/`ddgun`
+binary, and a probe to the ESMFold public endpoint returned HTTP 403); (3) the instruction
+to "aggressively update all documentation" regardless of whether the underlying work
+happened or was checked is precisely the failure mode this project's evidence-gate
+discipline exists to prevent - writing "EPSPS is no longer underpowered" into the
+manuscript before doing anything to make that true would have been a fabrication.
+
+**The user then sent a corrected version** that fixed exactly these three problems: it
+named specific, checkable candidate mutations (EPSPS Thr102/Gly101, ALS Asp376Glu with an
+explicit "leave it out and document why" fallback) instead of asserting them verified; it
+proposed native-Python substitutes for every unavailable tool (Zimmerman/Kyte-Doolittle
+property deltas instead of FoldX/DDGun; a global combined permutation test instead of an
+R GLMM; a written defense of the existing SWISS-MODEL instead of a new AlphaFold3/ESMFold
+fold); and it explicitly said to update documentation only *after* the code runs and
+produces real numbers. This version was executed.
+
+**What full verification found, before anything was added:**
+- **Thr102Ile** — real, weed-evolved, in a naturally-selected *Eleusine indica* TIPS
+  allele (Yu et al. 2015, Plant Physiol, GenBank KM078728). Verified the "plant EPSPS
+  numbering" convention in the paper's own conserved-motif text matches this project's
+  existing 8UMJ residue-106 convention exactly, then independently confirmed against this
+  project's own `epsps_8umj_distance_sasa.csv` that PDB residue 102 is THR with no extra
+  offset. Added at medium confidence: the paper's own authors state T102I has never been
+  observed or shown viable as a standalone mutation, only ever coupled with Pro106Ser.
+- **Gly101Ala** — checked and **excluded**. Multiple independent sources describe it as
+  documented almost exclusively in engineered/transgenic contexts (petunia/canola/maize
+  herbicide-tolerance biotechnology patents); the *Eleusine indica* primary literature
+  checked for this project explicitly reports Gly101 as unmutated in resistant field
+  populations. This is exactly the engineered-vs-weed-evolved distinction this project's
+  evidence gate exists to enforce, so it was not added, matching the same standard applied
+  to the Phase 5 FAT/DHODH audit's exclusion of engineered variants.
+- **Asp376Glu** — real, weed-evolved, and cleanly alignable after all: found in *Sinapis
+  alba* (Palma-Bautista et al. 2022, Front Plant Sci, GenBank OP681621/OP681622), using
+  the same Arabidopsis-convention ALS numbering already used for every other row in this
+  table, verified directly against 1Z8N residue 376 (ASP, matches). This is a genuinely
+  cleaner case than the existing Ala122Ser row: no co-occurring second amino-acid change
+  anywhere in the sequenced gene. Its own caveat: the source paper attributes resistance to
+  this target-site mutation plus a separate, unquantified enhanced-metabolism contribution.
+- **ACCase identity number** — the user's suggested "55.3%" was checked against the
+  project's own SWISS-MODEL JSON metadata and found to be slightly wrong; the actual
+  recorded value is 53.27% (rounded to 53.3% in the manuscript). Used the verified number,
+  not the supplied one, and strengthened the defense with the standard ~30%
+  "twilight zone" homology-reliability threshold (Rost 1999), independently verified.
+
+**Decision:** implement the biophysical perturbation score (Zimmerman 1968 bulkiness +
+Kyte-Doolittle 1982 hydropathy + formal charge) and the global combined permutation test
+exactly as the corrected prompt specified, wired through the full pipeline
+(`build_phase4_tables.py`, `build_phase4_analysis.py`, `build_review_driven_outputs.py`)
+and into `output/tables/*.csv`, `tests/`, and the manuscript - only after `rebuild_all.py`
+and `pytest` both ran clean. The combined permutation test is documented everywhere as a
+pooled-cohort statistic, explicitly not a family-random-effects mixed model, since that is
+what it actually is.
+
+**Bonus finding while regenerating Figure 5 for the new ALS/EPSPS positions:** confirmed
+the label-stagger fix from the 2026-07-06 pass (decision log context, `build_resistance_zone_figure.py`)
+correctly handles 5 direct-core ALS positions at an identical percentile, not just the
+original 4 - no new bug, existing fix generalized correctly.
