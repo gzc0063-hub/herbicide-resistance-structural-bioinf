@@ -1,0 +1,51 @@
+{
+  "PPO": {
+    "name": "Protoporphyrinogen oxidase",
+    "role": "Pilot family (validated first)",
+    "pdb": "1SEZ",
+    "species": "Nicotiana tabacum (tobacco)",
+    "status": "pooled"
+  },
+  "ALS": {
+    "name": "Acetohydroxyacid synthase (ALS/AHAS)",
+    "role": "Pooled core family",
+    "pdb": "1Z8N",
+    "species": "reference structure",
+    "status": "pooled"
+  },
+  "ACCase": {
+    "name": "Acetyl-CoA carboxylase (CT domain)",
+    "role": "Pooled core (homology model)",
+    "pdb": "1UYS",
+    "species": "Alopecurus myosuroides (black-grass) homology model",
+    "status": "pooled"
+  },
+  "EPSPS": {
+    "name": "5-enolpyruvylshikimate-3-phosphate synthase",
+    "role": "Pooled core family",
+    "pdb": "8UMJ",
+    "species": "Zea mays (maize)",
+    "status": "pooled"
+  },
+  "HPPD": {
+    "name": "Hydroxyphenylpyruvate dioxygenase",
+    "role": "Contrast / negative control",
+    "pdb": "5YWG",
+    "species": "Arabidopsis thaliana",
+    "status": "contrast"
+  },
+  "FAT": {
+    "name": "Acyl-ACP thioesterase",
+    "role": "Phase 5 risk table (engineered variants only)",
+    "pdb": "9GRR",
+    "species": "Alopecurus myosuroides / Arabidopsis thaliana",
+    "status": "phase5"
+  },
+  "DHODH": {
+    "name": "Dihydroorotate dehydrogenase",
+    "role": "Phase 5 risk table (no public structure)",
+    "pdb": null,
+    "species": "Arabidopsis thaliana (EMS lines)",
+    "status": "phase5"
+  }
+}

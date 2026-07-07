@@ -1,0 +1,28 @@
+[
+  {
+    "target": "FAT",
+    "target_full_name": "Acyl-ACP thioesterase",
+    "phase5_priority": "FAT_first",
+    "target_moa_evidence": "Plant FAT inhibitor-complex literature identified",
+    "structure_model_status": "Public plant structures available; 9GRR is Arabidopsis FatA bound to cinmethylin itself (verified via RCSB data API)",
+    "structure_ids_or_model_route": "9GRR;9HRR;7HQQ-7HQU;8P8K(Lemna;non-cinmethylin ligand)",
+    "mutation_evidence_status": "Primary-source verified: R171K/Q/I/M (FAT A) and P192R (FAT B) in Alopecurus myosuroides",
+    "mutation_source_type": "engineered_predicted_docking_guided",
+    "go_no_go": "audit_first",
+    "next_action": "Align A. myosuroides FatA to 9GRR to confirm R171/Arg176 correspondence; obtain full PDF of Lolium rigidum metabolic-resistance paper (10.1002/ps.6947)",
+    "notes": "Not weed-evolved -- site-directed mutants guided by molecular docking, tested in vitro (Wagner et al. 2026 bioRxiv, bachelor thesis, not peer-reviewed). Real NTSR (metabolic) cinmethylin resistance does exist in L. rigidum populations; target-site resistance does not yet. See phase5_risk_table.csv for full mutation data."
+  },
+  {
+    "target": "DHODH",
+    "target_full_name": "Dihydroorotate dehydrogenase",
+    "phase5_priority": "DHODH_gated",
+    "target_moa_evidence": "Tetflupyrolimet/DHODH target literature identified; primary PNAS paper read directly",
+    "structure_model_status": "Rice (Oryza sativa) DHODH-tetflupyrolimet structure exists per Kang et al. 2023 PNAS but is NOT publicly deposited (no PDB ID given); AlphaFold AtDHODH model also internal-only",
+    "structure_ids_or_model_route": "No public accession -- internal Syngenta structure + internal AlphaFold model (At5g23300)",
+    "mutation_evidence_status": "Primary-source verified: G198E and A141T in Arabidopsis thaliana (EMS mutagenesis lines 45R1/60R1)",
+    "mutation_source_type": "lab_selected_EMS_mutagenesis",
+    "go_no_go": "hold_model_source",
+    "next_action": "Monitor for a future public deposition of the rice DHODH-tetflupyrolimet structure or an independent plant DHODH structure/model",
+    "notes": "Not weed-evolved -- EMS chemical mutagenesis screen of ~24,000 seeds (Kang et al. 2023 PNAS, DOI 10.1073/pnas.2313197120). G198E confirmed causal via transgenic re-creation. See phase5_risk_table.csv for full mutation data."
+  }
+]

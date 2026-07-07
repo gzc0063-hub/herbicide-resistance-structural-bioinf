@@ -1,0 +1,9 @@
+[
+  {
+    "family": "HPPD",
+    "status": "no_verified_weed_tsr_accepted",
+    "accepted_tsr_rows": "0",
+    "active_site_metric_file": "data/processed/hppd_5ywg_active_site_metrics.csv",
+    "notes": "Retained as a structural negative/contrast case after source audit; do not pool fabricated mutation rows."
+  }
+]

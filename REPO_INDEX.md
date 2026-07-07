@@ -79,6 +79,7 @@ git log --oneline --decorate --max-count=12
 | `output/tables/` | Generated manuscript and Phase 4 tables. | Read for final numeric results. |
 | `output/figures/` | Generated SVG figures. | Manuscript figure drafts. |
 | `output/figures_pms/` | PDF figures converted for Pest Management Science submission (Wiley requires vector figures as PDF/EPS, not TIFF). | Regenerate with `scripts/convert_figures_for_pms.py` whenever the SVGs change. |
+| `site/` | React (Vite) companion website - family cards, sortable mutation table, enrichment charts, Phase 5 risk table. Reads only `site/public/data/*.json`, exported from `output/tables/`/`data/processed/` by `scripts/export_site_data.py`. Deploys to GitHub Pages via `.github/workflows/deploy-site.yml`. | Run `npm install && npm run dev` inside `site/` to preview locally; re-run `scripts/export_site_data.py` first if the tables changed. |
 | `output/presentations/` | Canonical project presentation deck. | Use the saved PPTX as the baseline; do not regenerate preview assets into the repo. |
 | `docs/` | Decisions, handoff, reviews, manuscript, references, specs. | Project memory and writing layer. |
 | `docs/references/` | Archived source PDFs. | Primary-source evidence library. |

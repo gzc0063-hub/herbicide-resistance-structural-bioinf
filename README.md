@@ -28,6 +28,23 @@ This regenerates everything downstream of the per-family structural metric CSVs
 (which need ChimeraX or the pure-Python fallback and change only when a structure or
 active-site core changes). Regeneration is deterministic.
 
+## Companion website
+
+`site/` is a small React (Vite) app that presents this project's own verified tables and
+figures as an interactive site - family cards, a sortable/filterable mutation table, the
+enrichment/combined-permutation charts, and the Phase 5 risk table. It reads only from JSON
+exported from `output/tables/` and `data/processed/` by `scripts/export_site_data.py`; it
+never hand-types a number. Run locally:
+
+```bash
+python scripts/export_site_data.py   # regenerate site/public/data/*.json from the current tables
+cd site
+npm install
+npm run dev
+```
+
+Deploys automatically to GitHub Pages on push via `.github/workflows/deploy-site.yml`.
+
 ## Repo layout
 
 - `data/raw/` — sequences, structures, and mutation lists as pulled from source (NCBI, UniProt, PDB, literature)
