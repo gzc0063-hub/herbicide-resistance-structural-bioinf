@@ -42,7 +42,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
           cache-dependency-path: site/package-lock.json
 
@@ -56,6 +56,10 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
+        with:
+          # Attempts to create/enable the Pages site via API if it isn't already
+          # configured, instead of requiring a manual Settings -> Pages toggle first.
+          enablement: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
