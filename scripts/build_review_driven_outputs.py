@@ -1,6 +1,7 @@
 import argparse
 import csv
 import html
+import math
 import sys
 from pathlib import Path
 
@@ -179,6 +180,15 @@ def svg_rect(x: float, y: float, width: float, height: float, fill: str, stroke:
     )
 
 
+def nice_axis_max(values: list[float], step: int) -> int:
+    """Round the largest value up to the next multiple of step, so no data
+    point ever needs to be clamped/clipped onto the axis edge - every figure
+    should show its own real data range, not a range sized for the dataset
+    that existed before Phase 6 added more mutation rows."""
+    highest = max(values, default=step)
+    return max(step, math.ceil(highest / step) * step)
+
+
 def write_svg(path: Path, width: int, height: int, body: list[str]) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     svg = [
@@ -245,76 +255,93 @@ def figure_1_workflow(path: Path) -> Path:
 
 
 def figure_2_permutation(path: Path, summary_rows: list[dict[str, str]]) -> Path:
-    width, height = 760, 360
-    left, top, plot_w = 120, 70, 560
+    width = 760
+    left, top, plot_w, row_h = 120, 90, 560, 58
+    n = len(summary_rows)
+    axis_y = top + n * row_h + 10
+    height = axis_y + 60
     body = [svg_text(40, 34, "Figure 2. Observed TSR positions are enriched near active-site cores", 18)]
-    body.append(f'<line x1="{left}" y1="{height - 58}" x2="{left + plot_w}" y2="{height - 58}" stroke="#333" />')
+    body.append(svg_rect(left, 50, 18, 12, COLORS["random"]))
+    body.append(svg_text(left + 24, 60, "random mean", 11))
+    body.append(svg_rect(left + 150, 50, 18, 12, "#3f6fb5"))
+    body.append(svg_text(left + 174, 60, "observed", 11))
+    body.append(f'<line x1="{left}" y1="{axis_y}" x2="{left + plot_w}" y2="{axis_y}" stroke="#333" />')
     for tick in range(0, 101, 25):
         x = left + plot_w * tick / 100
-        body.append(f'<line x1="{x:.1f}" y1="{height - 62}" x2="{x:.1f}" y2="{height - 54}" stroke="#333" />')
-        body.append(svg_text(x, height - 36, str(tick), 11, "middle"))
+        body.append(f'<line x1="{x:.1f}" y1="{axis_y - 4}" x2="{x:.1f}" y2="{axis_y + 4}" stroke="#333" />')
+        body.append(svg_text(x, axis_y + 22, str(tick), 11, "middle"))
     for i, row in enumerate(summary_rows):
-        y = top + i * 58
+        y = top + i * row_h
         observed = float(row["observed_mean_percentile"])
         random_mean = float(row["random_mean_percentile_mean"])
         p_value = float(row["empirical_p_value_lower_tail"])
-        body.append(svg_text(35, y + 19, row["family"], 13))
+        position_set = "non-core" if row["position_set"] == "non_core_only" else "all"
+        body.append(svg_text(35, y + 19, f'{row["family"]} ({position_set})', 13))
         body.append(svg_rect(left, y, plot_w * random_mean / 100, 16, COLORS["random"]))
         body.append(svg_rect(left, y + 22, plot_w * observed / 100, 16, COLORS[row["family"]]))
         body.append(svg_text(left + plot_w + 10, y + 34, f"p={p_value:.4f}", 11))
-    body.append(svg_text(left + 140, height - 10, "Mean distance-to-core percentile (lower = closer)", 12))
-    body.append(svg_rect(520, 48, 18, 12, COLORS["random"]))
-    body.append(svg_text(544, 58, "random mean", 11))
-    body.append(svg_rect(620, 48, 18, 12, "#3f6fb5"))
-    body.append(svg_text(644, 58, "observed", 11))
+    body.append(svg_text(left + 140, axis_y + 46, "Mean distance-to-core percentile (lower = closer)", 12))
     return write_svg(path, width, height, body)
 
 
 def figure_3_position_screen(path: Path, rows: list[dict[str, str]]) -> Path:
-    width, height = 850, 500
-    left, top, plot_w = 130, 70, 620
+    width = 900
+    left, top, plot_w, row_h = 150, 90, 560, 28
+    n = len(rows)
+    axis_max = nice_axis_max(
+        [float(row["percentile_rank_distance_to_core"]) for row in rows], step=10
+    )
+    axis_y = top + n * row_h + 10
+    height = axis_y + 55
     body = [svg_text(40, 34, "Figure 3. Unique mutation positions by structural proximity class", 18)]
-    body.append(f'<line x1="{left}" y1="{height - 55}" x2="{left + plot_w}" y2="{height - 55}" stroke="#333" />')
-    for tick in range(0, 31, 10):
-        x = left + plot_w * tick / 30
-        body.append(f'<line x1="{x:.1f}" y1="{height - 59}" x2="{x:.1f}" y2="{height - 51}" stroke="#333" />')
-        body.append(svg_text(x, height - 34, str(tick), 11, "middle"))
+    body.append(f'<line x1="{left}" y1="{axis_y}" x2="{left + plot_w}" y2="{axis_y}" stroke="#333" />')
+    for tick in range(0, axis_max + 1, 10):
+        x = left + plot_w * tick / axis_max
+        body.append(f'<line x1="{x:.1f}" y1="{axis_y - 4}" x2="{x:.1f}" y2="{axis_y + 4}" stroke="#333" />')
+        body.append(svg_text(x, axis_y + 20, str(tick), 11, "middle"))
     for i, row in enumerate(rows):
-        y = top + i * 28
+        y = top + i * row_h
         percentile = float(row["percentile_rank_distance_to_core"])
-        x = left + plot_w * min(percentile, 30) / 30
+        x = left + plot_w * percentile / axis_max
         label = f"{row['family']} {row['structure_position']}"
         body.append(svg_text(28, y + 5, label, 11))
         body.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="6" fill="{COLORS[row["mechanism_label"]]}" />')
         body.append(svg_text(x + 10, y + 4, row["mutation_ids"], 10))
-    body.append(svg_text(left + 160, height - 8, "Distance-to-core percentile", 12))
+    body.append(svg_text(left + 140, axis_y + 42, "Distance-to-core percentile", 12))
     return write_svg(path, width, height, body)
 
 
 def figure_4_scatter(path: Path, rows: list[dict[str, str]]) -> Path:
-    width, height = 760, 460
     left, top, plot_w, plot_h = 85, 58, 590, 320
+    axis_max = nice_axis_max(
+        [float(row["percentile_rank_distance_to_core"]) for row in rows], step=10
+    )
+    max_rsa = max((max(0.0, float(row["rsa_tien2013"])) for row in rows), default=0.0)
+    rsa_max = max(0.3, math.ceil(max_rsa / 0.05) * 0.05)
+    width = left + plot_w + 140
+    height = top + plot_h + 100
     body = [svg_text(40, 30, "Figure 4. Distance percentile, RSA, and conservation annotations", 18)]
     body.append(f'<rect x="{left}" y="{top}" width="{plot_w}" height="{plot_h}" fill="none" stroke="#333" />')
-    for tick in range(0, 31, 10):
-        x = left + plot_w * tick / 30
+    for tick in range(0, axis_max + 1, 10):
+        x = left + plot_w * tick / axis_max
         body.append(f'<line x1="{x:.1f}" y1="{top + plot_h}" x2="{x:.1f}" y2="{top + plot_h + 6}" stroke="#333" />')
         body.append(svg_text(x, top + plot_h + 22, str(tick), 11, "middle"))
-    for tick in [0, 0.1, 0.2, 0.3]:
-        y = top + plot_h - plot_h * tick / 0.3
+    rsa_ticks = [round(rsa_max * i / 3, 2) for i in range(4)]
+    for tick in rsa_ticks:
+        y = top + plot_h - plot_h * tick / rsa_max
         body.append(f'<line x1="{left - 6}" y1="{y:.1f}" x2="{left}" y2="{y:.1f}" stroke="#333" />')
-        body.append(svg_text(left - 12, y + 4, f"{tick:.1f}", 11, "end"))
+        body.append(svg_text(left - 12, y + 4, f"{tick:.2f}", 11, "end"))
     for row in rows:
         percentile = float(row["percentile_rank_distance_to_core"])
         rsa = max(0.0, float(row["rsa_tien2013"]))
         conservation = float(row["normalized_conservation"] or 0)
-        x = left + plot_w * min(percentile, 30) / 30
-        y = top + plot_h - plot_h * min(rsa, 0.3) / 0.3
+        x = left + plot_w * percentile / axis_max
+        y = top + plot_h - plot_h * rsa / rsa_max
         radius = 4 + 5 * conservation
         body.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{radius:.1f}" fill="{COLORS[row["mechanism_label"]]}" opacity="0.82" />')
-    body.append(svg_text(left + 160, height - 38, "Distance-to-core percentile", 12))
-    body.append(svg_text(18, top + 170, "RSA", 12))
-    body.append(svg_text(95, height - 12, "Point size scales with normalized conservation; colors show mechanism annotation.", 11))
+    body.append(svg_text(left + 160, top + plot_h + 60, "Distance-to-core percentile", 12))
+    body.append(svg_text(18, top + plot_h / 2, "RSA", 12))
+    body.append(svg_text(left, top + plot_h + 80, "Point size scales with normalized conservation; colors show mechanism annotation.", 11))
     return write_svg(path, width, height, body)
 
 

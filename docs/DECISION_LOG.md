@@ -1183,3 +1183,41 @@ a rigor violation:
 leave every dated changelog/review entry exactly as originally written. Ran
 `pytest -q` after all edits (20 passed) to confirm no doc-only change had
 drifted from what the code actually produces.
+
+---
+
+## 40. Fixed layout bugs in Figures 2, 3, and 4 (hardcoded canvas sizes never updated after Phase 6 added rows)
+
+The user viewed the new companion-site Figures page and flagged that Figures 2,
+3, and 4 looked wrong - elements sitting outside the plotted axis area. This
+was a real bug in `scripts/build_review_driven_outputs.py`, not a site display
+issue: the SVG generator functions used hardcoded canvas `height` and axis
+`width`/`max` values sized for the pre-Phase-6 row counts (7 permutation-summary
+rows, 15 mechanism rows, a 0-30 percentile axis). Phase 6 added rows without
+anyone re-checking these fixed constants, so:
+
+- **Figure 2** (7 summary rows after the `ALL_FAMILIES_COMBINED` filter, up
+  from fewer before Phase 6): rows were drawn at `top + i * 58`, but the fixed
+  `height = 360` only had room for about 5 rows before the axis line and
+  legend; the remaining rows rendered past the bottom of the canvas.
+- **Figure 3** (17 mechanism rows, up from 15): same problem at `row_h = 28`
+  against a fixed `height = 500` - the last couple of rows collided with the
+  x-axis line and its label text.
+- **Figure 3 and 4** both also had a hardcoded percentile axis max of 30, but
+  the real data now reaches 31.98 (ACCase Cys2088Arg): that point was silently
+  clamped (`min(percentile, 30)`) onto the right axis border, which reads as
+  "sitting outside the plot" - because it visually is right on the boundary
+  line, not inside the plotted range like every other point.
+
+**Decision:** made canvas height and axis range computed from the actual data
+instead of hardcoded, so this class of bug cannot recur the next time a row is
+added: `nice_axis_max()` rounds the true data max up to the next multiple of
+10 (or 0.05 for the RSA axis in Figure 4) instead of assuming a fixed range,
+and all three figures compute `height`/`width` from the row count instead of
+a fixed constant. Verified by re-running `scripts/rebuild_all.py` (regenerates
+the SVGs from real data and re-runs `pytest -q`, 20 passed),
+`scripts/convert_figures_for_pms.py` (regenerates the submission PDFs from the
+corrected SVGs - the same bug was present in the manuscript's own figures, not
+just the site), and `scripts/export_site_data.py`, then visually confirmed all
+three figures in the site preview with every row and the full data range now
+inside the plotted area.
