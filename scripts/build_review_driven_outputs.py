@@ -235,14 +235,19 @@ def copy_table(source: Path, destination: Path) -> Path:
 
 
 def figure_1_workflow(path: Path) -> Path:
+    # The figure title/caption is supplied externally (site card heading and the
+    # manuscript's Figure Captions section), so it is intentionally NOT baked
+    # into the SVG - a title inside the image would duplicate the caption on the
+    # site and is not wanted for journal submission, where captions are typeset
+    # separately from the figure file.
     boxes = [
-        ("Curated TSR\nsource rows", 40, 82),
-        ("Real structures\n+ active-site cores", 230, 82),
-        ("Distance percentile\n+ RSA + conservation", 420, 82),
-        ("Permutation enrichment\n+ mechanism screen", 610, 82),
-        ("Static resource\nwith dynamic caveats", 800, 82),
+        ("Curated TSR\nsource rows", 40, 36),
+        ("Real structures\n+ active-site cores", 230, 36),
+        ("Distance percentile\n+ RSA + conservation", 420, 36),
+        ("Permutation enrichment\n+ mechanism screen", 610, 36),
+        ("Static resource\nwith dynamic caveats", 800, 36),
     ]
-    body = [svg_text(40, 38, "Figure 1. Static structural-bioinformatics workflow", 18)]
+    body = []
     for i, (label, x, y) in enumerate(boxes):
         body.append(svg_rect(x, y, 145, 74, "#f3f5f7", "#4c5967"))
         for j, line in enumerate(label.split("\n")):
@@ -250,21 +255,21 @@ def figure_1_workflow(path: Path) -> Path:
         if i < len(boxes) - 1:
             body.append(f'<line x1="{x + 145}" y1="{y + 37}" x2="{x + 185}" y2="{y + 37}" stroke="#4c5967" stroke-width="2" />')
             body.append(f'<polygon points="{x + 185},{y + 37} {x + 176},{y + 32} {x + 176},{y + 42}" fill="#4c5967" />')
-    body.append(svg_text(40, 190, "Scope boundary: no new MD pipeline; literature dynamics/free-energy studies are cited as mechanism context.", 13))
-    return write_svg(path, 990, 230, body)
+    body.append(svg_text(40, 148, "Scope boundary: no new MD pipeline; literature dynamics/free-energy studies are cited as mechanism context.", 13))
+    return write_svg(path, 990, 176, body)
 
 
 def figure_2_permutation(path: Path, summary_rows: list[dict[str, str]]) -> Path:
+    # Title/caption supplied externally; not baked into the SVG (see figure_1).
     width = 760
-    left, top, plot_w, row_h = 120, 90, 560, 58
+    left, top, plot_w, row_h = 120, 48, 560, 58
     n = len(summary_rows)
     axis_y = top + n * row_h + 10
     height = axis_y + 60
-    body = [svg_text(40, 34, "Figure 2. Observed TSR positions are enriched near active-site cores", 18)]
-    body.append(svg_rect(left, 50, 18, 12, COLORS["random"]))
-    body.append(svg_text(left + 24, 60, "random mean", 11))
-    body.append(svg_rect(left + 150, 50, 18, 12, "#3f6fb5"))
-    body.append(svg_text(left + 174, 60, "observed", 11))
+    body = [svg_rect(left, 16, 18, 12, COLORS["random"])]
+    body.append(svg_text(left + 24, 26, "random mean", 11))
+    body.append(svg_rect(left + 150, 16, 18, 12, "#3f6fb5"))
+    body.append(svg_text(left + 174, 26, "observed", 11))
     body.append(f'<line x1="{left}" y1="{axis_y}" x2="{left + plot_w}" y2="{axis_y}" stroke="#333" />')
     for tick in range(0, 101, 25):
         x = left + plot_w * tick / 100
@@ -285,16 +290,16 @@ def figure_2_permutation(path: Path, summary_rows: list[dict[str, str]]) -> Path
 
 
 def figure_3_position_screen(path: Path, rows: list[dict[str, str]]) -> Path:
+    # Title/caption supplied externally; not baked into the SVG (see figure_1).
     width = 900
-    left, top, plot_w, row_h = 150, 90, 560, 28
+    left, top, plot_w, row_h = 150, 40, 560, 28
     n = len(rows)
     axis_max = nice_axis_max(
         [float(row["percentile_rank_distance_to_core"]) for row in rows], step=10
     )
     axis_y = top + n * row_h + 10
     height = axis_y + 55
-    body = [svg_text(40, 34, "Figure 3. Unique mutation positions by structural proximity class", 18)]
-    body.append(f'<line x1="{left}" y1="{axis_y}" x2="{left + plot_w}" y2="{axis_y}" stroke="#333" />')
+    body = [f'<line x1="{left}" y1="{axis_y}" x2="{left + plot_w}" y2="{axis_y}" stroke="#333" />']
     for tick in range(0, axis_max + 1, 10):
         x = left + plot_w * tick / axis_max
         body.append(f'<line x1="{x:.1f}" y1="{axis_y - 4}" x2="{x:.1f}" y2="{axis_y + 4}" stroke="#333" />')
@@ -312,7 +317,8 @@ def figure_3_position_screen(path: Path, rows: list[dict[str, str]]) -> Path:
 
 
 def figure_4_scatter(path: Path, rows: list[dict[str, str]]) -> Path:
-    left, top, plot_w, plot_h = 85, 58, 590, 320
+    # Title/caption supplied externally; not baked into the SVG (see figure_1).
+    left, top, plot_w, plot_h = 85, 30, 590, 320
     axis_max = nice_axis_max(
         [float(row["percentile_rank_distance_to_core"]) for row in rows], step=10
     )
@@ -320,8 +326,7 @@ def figure_4_scatter(path: Path, rows: list[dict[str, str]]) -> Path:
     rsa_max = max(0.3, math.ceil(max_rsa / 0.05) * 0.05)
     width = left + plot_w + 140
     height = top + plot_h + 100
-    body = [svg_text(40, 30, "Figure 4. Distance percentile, RSA, and conservation annotations", 18)]
-    body.append(f'<rect x="{left}" y="{top}" width="{plot_w}" height="{plot_h}" fill="none" stroke="#333" />')
+    body = [f'<rect x="{left}" y="{top}" width="{plot_w}" height="{plot_h}" fill="none" stroke="#333" />']
     for tick in range(0, axis_max + 1, 10):
         x = left + plot_w * tick / axis_max
         body.append(f'<line x1="{x:.1f}" y1="{top + plot_h}" x2="{x:.1f}" y2="{top + plot_h + 6}" stroke="#333" />')

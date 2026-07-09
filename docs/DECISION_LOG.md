@@ -1221,3 +1221,41 @@ corrected SVGs - the same bug was present in the manuscript's own figures, not
 just the site), and `scripts/export_site_data.py`, then visually confirmed all
 three figures in the site preview with every row and the full data range now
 inside the plotted area.
+
+---
+
+## 41. Removed the "Figure N" title baked into each SVG (was duplicated on the site)
+
+Reviewing the new Figures page, the user flagged that every figure showed its
+title twice: once as the site card heading (from `export_site_data.py`'s
+`FIGURES` list) and again baked into the SVG image itself as a `<text>` element
+(e.g. the card said "Figure 2. Observed vs. random distance-to-core percentile
+by family" and the image below it repeated "Figure 2. Observed TSR positions
+are enriched near active-site cores"). Two stacked "Figure 2" lines read as a
+layout bug.
+
+**Decision:** removed the embedded `Figure N. ...` title `<text>` from all five
+figure generators (`figure_1_workflow`, `figure_2_permutation`,
+`figure_3_position_screen`, `figure_4_scatter` in
+`scripts/build_review_driven_outputs.py`, and the title line in
+`scripts/build_resistance_zone_figure.py`) and tightened each figure's top
+margin to reclaim the freed space. This is the correct state for *both*
+consumers, not just a site patch: the manuscript already supplies every figure's
+title/caption separately in its "Figure Captions" section, and Wiley/PMS typeset
+captions separately from the figure file, so a title baked into the image is
+redundant in the manuscript and unwanted in submission artwork. The title text
+now lives in exactly one place per context (site card heading; manuscript
+caption).
+
+**Bonus fix in the same pass:** Figure 5 (`build_resistance_zone_figure.py`)
+still had the hardcoded `xmax = 30.0` clamp that decision #40 fixed in Figures 3
+and 4 but had not reached - its own comment ("zoom to 0-30th percentile where
+all positions sit") was now false because ACCase Cys2088Arg sits at ~32.
+Replaced the fixed clamp with the same data-driven axis max (round the real data
+max up to the next multiple of 5, so the point renders inside the plot at ~32 on
+a 0-35 axis instead of pinned to the old "30" edge). Verified by regenerating
+the SVGs (`rebuild_all.py`, 20 tests pass), the PMS PDFs
+(`convert_figures_for_pms.py`), and the site export (`export_site_data.py`),
+then visually confirming all five figures in the site preview - no duplicate
+titles, nothing clipped, `grep` confirms no `>Figure N.` title text remains in
+any SVG.
