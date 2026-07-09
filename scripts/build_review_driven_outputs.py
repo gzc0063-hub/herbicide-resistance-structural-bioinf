@@ -262,7 +262,9 @@ def figure_1_workflow(path: Path) -> Path:
 def figure_2_permutation(path: Path, summary_rows: list[dict[str, str]]) -> Path:
     # Title/caption supplied externally; not baked into the SVG (see figure_1).
     width = 760
-    left, top, plot_w, row_h = 120, 48, 560, 58
+    # left is wide enough to hold the longest right-aligned row label
+    # ("ACCase (non-core)") without it running into the bars.
+    left, top, plot_w, row_h = 150, 48, 520, 58
     n = len(summary_rows)
     axis_y = top + n * row_h + 10
     height = axis_y + 60
@@ -281,7 +283,7 @@ def figure_2_permutation(path: Path, summary_rows: list[dict[str, str]]) -> Path
         random_mean = float(row["random_mean_percentile_mean"])
         p_value = float(row["empirical_p_value_lower_tail"])
         position_set = "non-core" if row["position_set"] == "non_core_only" else "all"
-        body.append(svg_text(35, y + 19, f'{row["family"]} ({position_set})', 13))
+        body.append(svg_text(left - 12, y + 19, f'{row["family"]} ({position_set})', 12, "end"))
         body.append(svg_rect(left, y, plot_w * random_mean / 100, 16, COLORS["random"]))
         body.append(svg_rect(left, y + 22, plot_w * observed / 100, 16, COLORS[row["family"]]))
         body.append(svg_text(left + plot_w + 10, y + 34, f"p={p_value:.4f}", 11))
