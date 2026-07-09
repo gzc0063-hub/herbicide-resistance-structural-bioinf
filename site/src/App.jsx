@@ -4,6 +4,7 @@ import Overview from './pages/Overview'
 import Families from './pages/Families'
 import Mutations from './pages/Mutations'
 import Stats from './pages/Stats'
+import Figures from './pages/Figures'
 import Phase5 from './pages/Phase5'
 import { REPO_URL } from './constants'
 
@@ -12,6 +13,7 @@ const NAV_ITEMS = [
   { to: '/families', label: 'Target families' },
   { to: '/mutations', label: 'Mutations' },
   { to: '/stats', label: 'Enrichment & stats' },
+  { to: '/figures', label: 'Figures' },
   { to: '/phase5', label: 'Phase 5' },
 ]
 
@@ -50,6 +52,7 @@ function App() {
           <Route path="/families" element={<Families />} />
           <Route path="/mutations" element={<Mutations />} />
           <Route path="/stats" element={<Stats />} />
+          <Route path="/figures" element={<Figures />} />
           <Route path="/phase5" element={<Phase5 />} />
         </Routes>
       </main>
